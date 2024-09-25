@@ -1,9 +1,10 @@
-# rojo-frontend
-### User Story for a Web Application with "Activity Matching" Feature
+# rojo-Frontend
+
+### **User Story for a Web Application with "Activity Matching" Feature**
 
 #### **Overview**:
 
-This web application is designed to match users in groups of 5 based on an algorithm. The users participate in various activities based on their preferences. A user can express their preferred activity and filter options based on their location. After the activity is created and a group is formed, a chat feature will allow participants to communicate. The platform offers different roles, and safety features are integrated to ensure a secure environment.
+This web application is designed to match users in groups of 5 based on an algorithm that considers preferences and location. Users can explore activities, but can only join them after being matched by the algorithm. Chat functionality is created automatically once the event is formed. The platform includes categories, blog articles, and roles such as users and administrators.
 
 ---
 
@@ -25,59 +26,58 @@ As a user, I want to create an account by providing my email and password, so I 
 As a user, I want to be able to set preferences for activities I’m interested in, so the algorithm can match me with activities I enjoy.
 
 - **Acceptance Criteria**:
-    - Users can select from a list of available activities.
-    - Users can express preferences or prioritize activities in order of interest.
-    - Preferences are stored and can influence matching.
+    - Users can select from a list of available categories (e.g., sports, dancing).
+    - Users can choose one or more categories for matching.
+    - Preferences are stored and influence the matching algorithm.
 
 ### **3. Activity Discovery Based on Location**:
 
 As a user, I want to filter available activities by my geographic area, so I can join activities close to me.
 
 - **Acceptance Criteria**:
-    - Users can filter activities by location (zone).
-    - Only activities in the selected area/zona will be shown to the user.
+    - Users can filter activities by city.
+    - Only activities in the selected city will be displayed.
 
 ### **4. Activity Creation (Administrator Role)**:
 
-As an administrator, I want to create an activity by specifying a title, area, date/time, and description, so other users can join.
+As an administrator, I want to create an activity by specifying a title, city, date/time, and description, so other users can be matched.
 
 - **Acceptance Criteria**:
-    - Administrators can create events with fields such as title, area, activity type, description, and date/time.
+    - Administrators can create events with fields such as title, city, category, description, and date/time.
     - Administrator must upload a cover photo for the activity.
 
-### **5. Random/Question-based Matching Algorithm**:
+### **5. Category-based Matching Algorithm**:
 
-As a user, I want to be randomly matched with four other users based on an algorithm, so I can participate in group activities.
+As a user, I want to be matched with four other users based on an algorithm, so I can participate in group activities.
 
 - **Acceptance Criteria**:
-    - The algorithm either randomly selects users or uses question-based criteria (like preferences or common interests).
+    - The algorithm matches users based on selected categories, city, and availability.
     - Users are placed into groups of 5 for each activity.
-    - The matching algorithm takes preferences, location, and availability into account.
+    - Only the algorithm can suggest and form activity groups; users cannot select them directly.
 
 ### **6. Viewing and Joining Activities**:
 
-As a user, I want to browse available activities and choose which one to join, so I can engage in activities I like.
+As a user, I want to browse available activities, but only the algorithm can assign me to one.
 
 - **Acceptance Criteria**:
-    - Users can browse available activities based on area and preferences.
-    - Each activity displays details such as title, description, date/time, and administrator.
-    - Users can join any available activity if space is available.
+    - Users can browse activities on the homepage but cannot directly join or book them.
+    - The algorithm suggests and assigns activities based on category and city.
 
 ### **7. Post-Activity Chat**:
 
-As a user, I want to communicate with other participants via chat after we have been matched for an activity, so we can coordinate or discuss the event.
+As a user, I want to communicate with other participants via chat after we have been matched for an activity.
 
 - **Acceptance Criteria**:
-    - The chat feature only becomes available after the activity group has been formed.
-    - Chat is available only to participants of the same activity.
+    - A chat is automatically created when the event is formed for the group of 5.
+    - Chat is only available for participants of the same activity.
 
 ### **8. View and Manage Events (Administrator Role)**:
 
-As an administrator, I want to view a list of activities I have organized, so I can manage and edit them.
+As an administrator, I want to view and manage the activities I have created.
 
 - **Acceptance Criteria**:
-    - Administrators can view, edit, or delete activities they have created.
-    - Administrators can see the participants in their events and interact with them.
+    - Administrators can view, edit, or delete events they have created.
+    - Administrators can view participants and interact with them.
 
 ### **9. Safety Button**:
 
@@ -89,12 +89,12 @@ As a user, I want access to a safety button, so I can report inappropriate behav
 
 ### **10. Profile and Event History Management**:
 
-As a user, I want to manage my profile and see a history of events I’ve organized or participated in, so I can keep track of my involvement.
+As a user, I want to manage my profile and see a history of events I’ve participated in, so I can keep track of my involvement.
 
 - **Acceptance Criteria**:
-    - Users can update their photo, preferences, and zone in their profile settings.
-    - Users can view a list of past and upcoming activities they have joined.
-    - If the user is an administrator, they can see the events they have organized.
+    - Users can update their photo, preferences, and city in their profile settings.
+    - Users can view a list of past and upcoming activities.
+    - Administrators can see events they have organized.
 
 ---
 
@@ -105,10 +105,10 @@ As a user, I want to manage my profile and see a history of events I’ve organi
 #### **Entity: Event**
 
 - **Attributes**:
-    - `area` (zone/region)
+    - `city` (zone/region)
     - `title`
     - `date/time`
-    - `activity`
+    - `category`
     - `description`
     - `administrator` (User who organized the event)
     - `photos` (cover or activity-related images)
@@ -119,37 +119,91 @@ As a user, I want to manage my profile and see a history of events I’ve organi
     - `email`
     - `password`
     - `photo` (mandatory)
-    - `zone` (geographic area)
-    - `preferences` (activity preferences)
+    - `city` (geographic area)
+    - `preferences` (category preferences)
     - `age`
-    - `IsAdministrator?` (boolean flag)
+    - `isAdministrator` (boolean flag)
     - `organizedEvents` (List of events the user has organized)
     - `joinedEvents` (List of events the user has joined)
+
+#### **Entity: City**
+
+- **Attributes**:
+    - `cityId`
+    - `name` (city name)
+    - `state` (optional)
+    - `country`
+    - `latitude` (optional)
+    - `longitude` (optional)
+    - `createdAt`
+    - `updatedAt`
+
+#### **Entity: Category**
+
+- **Attributes**:
+    - `categoryId`
+    - `name` (e.g., sports, dancing)
+    - `createdAt`
+    - `updatedAt`
+
+#### **Entity: Chat**
+
+- **Attributes**:
+    - `chatId`
+    - `eventId`
+    - `createdAt`
+
+#### **Entity: Message**
+
+- **Attributes**:
+    - `messageId`
+    - `chatId`
+    - `content`
+    - `createdAt`
+    - `senderId`
+
+#### **Entity: Blog Article**
+
+- **Attributes**:
+    - `articleId`
+    - `title`
+    - `content`
+    - `createdAt`
+    - `authorId`
 
 ---
 
 ### **Roles**:
 
 1. **Regular User**:
-    
-    - Can join activities.
-    - Can view and manage their profile.
-    - Can participate in post-activity chat.
+    - Can browse activities.
+    - Can manage their profile.
+    - Can join activities after being matched by the algorithm.
+    - Can chat with other participants after being matched.
     - Can report issues via the safety button.
+
 2. **Administrator**:
-    
     - Can create, edit, and manage activities.
+    - Can manage categories.
     - Can view and manage participants.
-    - Can organize activities in specific zones.
+    - Can organize activities in specific cities.
 
 ---
 
 ### **Additional Features**:
 
 - **Email Confirmation**: Upon registration, users receive an email to confirm their account.
-- **Safety Button**: A prominent feature allowing users to report issues or concerns regarding other participants or the activity environment.
-- **Post-Matching Chat**: Only available after the activity group is formed.
+- **Safety Button**: Allows users to report issues or concerns.
+- **Post-Matching Chat**: Only available after the group is formed for an activity.
+- **Payment Integration** (planned): Payment could be implemented once the user is matched and has joined an activity.
 
 ---
 
-This user history captures the essential functionality of the platform, from user registration to post-event communication, with features such as preference-based matching, activity filtering by location, and safety measures ensuring user security.
+### **Algorithm Rules**:
+
+- Users can select one or more categories of activities.
+- The algorithm will match users based on category, city, and availability.
+- Users cannot directly join or book activities; the algorithm handles group assignment.
+- Users cannot choose their group; the algorithm forms groups automatically.
+
+---
