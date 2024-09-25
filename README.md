@@ -207,3 +207,5 @@ As a user, I want to manage my profile and see a history of events I’ve partic
 - Users cannot choose their group; the algorithm forms groups automatically.
 
 ---
+
+<!-- Comentario  -->
