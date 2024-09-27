@@ -1,25 +1,25 @@
 # rojo-Frontend
 
-### **User Story for a Web Application with "Activity Matching" Feature**
+## **User Story for a Web Application with "Activity Matching" Feature**
 
-#### **Overview**:
+### **Overview**:
 
-This web application is designed to match users in groups of 5 based on an algorithm that considers preferences and location. Users can explore activities, but can only join them after being matched by the algorithm. Chat functionality is created automatically once the event is formed. The platform includes categories, blog articles, and roles such as users and administrators.
-
----
-
-### **Key User Stories**:
+This web application is designed to match users in groups of 5 based on an algorithm that considers preferences and location. Users can explore activities, but can only join them after being matched by the algorithm. Chat functionality is created automatically once the event is formed. The platform includes categories, blog articles, and roles such as users,  administrators and visitors.
 
 ---
 
-### **1. User Registration and Profile Creation**:
+## **Key User Stories**:
 
-As a user, I want to create an account by providing my email and password, so I can access the application features.
+---
+
+### **1. Visitor Registration and Profile Creation**:
+
+As a Visitor, I want to create an account by providing my email and password, so I can access the application features.
 
 - **Acceptance Criteria**:
-    - User must upload a profile picture during the registration process.
+    - Visitor must upload a profile picture during the registration process.
     - A confirmation email is sent to verify the user's account.
-    - Mandatory fields include email, password, age, photo, and zone (location).
+    - Mandatory fields include email, password, date of birth, photo, and zone (location).
 
 ### **2. Setting Preferences for Activities**:
 
@@ -30,7 +30,7 @@ As a user, I want to be able to set preferences for activities I’m interested 
     - Users can choose one or more categories for matching.
     - Preferences are stored and influence the matching algorithm.
 
-### **3. Activity Discovery Based on Location**:
+### **4. Activity Discovery Based on Location**:
 
 As a user, I want to filter available activities by my geographic area, so I can join activities close to me.
 
@@ -54,6 +54,7 @@ As a user, I want to be matched with four other users based on an algorithm, so 
     - The algorithm matches users based on selected categories, city, and availability.
     - Users are placed into groups of 5 for each activity.
     - Only the algorithm can suggest and form activity groups; users cannot select them directly.
+    - The algortithm will match the users based on location, the prefences and on the result of the questionnaire.
 
 ### **6. Viewing and Joining Activities**:
 
@@ -98,22 +99,26 @@ As a user, I want to manage my profile and see a history of events I’ve partic
 
 ---
 
-### **Entities (Database Design)**:
+## **Entities (Database Design)**:
 
 ---
 
-#### **Entity: Event**
+### **Entity: Event**
 
 - **Attributes**:
     - `city` (zone/region)
     - `title`
     - `date/time`
+    - `Location`
     - `category`
     - `description`
     - `administrator` (User who organized the event)
     - `photos` (cover or activity-related images)
+    - `modifiedAt`
+	- `createdAt`
+	- `deletedAt`
 
-#### **Entity: User**
+### **Entity: User**
 
 - **Attributes**:
     - `email`
@@ -121,85 +126,154 @@ As a user, I want to manage my profile and see a history of events I’ve partic
     - `photo` (mandatory)
     - `city` (geographic area)
     - `preferences` (category preferences)
-    - `age`
+    - `dateOfBirth`
     - `isAdministrator` (boolean flag)
     - `organizedEvents` (List of events the user has organized)
     - `joinedEvents` (List of events the user has joined)
+    - `modifiedAt`
+	- `createdAt`
+	- `deletedAt`
 
-#### **Entity: City**
+### **Entity: City**
 
 - **Attributes**:
     - `cityId`
     - `name` (city name)
-    - `state` (optional)
+    - `state` 
     - `country`
     - `latitude` (optional)
     - `longitude` (optional)
-    - `createdAt`
-    - `updatedAt`
+    - `modifiedAt`
+	- `createdAt`
+	- `deletedAt`
 
-#### **Entity: Category**
+### **Entity: Category**
 
 - **Attributes**:
     - `categoryId`
     - `name` (e.g., sports, dancing)
-    - `createdAt`
-    - `updatedAt`
+    - `ParentCategory`
+    - `modifiedAt`
+	- `createdAt`
+	- `deletedAt`
 
-#### **Entity: Chat**
+### **Entity: Location**
+
+- **Attributes**:
+    - `LocationID`
+    - `Name`
+    - `Address`
+    - `City`
+    - `State`
+    - `Country`
+    - `PostalCode`
+    - `Latitude` (optional)
+    - `Longitude` (optional)
+    - `LocationType`
+    - `CreatedAt`
+    - `ModifiedAt`
+    - `deletedAt`
+
+### **Entity: State**
+
+- **Attributes**:
+    - `StateID`
+    - `Name`
+    - `CountryID`
+    - `Abbreviation` (optional)
+    - `Timezone` (optional)
+    - `CreatedAt`
+    - `ModifiedAt`
+    - `deletedAt`
+
+### **Entity: Country**
+
+- **Attributes**:
+    - `CountryID`
+    - `StateID`
+    - `Name`
+    - `ISOCode`
+    - `Capital`
+    - `OfficialLanguage` (optional)
+    - `Timezone` (optional)
+    - `CreatedAt`
+    - `ModifiedAt`
+    - `DeletedAt`
+
+### **Entity: Chat**
 
 - **Attributes**:
     - `chatId`
     - `eventId`
-    - `createdAt`
+    - `CreatedAt`
+    - `ModifiedAt`
+    - `DeletedAt`
 
-#### **Entity: Message**
+### **Entity: Message**
 
 - **Attributes**:
     - `messageId`
     - `chatId`
     - `content`
-    - `createdAt`
     - `senderId`
+    - `CreatedAt`
+    - `ModifiedAt`
+    - `DeletedAt`
 
-#### **Entity: Blog Article**
+### **Entity: Blog Article**
 
 - **Attributes**:
     - `articleId`
     - `title`
     - `content`
-    - `createdAt`
     - `authorId`
+    - `CategoryId`
+    - `CreatedAt`
+    - `ModifiedAt`
+    - `DeletedAt`
 
 ---
 
-### **Roles**:
+## **Roles**:
 
 1. **Regular User**:
     - Can browse activities.
+    - Can leave the activity.
     - Can manage their profile.
     - Can join activities after being matched by the algorithm.
     - Can chat with other participants after being matched.
     - Can report issues via the safety button.
+    - Can recover the password.
 
 2. **Administrator**:
     - Can create, edit, and manage activities.
     - Can manage categories.
     - Can view and manage participants.
     - Can organize activities in specific cities.
+    - Can delete events
+    - Can delete users
+
+3. **Visitor**
+    - Can signup on the Social network and become a user
 
 ---
 
-### **Additional Features**:
+## **Blog**:
+
+    - The blog is to review the exeperience.
+
+---
+
+## **Additional Features**:
 
 - **Email Confirmation**: Upon registration, users receive an email to confirm their account.
 - **Safety Button**: Allows users to report issues or concerns.
 - **Post-Matching Chat**: Only available after the group is formed for an activity.
-- **Payment Integration** (planned): Payment could be implemented once the user is matched and has joined an activity.
+- **Payment Integration** (planned - To be rediscussed): Payment could be implemented once the user is matched and has joined an activity.
 
 ---
 
-### **Algorithm Rules**:
+## **Algorithm Rules**:
 
 - Users can select one or more categories of activities.
 - The algorithm will match users based on category, city, and availability.
