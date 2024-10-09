@@ -14,6 +14,7 @@ export const LoginFrom = () => {
           const [password, setPassword] = useState('');
           const { login } = useContext(AuthContext);
           const navigate = useNavigate();
+
           const [error, setError] = useState('');
 
           const emailRef = useRef(null);
@@ -45,7 +46,7 @@ export const LoginFrom = () => {
                               >
                                         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login</h2>
                                         {error && <Alert message={error} />}
-
+                                        
                                         <div>
                                                   <InputText
                                                             type="email"
