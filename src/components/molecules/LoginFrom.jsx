@@ -74,7 +74,7 @@ export const LoginFrom = () => {
                                         <div>
                                                   <Buttons
                                                             type="submit"
-                                                            value="Register"
+                                                            value="Login"
                                                             className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
                                                   />
                                         </div>
