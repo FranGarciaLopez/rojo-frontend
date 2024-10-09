@@ -1,40 +1,33 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import axios from "axios";
+import React from "react"
+import { AuthProvider } from "./contexts/AuthContext";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import { Home } from "./components/organisms/Home";
 import { Login } from "./components/organisms/Login";
+import { Register } from './components/organisms/Register';
+import { Dashboard } from "./components/organisms/Dashboard";
 
 function App() {
-
-       const [userLoggedIn, setUserLoggedIn] = useState(false)
-
-       useEffect(() => {
-              axios.get('http://localhost:3001/user', {
-                     headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`
-                     }
-              }).then(response => {
-                     setUserLoggedIn(response.data.loggedIn)
-              }).catch(error => {
-                     setUserLoggedIn(false)
-              })
-       }, [])
-
-       useEffect(() => {
-              const token = localStorage.getItem('token')
-              if (token) {
-                     setUserLoggedIn(true)
-              }
-       }, [])
-
        return (
-              <div className="App">
-                     <header className="App-header">
-                            <h1>Rojo</h1>
-                            {userLoggedIn ? 'Logged in' : <Login />}
-
-                     </header>
-              </div>
-       );
+              <AuthProvider>
+                     <Router>
+                            <Routes>
+                                   <Route path="/" element={<Home />} />
+                                   <Route path="/login" element={<Login />} />
+                                   <Route path="/register" element={<Register />} />
+                                   <Route
+                                          path="/dashboard"
+                                          element={
+                                                 <PrivateRoute>
+                                                        <Dashboard />
+                                                 </PrivateRoute>
+                                          }
+                                   />
+                            </Routes>
+                     </Router>
+              </AuthProvider>
+       )
 }
 
 export default App
