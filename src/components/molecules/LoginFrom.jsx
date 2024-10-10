@@ -45,7 +45,7 @@ export const LoginFrom = () => {
                                         className="bg-white p-8 m-8 rounded-lg w-full max-w-md space-y-4"
                               >
                                         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login</h2>
-                                        {error && <Alert message={error} />}
+                                        {error && <Alert message={error.message} />}
                                         
                                         <div>
                                                   <InputText
