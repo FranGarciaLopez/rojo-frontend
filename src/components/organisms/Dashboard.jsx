@@ -5,6 +5,7 @@ import NavBar from "../molecules/NavBar";
 export const Dashboard = () => {
 
           const { user } = React.useContext(AuthContext);
+          debugger;
 
           return (
                     <>
@@ -13,7 +14,8 @@ export const Dashboard = () => {
                                         <h1>Dashboard</h1>
 
                                         {user ? (
-                                                  <p className="text-lg">Welcome, {user.firstname}!</p>
+                                                  
+                                                  <p className="text-lg">Welcome, {user.user.firstname}!</p>
                                         ) : (
                                                   <p className="text-lg">Loading user info...</p>
                                         )}
