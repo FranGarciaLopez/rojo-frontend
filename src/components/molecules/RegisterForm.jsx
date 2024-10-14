@@ -1,11 +1,12 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext , useEffect} from 'react';
 import axios from 'axios';
 
 import { AuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import InputText from '../atoms/InputText';
 import Buttons from '../atoms/Buttons';
-import Alert from '../atoms/Alert'
+import Alert from '../atoms/Alert';
+
 
 
 export const RegisterForm = () => {
@@ -19,6 +20,7 @@ export const RegisterForm = () => {
           const { register } = useContext(AuthContext);
           const navigate = useNavigate();
           const [error, setError] = useState('');
+          const [cities, setCities] = useState([]);
 
           const refs = {
                     firstname: useRef(null),
@@ -28,6 +30,20 @@ export const RegisterForm = () => {
                     city: useRef(null),
                     dateOfBirth: useRef(null),
           };
+
+
+          useEffect(() => {
+            const fetchCities = async () => {
+              try {
+                const response = await axios.get('http://localhost:3000/cities/cities'); 
+                setCities(response.data); 
+              } catch (error) {
+                console.error('Error fetching cities:',  error.message);
+              }
+            };
+        
+            fetchCities();
+          }, []);
 
           const handleSubmit = async (e) => {
                     e.preventDefault();
@@ -46,7 +62,7 @@ export const RegisterForm = () => {
                                         navigate('/login');
                               })
                               .catch((error) => {
-                                        debugger;
+                                        
                                         setError(error.message || "An unexpected error occurred");
                               });
                     
@@ -113,15 +129,23 @@ export const RegisterForm = () => {
                                                   </div>
 
                                                   <div>
-                                                            <InputText
-                                                                      type="text"
-                                                                      placeholder="City"
+                                                            <select
+                                                                     
                                                                       value={city}
                                                                       onChange={(e) => setCity(e.target.value)}
                                                                       ref={refs.city}
                                                                       className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
                                                                       required
-                                                            />
+                                                                      >
+                                                                        <option value=""> Choose your City </option>
+                                                                        {cities.map((city) =>(
+                                                                            <option key ={city._id} value={city.name}>
+                                                                                {city.name}
+                                                                            </option>
+                                                                        ))}
+               
+                                                                      </select>
+                                                            
                                                   </div>
 
                                                   <div>

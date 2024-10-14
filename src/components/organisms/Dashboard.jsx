@@ -5,7 +5,7 @@ import NavBar from "../molecules/NavBar";
 export const Dashboard = () => {
 
           const { user } = React.useContext(AuthContext);
-          debugger;
+       
 
           return (
                     <>
