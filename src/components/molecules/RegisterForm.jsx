@@ -134,10 +134,10 @@ export const RegisterForm = () => {
                                                                       value={city}
                                                                       onChange={(e) => setCity(e.target.value)}
                                                                       ref={refs.city}
-                                                                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
+                                                                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full"
                                                                       required
                                                                       >
-                                                                        <option value=""> Choose your City </option>
+                                                                        <option value="">     Choose your City     </option>
                                                                         {cities.map((city) =>(
                                                                             <option key ={city._id} value={city.name}>
                                                                                 {city.name}
