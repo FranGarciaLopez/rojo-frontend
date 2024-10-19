@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const NavBar = () => {
           
@@ -38,9 +39,16 @@ const NavBar = () => {
                                                                       <div className="flex items-center -mx-2">
                                                                                 <Link to="/login" className="mx-2 text-gray-900">Login</Link>
                                                                       </div>
+                                                                      
                                                             )} 
+                                                             <div className="flex items-center -mx-2">
+                                                                                <Link to="/usersettings" className="mx-2 text-gray-900" >   <i className="fas fa-cog"></i> User Settings</Link>
+                                                                      </div>
                                                   </div>
+                                                 
                                         </div>
+
+                                        
 
                               </div>
                     </nav>

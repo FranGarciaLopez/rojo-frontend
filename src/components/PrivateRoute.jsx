@@ -10,3 +10,5 @@ export const PrivateRoute = ({ children }) => {
                     authToken ? children : <Navigate to="/login" />
           );
 };
+
+
