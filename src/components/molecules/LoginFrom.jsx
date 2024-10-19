@@ -29,6 +29,7 @@ export const LoginFrom = () => {
                     })
                               .then((response) => {
                                         const token = response.data.token;
+                                        // token is admin 
                                         login(token);
                                         navigate('/dashboard');
                               })
@@ -70,6 +71,7 @@ export const LoginFrom = () => {
                                                             required
                                                   />
                                         </div>
+                                        
 
                                         <div>
                                                   <Buttons
