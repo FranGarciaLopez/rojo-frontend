@@ -10,6 +10,7 @@ import { Dashboard } from "./components/organisms/Dashboard";
 
 import { UserSettings } from "./components/organisms/UserSettings";
 
+
 function App() {
        return (
               <AuthProvider>
@@ -19,6 +20,7 @@ function App() {
                                    <Route path="/login" element={<Login />} />
                                    <Route path="/register" element={<Register />} />
                                    <Route path="/usersettings" element={<UserSettings />} />
+                               
                                    <Route
                                           path="/dashboard"
                                           element={

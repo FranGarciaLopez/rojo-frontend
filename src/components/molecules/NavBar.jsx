@@ -44,6 +44,10 @@ const NavBar = () => {
                                                              <div className="flex items-center -mx-2">
                                                                                 <Link to="/usersettings" className="mx-2 text-gray-900" >   <i className="fas fa-cog"></i> User Settings</Link>
                                                                       </div>
+
+                                                                    
+
+                                                                    
                                                   </div>
                                                  
                                         </div>
