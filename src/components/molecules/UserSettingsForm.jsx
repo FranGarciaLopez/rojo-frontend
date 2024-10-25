@@ -81,7 +81,7 @@ export const UserSettingsForm = () => {
                         <div className="flex items-center gap-4">
                             <img
                                 className="h-16 w-16 flex-none object-cover [clip-path:circle()]"
-                                src="https://res.cloudinary.com/subframe/image/upload/v1711417513/shared/kwut7rhuyivweg8tmyzl.jpg"
+                                src=""
                                 alt="User Profile" 
                             />
                               <label htmlFor="image-upload" className="cursor-pointer">
@@ -151,13 +151,13 @@ export const UserSettingsForm = () => {
 
 
                 </div>
-                <div>
+              
                                                   <Buttons
                                                             type="submit"
                                                             value="Save Settings"
                                                             className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
                                                   />
-                                        </div>
+                                        
 
                 <div className="flex h-px w-full flex-none flex-col items-center gap-6 bg-neutral-border" />
 <div className="flex w-full flex-col items-start gap-6">
@@ -199,13 +199,13 @@ export const UserSettingsForm = () => {
 
 
 </div>
-<div>
+
                                                   <Buttons
                                                             type="submit"
                                                             value="Change Password"
                                                             className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
                                                   />
-                                        </div>
+                                        
 
 
 
