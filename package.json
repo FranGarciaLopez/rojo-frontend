@@ -12,7 +12,7 @@
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free": "^6.6.0",
-    "@subframe/core": "^1.124.0",
+    "@subframe/core": "^1.128.0",
     "@testing-library/react": "^16.0.1",
     "axios": "^1.7.7",
     "feather-icons": "^4.29.2",

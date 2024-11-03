@@ -42,10 +42,14 @@ export const UserSettingsForm = () => {
               Workspace
             </span>
             <div className="flex w-full flex-col items-start gap-1">
-              <SettingsMenu.Item
-                icon="FeatherUsers"
-                label="Registered events"
-              />
+            <div>
+            <div>
+    
+      <a href="/CreateEventForm" className="bg-gray-600 hover:bg-blue-800 text-white font-bold py-1 px-2 rounded">
+        Register new Event
+      </a>
+    </div>
+</div>
             </div>
           </div>
         </SettingsMenu>
