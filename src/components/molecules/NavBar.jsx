@@ -45,6 +45,11 @@ const NavBar = () => {
                                                                                 <Link to="/usersettings" className="mx-2 text-gray-900" >   <i className="fas fa-cog"></i> User Settings</Link>
                                                                       </div>
 
+
+                                                                      <div className="flex items-center -mx-2">
+                                                                                <Link to="/CreateEventForm" className="mx-2 text-gray-900" >   <i className="fas fa-plus"></i> Create Event</Link>
+                                                                      </div>
+
                                                                     
 
                                                                     

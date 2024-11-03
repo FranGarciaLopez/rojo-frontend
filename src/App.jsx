@@ -9,6 +9,7 @@ import { Register } from './components/organisms/Register';
 import { Dashboard } from "./components/organisms/Dashboard";
 
 import { UserSettings } from "./components/organisms/UserSettings";
+import {CreateEvent} from "./components/molecules/CreateEventForm";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                                    <Route path="/login" element={<Login />} />
                                    <Route path="/register" element={<Register />} />
                                    <Route path="/usersettings" element={<UserSettings />} />
+                                   <Route path="/CreateEventForm" element={<CreateEvent />} />
                                
                                    <Route
                                           path="/dashboard"
@@ -35,4 +37,4 @@ function App() {
        )
 }
 
-export default App
+export default App;
