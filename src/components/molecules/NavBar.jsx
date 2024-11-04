@@ -4,8 +4,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const NavBar = () => {
-          
-          const { authToken, logout } = React.useContext(AuthContext);
+          const { authToken, logout, loading } = React.useContext(AuthContext);
 
           return (
                     <nav className="bg-white border-gray-200">
@@ -54,11 +53,7 @@ const NavBar = () => {
 
                                                                     
                                                   </div>
-                                                 
                                         </div>
-
-                                        
-
                               </div>
                     </nav>
           );
