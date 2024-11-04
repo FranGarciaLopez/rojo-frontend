@@ -15,7 +15,7 @@ const SettingsMenu = ({ children }) => {
 SettingsMenu.Item = function SettingsMenuItem({ selected, icon, label, onClick }) {
        return (
               <div
-                     className={`flex items-center p-2 rounded cursor-pointer ${selected ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`}
+                     className={`flex items-center justify-center w-full h-full rounded cursor-pointer ${selected ? 'bg-gray-200' : 'hover:bg-blue-100'}`}
                      onClick={onClick}
               >
                      {icon && <i data-feather={icon} className="mr-2" />}

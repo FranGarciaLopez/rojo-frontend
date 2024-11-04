@@ -10,7 +10,7 @@ import { Dashboard } from "./components/organisms/Dashboard";
 
 import { UserSettings } from "./components/organisms/UserSettings";
 import {CreateEvent} from "./components/molecules/CreateEventForm";
-
+import { AdminDashboard } from "./components/organisms/AdminDashboard";	
 
 function App() {
        return (

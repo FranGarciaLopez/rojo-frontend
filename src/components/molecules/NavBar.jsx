@@ -1,10 +1,11 @@
 import React from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const NavBar = () => {
-          const { authToken, logout, loading } = React.useContext(AuthContext);
+          const { authToken, logout } = useContext(AuthContext);
 
           return (
                     <nav className="bg-white border-gray-200">
@@ -23,35 +24,34 @@ const NavBar = () => {
                                         </button>
                                         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
                                                   <div className="flex items-center justify-between w-full gap-5 md:w-auto">
-                                                            <Link to="/" className="text-lg font-semibold text-gray-900">Rojo</Link>
-                                                            
-                                                            { authToken ? (
-                                                                      <div className="flex items-center -mx-2">
-                                                                                <button
-                                                                                          onClick={logout}
-                                                                                          className="mx-2 text-gray-900"
-                                                                                >
-                                                                                          Logout
-                                                                                </button>
-                                                                      </div>
+
+                                                            {authToken ? (
+                                                                      <>
+                                                                                <div className="flex items-center -mx-2">
+                                                                                          <Link to="/usersettings" className="mx-2 text-gray-900" >   <i className="fas fa-cog"></i> User Settings</Link>
+                                                                                </div>
+
+                                                                                <div className="flex items-center -mx-2">
+                                                                                          <button
+                                                                                                    onClick={logout}
+                                                                                                    className="mx-2 text-gray-900"
+                                                                                          >
+                                                                                                    Logout
+                                                                                          </button>
+                                                                                </div>
+
+
+                                                                      </>
                                                             ) : (
-                                                                      <div className="flex items-center -mx-2">
-                                                                                <Link to="/login" className="mx-2 text-gray-900">Login</Link>
-                                                                      </div>
-                                                                      
-                                                            )} 
-                                                             <div className="flex items-center -mx-2">
-                                                                                <Link to="/usersettings" className="mx-2 text-gray-900" >   <i className="fas fa-cog"></i> User Settings</Link>
-                                                                      </div>
+                                                                      <>
+                                                                                <Link to="/" className="text-lg font-semibold text-gray-900">Rojo</Link>
 
+                                                                                <div className="flex items-center -mx-2">
+                                                                                          <Link to="/login" className="mx-2 text-gray-900">Login</Link>
+                                                                                </div>
+                                                                      </>
+                                                            )}
 
-                                                                      <div className="flex items-center -mx-2">
-                                                                                <Link to="/CreateEventForm" className="mx-2 text-gray-900" >   <i className="fas fa-plus"></i> Create Event</Link>
-                                                                      </div>
-
-                                                                    
-
-                                                                    
                                                   </div>
                                         </div>
                               </div>

@@ -27,11 +27,9 @@ export const LoginFrom = () => {
                     })
                               .then((response) => {
                                         const token = response.data.token;
-                                        setIsAdmin(response.data.isAdmin); // Set isAdmin from the response
+                                        setIsAdmin(response.data.isAdmin);
                                         login(token);
 
-                                        debugger;
-                                        // Navigate based on isAdmin status
                                         if (response.data.isAdmin) {
                                                   navigate('/admin');
                                         } else {
