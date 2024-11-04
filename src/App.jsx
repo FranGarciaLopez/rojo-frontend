@@ -31,6 +31,15 @@ function App() {
                                                  </PrivateRoute>
                                           }
                                    />
+
+
+                                   <Route path="/admin" element={
+                                          <PrivateRoute>
+                                                 <h1><AdminDashboard /></h1>
+                                          </PrivateRoute>
+                                   } />
+                                                                                      
+                                   <Route path="*" element={<h1>Not Found</h1>} />
                             </Routes>
                      </Router>
               </AuthProvider>
