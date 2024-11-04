@@ -1,15 +1,18 @@
 import Buttons from '../atoms/Buttons';
 
 import InputText from '../atoms/InputText';
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import CustomAlert from '../atoms/CustomAlert';
 import SettingsMenu from '../atoms/SettingsMenu';
+import { AuthContext } from '../../contexts/AuthContext';
 
 export const UserSettingsForm = () => {
+  const { authToken } = useContext(AuthContext);
+  const [setError] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // const [password, setPassword] = useState('');
 
   const [dateOfBirth, setDateOfBirth] = useState('');
 
@@ -17,10 +20,32 @@ export const UserSettingsForm = () => {
     firstname: useRef(null),
     lastname: useRef(null),
     email: useRef(null),
-    password: useRef(null),
+    // password: useRef(null),
     city: useRef(null),
     dateOfBirth: useRef(null),
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/user', {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        const data = await response.json();
+        setFirstname(data.user.firstname);
+        setLastname(data.user.lastname);
+        setEmail(data.user.email);
+        setDateOfBirth(data.user.dateOfBirth);
+      }
+      catch (error) {
+        setError(error);
+      }
+    }
+    fetchUser();
+  }, [authToken]);
+
   return (
     <div className="flex h-full w-full justify-center">
       <div className="flex h-full w-50 max-w-[1200px] items-start mobile:flex-col mobile:gap-0 pt-10">
@@ -68,7 +93,7 @@ export const UserSettingsForm = () => {
                 <span className="text-body-bold font-body-bold text-default-font">
                   Photo Profile
                 </span>
-                   {/* <div className="flex items-center gap-4">
+                {/* <div className="flex items-center gap-4">
                   <img
                     className="h-16 w-16 flex-none object-cover [clip-path:circle()]"
                    src="https://res.cloudinary.com/subframe/image/upload/v1711417513/shared/kwut7rhuyivweg8tmyzl.jpg"
@@ -116,40 +141,29 @@ export const UserSettingsForm = () => {
 
               <div>
                 <InputText
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  ref={refs.password}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5   min-w-[400px]"
-                  required
-                />
-              </div>
-              <div>
-                <InputText
                   type="date"
                   placeholder="Date of Birth"
-                  value={dateOfBirth}
-                  onChange={(e) => setDateOfBirth(e.target.value)}
+                  value={dateOfBirth.split('T')[0]}
+                  onChange={(e) => setDateOfBirth(e.target.value.split('T')[0])}
                   ref={refs.dateOfBirth}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5  w-88 min-w-[400px]"
                   required
                 />
               </div>
             </div>
-            
-              <Buttons
-                type="submit"
-                value="Save Settings"
-                className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
-              />
-            
 
-            <div className="flex h-px w-full flex-none flex-col items-center gap-6 bg-neutral-border" />
+            <Buttons
+              type="submit"
+              value="Save Settings"
+              className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+            />
+
+            {/* <div className="flex h-px w-full flex-none flex-col items-center gap-6 bg-neutral-border" />
             <div className="flex w-full flex-col items-start gap-6">
               <span className="text-heading-3 font-heading-3 text-default-font">
                 Password
               </span>
+
               <InputText
                 type="password"
                 placeholder="Current Password"
@@ -174,16 +188,67 @@ export const UserSettingsForm = () => {
                 type="password"
                 placeholder="Re-type new password"
                 value=""
-                onChange={() => {}}
+                onChange={(e) => { 
+                  setPassword(e.target.value);
+                }}
               />
             </div>
-        
-              <Buttons
-                type="submit"
-                value="Change Password"
-                className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+
+            <Buttons
+              type="submit"
+              value="Change Password"
+              className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+            /> */}
+
+
+            <div className="flex h-px w-full flex-none flex-col items-center gap-6 bg-neutral-border" />
+            <span className="text-heading-3  font-bold  font-heading-3 text-default-font">
+              Activities  Preferences
+            </span>
+
+            <div className="flex w-full flex-col items-start gap-4">
+              <span className="text-heading-3 font-heading-3 text-default-font">
+                Preferred City
+              </span>
+              <InputText
+                type="text"
+                placeholder="City"
+                value=""
+                onChange={(e) => { }}
+                ref={refs.city}
+                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5  min-w-[400px]"
+                required
               />
-        
+
+              {/* activity, dayoftheWeek */}
+              <span className="text-heading-3 font-heading-3 text-default-font">
+                Preferred Day of the Week
+              </span>
+              <InputText
+                type="text"
+                placeholder="Day of the Week"
+                value=""
+                onChange={(e) => { }}
+                ref={refs.city}
+                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5  min-w-[400px]"
+                required
+              />
+
+              <span className="text-heading-3 font-heading-3 text-default-font">
+                Preferred Category
+              </span>
+              <InputText
+                type="text"
+                placeholder="Category"
+                value=""
+                onChange={(e) => { }}
+                ref={refs.city}
+                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5  min-w-[400px]"
+                required
+              />
+
+            </div>
+
 
             <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-neutral-border" />
             <div className="flex w-full flex-col items-start gap-6">
@@ -200,7 +265,7 @@ export const UserSettingsForm = () => {
                     type="submit"
                     value="Delete account"
                     className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => {}}
+                    onClick={() => { }}
                   >
                     Delete account
                   </Buttons>
@@ -209,7 +274,7 @@ export const UserSettingsForm = () => {
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </div>
   );
 };

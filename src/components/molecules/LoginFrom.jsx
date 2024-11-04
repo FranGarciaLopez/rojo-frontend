@@ -12,13 +12,11 @@ export const LoginFrom = () => {
 
           const [email, setEmail] = useState('');
           const [password, setPassword] = useState('');
+          const [isAdmin, setIsAdmin] = useState(false);
+
           const { login } = useContext(AuthContext);
           const navigate = useNavigate();
-
           const [error, setError] = useState('');
-
-          const emailRef = useRef(null);
-          const passwordRef = useRef(null);
 
           const handleSubmit = async (e) => {
                     e.preventDefault();
@@ -29,14 +27,20 @@ export const LoginFrom = () => {
                     })
                               .then((response) => {
                                         const token = response.data.token;
-                                        // token is admin 
+                                        setIsAdmin(response.data.isAdmin); // Set isAdmin from the response
                                         login(token);
-                                        navigate('/dashboard');
+
+                                        debugger;
+                                        // Navigate based on isAdmin status
+                                        if (response.data.isAdmin) {
+                                                  navigate('/admin');
+                                        } else {
+                                                  navigate('/dashboard');
+                                        }
                               })
                               .catch((error) => {
-                                        setError(error.response.data)
+                                        setError(error.response.data.message);
                               });
-
           };
 
           return (
@@ -46,15 +50,14 @@ export const LoginFrom = () => {
                                         className="bg-white p-8 m-8 rounded-lg w-full max-w-md space-y-4"
                               >
                                         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login</h2>
-                                        {error && <Alert message={error.message} />}
-                                        
+                                        {error && <Alert message={error} />}
+
                                         <div>
                                                   <InputText
                                                             type="email"
                                                             placeholder="Email"
                                                             value={email}
                                                             onChange={(e) => setEmail(e.target.value)}
-                                                            ref={emailRef}
                                                             className="bg-white border border-gray-300 text-gray-800 text-sm rounded-lg p-2.5"
                                                             required
                                                   />
@@ -66,12 +69,10 @@ export const LoginFrom = () => {
                                                             placeholder="Password"
                                                             value={password}
                                                             onChange={(e) => setPassword(e.target.value)}
-                                                            ref={passwordRef}
                                                             className="bg-white border border-gray-300 text-gray-800 text-sm rounded-lg p-2.5"
                                                             required
                                                   />
                                         </div>
-                                        
 
                                         <div>
                                                   <Buttons
@@ -87,9 +88,13 @@ export const LoginFrom = () => {
                                                                       Register
                                                             </Link>
                                                   </p>
+                                                  <p className="text-gray-700 text-sm">
+                                                            <Link to="/forgotpassword" className="text-blue-600 hover:underline">
+                                                                      Forgot Password
+                                                            </Link>?
+                                                  </p>
                                         </div>
                               </form>
-
                     </div>
           );
 };
