@@ -7,6 +7,7 @@ import CustomAlert from '../atoms/CustomAlert';
 import SettingsMenu from '../atoms/SettingsMenu';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import NavBar from './NavBar';
 
 export const UserSettingsForm = () => {
      const [setError] = useState('');
@@ -53,6 +54,8 @@ export const UserSettingsForm = () => {
      }, [authToken]);
 
      return (
+          <>
+          <NavBar />
           <div className="centered-elements">
                <div className="flex flex-col h-full p-6 gap-6 xl:flex-row">
 
@@ -168,5 +171,6 @@ export const UserSettingsForm = () => {
                     </form>
                </div>
           </div>
+          </>
      );
 };
