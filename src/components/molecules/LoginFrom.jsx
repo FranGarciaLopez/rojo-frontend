@@ -42,12 +42,9 @@ export const LoginFrom = () => {
           };
 
           return (
-                    <div className="flex flex-grow justify-center items-center bg-white">
-                              <form
-                                        onSubmit={handleSubmit}
-                                        className="bg-white p-8 m-8 rounded-lg w-full max-w-md space-y-4"
-                              >
-                                        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login</h2>
+                    <div className="flex flex-grow justify-center items-center bg-white px-6 py-6">
+                              <form onSubmit={handleSubmit}>
+                                        <h2 className="text-center">Login</h2>
                                         {error && <Alert message={error} />}
 
                                         <div>
@@ -56,7 +53,6 @@ export const LoginFrom = () => {
                                                             placeholder="Email"
                                                             value={email}
                                                             onChange={(e) => setEmail(e.target.value)}
-                                                            className="bg-white border border-gray-300 text-gray-800 text-sm rounded-lg p-2.5"
                                                             required
                                                   />
                                         </div>
@@ -67,7 +63,6 @@ export const LoginFrom = () => {
                                                             placeholder="Password"
                                                             value={password}
                                                             onChange={(e) => setPassword(e.target.value)}
-                                                            className="bg-white border border-gray-300 text-gray-800 text-sm rounded-lg p-2.5"
                                                             required
                                                   />
                                         </div>
@@ -76,17 +71,18 @@ export const LoginFrom = () => {
                                                   <Buttons
                                                             type="submit"
                                                             value="Login"
-                                                            className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+                                                            className="bg-blue-600 hover:bg-blue-800"
                                                   />
                                         </div>
+
                                         <div className="text-center">
-                                                  <p className="text-gray-700 text-sm">
+                                                  <p className="text-gray-700">
                                                             Don't have an account?{' '}
                                                             <Link to="/register" className="text-blue-600 hover:underline">
                                                                       Register
                                                             </Link>
                                                   </p>
-                                                  <p className="text-gray-700 text-sm">
+                                                  <p className="text-gray-700">
                                                             <Link to="/forgotpassword" className="text-blue-600 hover:underline">
                                                                       Forgot Password
                                                             </Link>?
