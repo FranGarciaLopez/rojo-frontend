@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 
 import * as SubframeCore from "@subframe/core";
-
+import NavBar from '../molecules/NavBar';
 import InputText from "../atoms/InputText";
 
 import UploadImage from "../molecules/UploadImage";

@@ -4,9 +4,9 @@ const Buttons = ({ type, placeholder, value, className, ...others }) => {
           return (
                     <button
                               type={type}
-                              placeholder={placeholder}
                               {...others}
-                              className={`input input-border w-full ${className}`}
+                              className={`input input-border w-full 
+                                        transition duration-200 ease-in-out ${className}`}
                     >
                               {value}
                     </button>
