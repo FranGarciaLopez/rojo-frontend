@@ -6,39 +6,38 @@ import { useNavigate, Link } from 'react-router-dom';
 import InputText from '../atoms/InputText';
 import Buttons from '../atoms/Buttons';
 import Alert from '../atoms/Alert';
-
+import { loginUser } from '../../api/apiService';
 
 export const LoginFrom = () => {
-
           const [email, setEmail] = useState('');
           const [password, setPassword] = useState('');
-          const [isAdmin, setIsAdmin] = useState(false);
+          const [error, setError] = useState('');
 
           const { login } = useContext(AuthContext);
           const navigate = useNavigate();
-          const [error, setError] = useState('');
 
           const handleSubmit = async (e) => {
                     e.preventDefault();
 
-                    axios.post('http://localhost:3000/login', {
-                              email,
-                              password,
-                    })
-                              .then((response) => {
-                                        const token = response.data.token;
-                                        setIsAdmin(response.data.isAdmin);
-                                        login(token);
+                    try {
+                              // Call the loginUser function from the API client
+                              const response = await loginUser({ email, password });
 
-                                        if (response.data.isAdmin) {
-                                                  navigate('/admin');
-                                        } else {
-                                                  navigate('/dashboard');
-                                        }
-                              })
-                              .catch((error) => {
-                                        setError(error.response.data.message);
-                              });
+                              const token = response.data.token;
+                              const requiresOnboarding = response.data.requiresOnboarding;
+                              const isAdmin = response.data.isAdmin;
+                              login(token); 
+
+                              if (requiresOnboarding) {
+                                        navigate('/onboarding');
+                              } else if (isAdmin) {
+                                        navigate('/admin');
+                              } else {
+                                        navigate('/dashboard');
+                              }
+                    } catch (error) {
+                              setError(error.response?.data?.message || 'Login failed');
+                    }
           };
 
           return (
