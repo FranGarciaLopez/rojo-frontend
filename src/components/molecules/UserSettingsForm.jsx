@@ -1,299 +1,171 @@
 import Buttons from '../atoms/Buttons';
-
+import Label from '../atoms/Label';
 import InputText from '../atoms/InputText';
 import React, { useState, useRef, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CustomAlert from '../atoms/CustomAlert';
 import SettingsMenu from '../atoms/SettingsMenu';
 import { AuthContext } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export const UserSettingsForm = () => {
-     const { authToken } = useContext(AuthContext);
      const [setError] = useState('');
      const [firstname, setFirstname] = useState('');
      const [lastname, setLastname] = useState('');
      const [email, setEmail] = useState('');
-     const [isAdmin, setIsAdmin] = useState(false);
-     const { user } = useContext(AuthContext);
-     // const [password, setPassword] = useState('');
+     const [dayOfTheWeek, setdayOfTheWeek] = useState('');
+     const [preferedCategory, setPreferedCategory] = useState('');
+     const [preferedCity, setPreferedCity] = useState('');
 
-     const [dateOfBirth, setDateOfBirth] = useState('');
+     const { authToken } = useContext(AuthContext);
+     const [isAdmin, setIsAdmin] = useState(false);
+     const navigate = useNavigate();
 
      const refs = {
           firstname: useRef(null),
           lastname: useRef(null),
           email: useRef(null),
-          // password: useRef(null),
-          city: useRef(null),
-          dateOfBirth: useRef(null),
+          dayOfTheWeek: useRef(null),
+          preferedCategory: useRef(null),
+          preferedCity: useRef(null),
      };
 
      useEffect(() => {
           const fetchUser = async () => {
                try {
                     const response = await fetch('http://localhost:3000/user', {
-                         headers: {
-                              Authorization: `Bearer ${authToken}`,
-                         },
+                         headers: { Authorization: `Bearer ${authToken}` },
                     });
                     const data = await response.json();
+                    setIsAdmin(data.user.isAdministrator);
                     setFirstname(data.user.firstname);
                     setLastname(data.user.lastname);
                     setEmail(data.user.email);
-                    setDateOfBirth(data.user.dateOfBirth);
-                    setIsAdmin(data.user.isAdministrator);
-               }
-               catch (error) {
+                    setdayOfTheWeek(data.user.dayOfTheWeek);
+                    setPreferedCategory(data.user.categoryName.categoryName);
+                    setPreferedCity(data.user.preferedCity.name);
+               } catch (error) {
+                    console.log('Error fetching user data', error);
                     setError(error);
                }
-          }
+          };
           fetchUser();
      }, [authToken]);
 
      return (
-          <div className="flex h-full w-full justify-center">
-               <div className="flex h-full w-50 max-w-[1200px] items-start mobile:flex-col mobile:gap-0 pt-10">
-                    <SettingsMenu className="w-1/3 mobile:w-full mobile:mb-6">
-                         <i
-                              className="fas fa-arrow-left cursor-pointer"
-                              onClick={() => window.history.back()}
-                         ></i>
-                         <span className="w-full text-heading-3 font-heading-3 font-bold text-default-font">
-                              Settings
-                         </span>
-                         <div className="flex w-full flex-col items-start gap-2">
-                              <div className="flex w-full flex-col items-start gap-1">
-                                   <SettingsMenu.Item selected={true} label="Account" />
-                              </div>
-                         </div>
-                         <div className="flex w-full flex-col items-start gap-2">
-                              <span className="w-full text-body-bold  font-bold font-body-bold text-default-font">
-                                   Workspace
-                              </span>
+          <div className="centered-elements">
+               <div className="flex flex-col h-full p-6 gap-6 xl:flex-row">
 
-                              <div className="flex justify-center w-full">
-                                   {isAdmin ? (
-                                        <div className="flex flex-col items-center gap-1 w-full">
-                                             <Link to="/CreateEventForm" className='w-full' >
-                                                  <SettingsMenu.Item selected={true} label="Create new event">
-
-                                                  </SettingsMenu.Item>
-                                             </Link>
-                                        </div>
-                                   ) : (
-
-                                        <div className="flex flex-col items-center gap-1 w-full">
-                                             <Link to="/dashboard" className='w-full' >
-                                                  <SettingsMenu.Item selected={false} label="Events attended">
-
-                                                  </SettingsMenu.Item>
-                                             </Link>
-                                        </div>
-                                   )}
-                              </div>
-
-                         </div>
+                    {/* Sidebar - Settings Menu */}
+                    <SettingsMenu>
+                         <i className="fas fa-arrow-left cursor-pointer" onClick={() => navigate(-1)}></i>
+                         <span>Settings</span>
+                         <SettingsMenu.Item selected={true} label="Account" />
+                         {isAdmin && (
+                              <Link to="/CreateEventForm" className="w-full">
+                                   <SettingsMenu.Item selected={false} label="Create new event" />
+                              </Link>
+                         )}
                     </SettingsMenu>
 
-                    <div className="container max-w-none flex grow shrink-0 basis-0 flex-col items-center gap-6 self-stretch bg-default-background py-6 px-5 shadow-sm">
-                         <div className="flex w-full max-w-[576px] flex-col items-start gap-6">
-                              <div className="flex w-full flex-col items-start gap-1">
-                                   <span className="w-full   text-3xl font-bold  text-heading-2 font-heading-2 text-default-font">
-                                        Account
-                                   </span>
-                                   <span className="w-full text-body font-body text-subtext-color">
-                                        Update your profile and personal details here
-                                   </span>
-                              </div>
-                              <div className="flex w-full flex-col items-start gap-6">
-                                   <span className="text-heading-3  font-bold  font-heading-3 text-default-font">
-                                        Profile
-                                   </span>
-                                   <div className="flex w-full flex-col items-start gap-4">
-                                        <span className="text-body-bold font-body-bold text-default-font">
-                                             Photo Profile
-                                        </span>
-                                        {/* <div className="flex items-center gap-4">
-                  <img
-                    className="h-16 w-16 flex-none object-cover [clip-path:circle()]"
-                   src="https://res.cloudinary.com/subframe/image/upload/v1711417513/shared/kwut7rhuyivweg8tmyzl.jpg"
-                    alt="User Profile"
-                  /> 
-                  <label htmlFor="image-upload" className="cursor-pointer">
-                    <i className="fas fa-pencil-alt text-gray-700 hover:text-gray-900"></i>
-                  </label>
-                </div> */}
-                                   </div>
-                                   <div>
-                                        <InputText
-                                             type="text"
-                                             placeholder="First Name"
-                                             value={firstname}
-                                             onChange={(e) => setFirstname(e.target.value)}
-                                             ref={refs.firstname}
-                                             className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 min-w-[400px]"
-                                             required
-                                        />
-                                   </div>
-                                   <div>
-                                        <InputText
-                                             type="text"
-                                             placeholder="Last Name"
-                                             value={lastname}
-                                             onChange={(e) => setLastname(e.target.value)}
-                                             ref={refs.lastname}
-                                             className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5  min-w-[400px]"
-                                             required
-                                        />
-                                   </div>
+                    {/* Formulario */}
+                    <form>
+                         <h2>Account</h2>
+                         <p>Update your profile and personal details here</p>
 
-                                   <div>
-                                        <InputText
-                                             type="email"
-                                             placeholder="Email"
-                                             value={email}
-                                             onChange={(e) => setEmail(e.target.value)}
-                                             ref={refs.email}
-                                             className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5   w-88  min-w-[400px]"
-                                             required
-                                        />
-                                   </div>
-
-                                   <div>
-                                        <InputText
-                                             type="date"
-                                             placeholder="Date of Birth"
-                                             value={dateOfBirth.split('T')[0]}
-                                             onChange={(e) => setDateOfBirth(e.target.value.split('T')[0])}
-                                             ref={refs.dateOfBirth}
-                                             className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5  w-88 min-w-[400px]"
-                                             required
-                                        />
-                                   </div>
-                              </div>
-
-                              <Buttons
-                                   type="submit"
-                                   value="Save Settings"
-                                   className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+                         <div className="flex flex-col gap-4 w-full">
+                              <Label>First Name</Label>
+                              <InputText
+                                   type="text"
+                                   value={firstname}
+                                   onChange={(e) => setFirstname(e.target.value)}
+                                   ref={refs.firstname}
+                                   required
                               />
 
-                              {/* <div className="flex h-px w-full flex-none flex-col items-center gap-6 bg-neutral-border" />
-            <div className="flex w-full flex-col items-start gap-6">
-              <span className="text-heading-3 font-heading-3 text-default-font">
-                Password
-              </span>
+                              <Label>Last Name</Label>
+                              <InputText
+                                   type="text"
+                                   value={lastname}
+                                   onChange={(e) => setLastname(e.target.value)}
+                                   ref={refs.lastname}
+                                   required
+                              />
 
-              <InputText
-                type="password"
-                placeholder="Current Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                ref={refs.password}
-                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 "
-                required
-              />
-              <InputText
-                type="password"
-                placeholder="Enter new password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                ref={refs.password}
-                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5   min-w-[400px]"
-              />
-              <InputText
-                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5  min-w-[400px]"
-                label=""
-                helpText=""
-                type="password"
-                placeholder="Re-type new password"
-                value=""
-                onChange={(e) => { 
-                  setPassword(e.target.value);
-                }}
-              />
-            </div>
+                              <Label>Email</Label>
+                              <InputText
+                                   type="email"
+                                   value={email}
+                                   onChange={(e) => setEmail(e.target.value)}
+                                   ref={refs.email}
+                                   required
+                              />
 
-            <Buttons
-              type="submit"
-              value="Change Password"
-              className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
-            /> */}
-
-
-                              <div className="flex h-px w-full flex-none flex-col items-center gap-6 bg-neutral-border" />
-                              <span className="text-heading-3  font-bold  font-heading-3 text-default-font">
-                                   Activities  Preferences
-                              </span>
-
-                              <div className="flex w-full flex-col items-start gap-4">
-                                   <span className="text-heading-3 font-heading-3 text-default-font">
-                                        Preferred City
-                                   </span>
-                                   <InputText
-                                        type="text"
-                                        placeholder="City"
-                                        value=""
-                                        onChange={(e) => { }}
-                                        ref={refs.city}
-                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5  min-w-[400px]"
-                                        required
-                                   />
-
-                                   {/* activity, dayoftheWeek */}
-                                   <span className="text-heading-3 font-heading-3 text-default-font">
-                                        Preferred Day of the Week
-                                   </span>
-                                   <InputText
-                                        type="text"
-                                        placeholder="Day of the Week"
-                                        value=""
-                                        onChange={(e) => { }}
-                                        ref={refs.city}
-                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5  min-w-[400px]"
-                                        required
-                                   />
-
-                                   <span className="text-heading-3 font-heading-3 text-default-font">
-                                        Preferred Category
-                                   </span>
-                                   <InputText
-                                        type="text"
-                                        placeholder="Category"
-                                        value=""
-                                        onChange={(e) => { }}
-                                        ref={refs.city}
-                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5  min-w-[400px]"
-                                        required
-                                   />
-
-                              </div>
-
-
-                              <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-neutral-border" />
-                              <div className="flex w-full flex-col items-start gap-6">
-                                   <span className="text-heading-3 font-heading-3 text-default-font">
-                                        Danger zone
-                                   </span>
-                                   <CustomAlert
-                                        variant="error"
-                                        icon={null}
-                                        title="Delete account"
-                                        description=" Permanently remove your account. This action is not reversible."
-                                        actions={
-                                             <Buttons
-                                                  type="submit"
-                                                  value="Delete account"
-                                                  className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded"
-                                                  onClick={() => { }}
-                                             >
-                                                  Delete account
-                                             </Buttons>
-                                        }
-                                   />
-                              </div>
+                              <Label>Day of the week</Label>
+                              <InputText
+                                   type="text"
+                                   value={dayOfTheWeek}
+                                   onChange={(e) => setdayOfTheWeek(e.target.value)}
+                                   ref={refs.dayOfTheWeek}
+                                   required
+                              />
                          </div>
-                    </div>
+
+
+
+                         {/* show preferedCity, dayOfTheWeek and preferedCategory (categoryName)  */}
+                         <h3>Preferences</h3>
+                         <div className="flex flex-col gap-4 w-full">
+
+                              <Label>Prefered City</Label>
+                              <InputText
+                                   type="text"
+                                   value={preferedCity}
+                                   onChange={(e) => setPreferedCity(e.target.value)}
+                                   ref={refs.preferedCity}
+                                   required
+                              />
+
+                              <Label>Day of the week</Label>
+                              <InputText
+                                   type="text"
+                                   value={dayOfTheWeek}
+                                   onChange={(e) => setdayOfTheWeek(e.target.value)}
+                                   ref={refs.dayOfTheWeek}
+                                   required
+                              />
+
+                              <Label>Prefered Category</Label>
+                              <InputText
+                                   type="text"
+                                   value={preferedCategory}
+                                   onChange={(e) => setPreferedCategory(e.target.value)}
+                                   ref={refs.preferedCategory}
+                                   required
+                              />
+                         </div>
+                         <Buttons
+                              type="submit"
+                              value="Save Settings"
+                              className="mt-4 bg-blue-600 hover:bg-blue-800"
+                         />
+                         <div className="mt-10">
+                              <h3>Danger zone</h3>
+                              <CustomAlert
+                                   variant="error"
+                                   title="Delete account "
+                                   description="Permanently remove your account. This action is not reversible."
+                                   actions={
+                                        <Buttons
+                                             type="button"
+                                             value="Delete account"
+                                             className="bg-red-600 hover:bg-red-800"
+                                             onClick={() => { }}
+                                        />
+                                   }
+                              />
+                         </div>
+                    </form>
                </div>
           </div>
      );

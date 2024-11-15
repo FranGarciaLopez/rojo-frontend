@@ -1,48 +1,57 @@
-
-
 import React, { useState, useRef, useEffect } from 'react';
-
 import axios from 'axios';
 
 import * as SubframeCore from "@subframe/core";
-
+import NavBar from '../molecules/NavBar';
 import InputText from "../atoms/InputText";
-
 import Buttons from '../atoms/Buttons';
+import { useNavigate } from 'react-router-dom';
+
 export const CreateEvent = () => {
      const [photos, setPhotos] = useState([]);
-     const [eventData, setEventData] = useState({});
-
-
-     const [title, setTitle] = useState('');
-     const [description, setDescription] = useState('');
+     const [formData, setFormData] = useState({
+          title: '',
+          description: '',
+          city: '',
+          category: '',
+          dateTime: ''
+     });
      const [cities, setCities] = useState([]);
-     const [dateTime, setDateTime] = useState('')
-     const [city, setCity] = useState('');
-
-     const [category, setCategory] = useState([]);
      const [categories, setCategories] = useState([]);
+     const navigate = useNavigate();
 
-     const refs = {
-          title: useRef(null),
-          city: useRef(null),
-     };// Asegúrate de inicializar otros datos del evento
+     const handleChange = (e) => {
+          const { name, value } = e.target;
+          setFormData(prevState => ({
+               ...prevState,
+               [name]: value
+          }));
+     };
 
-
+     const handlePhotoUpload = (e) => {
+          const files = Array.from(e.target.files);
+          setPhotos(files);
+     };
 
      const handleSubmit = async (e) => {
           e.preventDefault();
+          const submissionData = new FormData();
 
-          const formData = new FormData();
-
-
-          photos.forEach(photo => {
-               formData.append('photos', photo);
+          photos.forEach(photo => submissionData.append('photos', photo));
+          Object.keys(formData).forEach(key => {
+               submissionData.append(key, formData[key]);
           });
 
-
-          formData.append('title', eventData.title);
-
+          try {
+               await axios.post('http://localhost:3000/events', submissionData, {
+                    headers: {
+                         'Content-Type': 'multipart/form-data'
+                    }
+               });
+               // Handle success
+          } catch (error) {
+               console.error('Error creating event:', error.message);
+          }
      };
 
      useEffect(() => {
@@ -54,150 +63,111 @@ export const CreateEvent = () => {
                     console.error('Error fetching cities:', error.message);
                }
           };
-
           fetchCities();
+
+          const fetchCategories = async () => {
+               try {
+                    const response = await axios.get('http://localhost:3000/categories/categories');
+                    setCategories(response.data);
+               } catch (error) {
+                    console.error('Error fetching categories:', error.message);
+               }
+          };
+          fetchCategories();
      }, []);
 
-
-     /* useEffect(() => {
-        const fetchCategories = async () => {
-          try {
-            const response = await axios.get('http://localhost:3000/'); 
-            setCategories(response.data); 
-          } catch (error) {
-            console.error('Error fetching categories:',  error.message);
-          }
-        };
-    
-        fetchCategories();
-      }, []);*/
-
-
      return (
-          
-          
-          <div className="flex w-full max-w-[1200px] flex-col items-center justify-center gap-6 rounded-md px-6 py-6 mx-auto">
-
-
-               <div className="w-full items-center gap-2">
-
-                    <i
-                         className="fas fa-arrow-left cursor-pointer"
-                         onClick={() => window.history.back()}
-                    ></i>
-
-
-                    <span className="font-heading-5 font-bold text-default-font"> Create New Event</span>
-               </div>
-
-
-               <div className="flex w-full flex-col items-center justify-center gap-2 rounded-md border border-dashed border-brand-600 px-6 py-6">
-                    <div className="flex w-full items-center gap-2 border-b border-solid border-neutral-border px-6 py-6">
-                         <span className="text-heading-3 font-bold text-default-font">Add details</span>
-                         <span className="text-body font-body font-bold text-subtext-color">tags, source, comments</span>
+          <>
+               <NavBar />
+               <div className="centered-elements flex-col gap-5">
+                    <div className="mx-8 gap-2">
+                         <i
+                              className="fas fa-arrow-left cursor-pointer"
+                              onClick={() => navigate(-1)}
+                         ></i>
+                         <span> Create New Event</span>
                     </div>
-                    <div className="flex w-full flex-col items-start gap-6 px-6 py-6">
-                         <span className="text-body-bold font-body-bold text-default-font">Title</span>
-                         <InputText
-                              type="text"
-                              placeholder="Title"
-                              value={title}
-                              onChange={(e) => setTitle(e.target.value)}
-                              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 min-w-[400px]"
-                              required
-                         />
-                         <div className="flex w-full flex-col items-start gap-2">
-                              <div className="flex w-full items-center gap-2">
-                                   <select
-
-                                        value={city}
-                                        onChange={(e) => setCity(e.target.value)}
-                                        ref={refs.city}
-                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full"
-                                        required
-                                   >
-                                        <option value="">     Choose your City     </option>
-                                        {cities.map((city) => (
-                                             <option key={city._id} value={city.name}>
-                                                  {city.name}
-                                             </option>
-                                        ))}
-
-                                   </select>
-                              </div>
-
-
-
-                         </div>
-
-                         <select
-
-                              value={category}
-                              onChange={(e) => setCategory(e.target.value)}
-                              ref={refs.category}
-                              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full"
-                              required
-                         >
-                              <option value="">     Choose a Category    </option>
-                              {categories.map((category) => (
-                                   <option key={category._id} value={category.name}>
-                                        {category.name}
-                                   </option>
-                              ))}
-
-                         </select>
-
-                         <div className="flex w-full flex-col items-start gap-2">
-                              <span className="text-body-bold font-body-bold text-default-font">Comment</span>
-                              <textarea
-                                   rows="5"
-                                   cols="50"
+                    <form onSubmit={handleSubmit}>
+                         <div className="w-full flex flex-col items-start gap-6">
+                              <label>Title</label>
+                              <InputText
                                    type="text"
-                                   placeholder="Description"
-                                   value={description}
-                                   onChange={(e) => setDescription(e.target.value)}
-                                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 min-w-full"
+                                   name="title"
+                                   placeholder="Title"
+                                   value={formData.title}
+                                   onChange={handleChange}
                                    required
                               />
-                         </div>
-                         <input
-                              type="datetime-local"
-                              value={dateTime}
-                              onChange={(e) => setDateTime(e.target.value)}
-                              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 min-w-[400px]"
-                              required
-                         />
-                         <form onSubmit={handleSubmit} className="flex h-full w-full flex-col items-center gap-6 bg-default-background px-6 py-10 mobile:h-full mobile:w-full">
 
-                              <SubframeCore.Icon
-                                   className="text-heading-1 font-heading-1 text-brand-700"
-                                   name="FeatherImage"
+                              <label>City</label>
+                              <select
+                                   name="city"
+                                   value={formData.city}
+                                   onChange={handleChange}
+                                   required
+                              >
+                                   <option>Choose your City</option>
+                                   {cities.map((city) => (
+                                        <option key={city._id} value={city.name}>
+                                             {city.name}
+                                        </option>
+                                   ))}
+                              </select>
+
+                              <label>Category</label>
+                              <select
+                                   name="category"
+                                   value={formData.category}
+                                   onChange={handleChange}
+                                   required
+                              >
+                                   <option>Choose a Category</option>
+                                   {categories.map((category) => (
+                                        <option key={category._id} value={category.name}>
+                                             {category.name}
+                                        </option>
+                                   ))}
+                              </select>
+
+                              <label>Description</label>
+                              <textarea
+                                   name="description"
+                                   rows="5"
+                                   placeholder="Description"
+                                   value={formData.description}
+                                   onChange={handleChange}
+                                   required
                               />
-                              <div className="flex flex-col items-center justify-center gap-2">
-                                   <span className="text-body-bold font-body-bold text-default-font text-center">
-                                        Drag photos here
-                                   </span>
-                                   <Buttons
-                                        type="submit"
-                                        value="Upload"
-                                        className="bg-blue-400 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded"
-                                   />
-                              </div>
-                              <span className="text-caption font-caption text-subtext-color text-center">
-                                   Supported files: jpg, png, svg
-                              </span>
 
-                         </form>
+                              <label>Date and Time</label>
+                              <InputText
+                                   type="datetime-local"
+                                   name="dateTime"
+                                   value={formData.dateTime}
+                                   onChange={handleChange}
+                                   required
+                              />
+
+                              <div className="upload-container shadow-3xl">
+                                   <SubframeCore.Icon className="upload-icon" name="FeatherImage" />
+                                   <div className="upload-text-container">
+                                        <span>Drag photos here</span>
+                                        <Buttons type="submit" value="Upload" className="upload-button" />
+                                   </div>
+                                   <span className="upload-support-text">
+                                        Supported files: jpg, png, svg
+                                   </span>
+                              </div>
+
+                         </div>
 
                          <Buttons
                               type="submit"
                               value="Create Event"
-                              className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+                              className="bg-blue-600 hover:bg-blue-800"
                          />
-                    </div>
+                    </form>
                </div>
-          </div>
-
-
+          </>
      );
 };
