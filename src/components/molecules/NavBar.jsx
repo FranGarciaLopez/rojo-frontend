@@ -1,5 +1,4 @@
-import React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -9,7 +8,7 @@ const NavBar = () => {
 
           return (
                     <nav className="bg-white border-gray-200">
-                              <div className="max-w-screen-xl flex flex-wrap items-center justify-around mx-auto p-4">
+                              <div className="max-w-xl flex flex-wrap items-center justify-around mx-auto p-4">
                                         <button
                                                   data-collapse-toggle="navbar-default"
                                                   type="button"
@@ -22,32 +21,28 @@ const NavBar = () => {
                                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
                                                   </svg>
                                         </button>
+
                                         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
                                                   <div className="flex items-center justify-between w-full gap-5 md:w-auto">
 
                                                             {authToken ? (
                                                                       <>
                                                                                 <div className="flex items-center -mx-2">
-                                                                                          <Link to="/usersettings" className="mx-2 text-gray-900" >   <i className="fas fa-cog"></i> User Settings</Link>
+                                                                                          <Link to="/usersettings" className="mx-2 text-gray-900 text-sm font-medium"> <i className="fas fa-cog"></i> User Settings</Link>
                                                                                 </div>
 
                                                                                 <div className="flex items-center -mx-2">
-                                                                                          <button
-                                                                                                    onClick={logout}
-                                                                                                    className="mx-2 text-gray-900"
-                                                                                          >
+                                                                                          <button onClick={logout} className="mx-2 text-gray-900 text-sm font-medium">
                                                                                                     Logout
                                                                                           </button>
                                                                                 </div>
-
-
                                                                       </>
                                                             ) : (
                                                                       <>
                                                                                 <Link to="/" className="text-lg font-semibold text-gray-900">Rojo</Link>
 
                                                                                 <div className="flex items-center -mx-2">
-                                                                                          <Link to="/login" className="mx-2 text-gray-900">Login</Link>
+                                                                                          <Link to="/login" className="mx-2 text-gray-900 text-sm font-medium">Login</Link>
                                                                                 </div>
                                                                       </>
                                                             )}
