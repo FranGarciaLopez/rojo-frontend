@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const SettingsMenu = ({ children }) => {
        return (
-              <div className="flex w-full flex-col items-start gap-2">
+              <div className="flex flex-col items-start gap-2">
                      {children}
               </div>
        );
@@ -15,7 +15,7 @@ const SettingsMenu = ({ children }) => {
 SettingsMenu.Item = function SettingsMenuItem({ selected, icon, label, onClick }) {
        return (
               <div
-                     className={`flex items-center justify-center w-full h-full rounded cursor-pointer ${selected ? 'bg-gray-200' : 'hover:bg-blue-100'}`}
+                     className={`flex w-full p-2 rounded cursor-pointer ${selected ? 'bg-gray-200' : 'hover:bg-blue-100'}`}
                      onClick={onClick}
               >
                      {icon && <i data-feather={icon} className="mr-2" />}
