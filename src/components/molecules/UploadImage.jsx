@@ -68,10 +68,10 @@ function ImageUpload({ setPhotos }) {
       )}
       <button
         onClick={handleUpload}
-        className="bg-blue-400 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded"
+      
         disabled={isUploading || uploadedImages.length === 0}
       >
-        Upload
+      
       </button>
       <div>
         <span className="text-caption font-caption text-subtext-color text-center">
