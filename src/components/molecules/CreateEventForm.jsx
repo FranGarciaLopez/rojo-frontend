@@ -26,6 +26,8 @@ export const CreateEvent = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
+
+   
     const refs = {
         title: useRef(null),
         city: useRef(null),
@@ -90,6 +92,16 @@ export const CreateEvent = () => {
                 if (eventResponse.status === 201) {
                     console.log("Event created successfully");
                     setUploadSuccess(true);
+
+                    setTitle('');
+                    setCity('');
+                    setDescription('');
+                    setDateTime('');
+                    setCategory('');
+                    setPhotos([]); 
+                    setError(null); 
+                  
+
                 }
             }
         } catch (error) {
@@ -245,7 +257,8 @@ export const CreateEvent = () => {
                                 {uploadSuccess && (
                                     <div className="text-green-500">
                                         Photos uploaded successfully!
-                                    </div>
+                                        
+                  </div>
                                 )}
                                 {error && <div className="text-red-500">{error}</div>}
                             </div>
