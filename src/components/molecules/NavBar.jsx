@@ -27,6 +27,10 @@ const NavBar = () => {
 
                                                             {authToken ? (
                                                                       <>
+                                                                       <div className="flex items-center -mx-2">
+                                                                                <Link to="/Blog" className="mx-2 text-gray-900 text-sm font-medium"> 
+                                                                                Blog</Link>
+                                                                                </div>
                                                                                 <div className="flex items-center -mx-2">
                                                                                           <Link to="/usersettings" className="mx-2 text-gray-900 text-sm font-medium"> <i className="fas fa-cog"></i> User Settings</Link>
                                                                                 </div>
@@ -36,6 +40,7 @@ const NavBar = () => {
                                                                                                     Logout
                                                                                           </button>
                                                                                 </div>
+                                                                               
                                                                       </>
                                                             ) : (
                                                                       <>

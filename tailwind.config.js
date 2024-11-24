@@ -38,7 +38,8 @@ module.exports = {
           'Segoe UI Emoji',
           'Segoe UI Symbol',
           'Noto Color Emoji'
-        ],
+        ]
+        ,
         'sans': [
           'Inter',
           'ui-sans-serif',
@@ -57,6 +58,8 @@ module.exports = {
           'Noto Color Emoji'
         ]
       },
+      'shrikhand': ['Shrikhand', 'cursive'], 
+        'dancing': ['Dancing Script', 'cursive'],
       boxShadow : {
         '3xl': 'rgba(0, 0, 0, 0.35) 0px 5px 15px;',
       },
