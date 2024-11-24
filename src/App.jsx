@@ -11,6 +11,7 @@ import { UserSettings } from "./components/organisms/UserSettings";
 import { CreateEvent } from "./components/molecules/CreateEventForm";
 import { AdminDashboard } from "./components/organisms/AdminDashboard";
 import { OnboardingDashboard } from "./components/organisms/OnboardingDashboard";
+import {Blog} from "./components/organisms/Blog";
 
 function App() {
        const { authToken } = useContext(AuthContext);
@@ -27,6 +28,7 @@ function App() {
                             <Route path="/register" element={<Register />} />
                             <Route path="/usersettings" element={<UserSettings />} />
                             <Route path="/CreateEventForm" element={<CreateEvent />} />
+                            <Route path="/blog" element={<Blog />} />
 
                             {/* Protected Routes */}
                             <Route path="/onboarding" element={
