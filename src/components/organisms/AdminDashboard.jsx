@@ -70,7 +70,7 @@ export const AdminDashboard = () => {
                                                             </div>
                                                             <div className="p-4 bg-gray-100 rounded-lg shadow-md">
                                                                       <h3 className="text-2xl font-bold">Created Events</h3>
-                                                                      <p className="text-xl">{user.user.organizedEvents}</p>
+                                                                      <p className="text-xl">{user.organizedEvents}</p>
                                                             </div>
                                                   </GridSection>
                                         </div>

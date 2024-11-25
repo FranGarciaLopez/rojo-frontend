@@ -1,19 +1,17 @@
-import React, { useState, useRef, useContext } from 'react';
-import axios from 'axios';
-
-import { AuthContext } from '../../contexts/AuthContext';
+import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext';
+import { loginUser } from '../../api/apiService';
 import InputText from '../atoms/InputText';
 import Buttons from '../atoms/Buttons';
 import Alert from '../atoms/Alert';
-import { loginUser } from '../../api/apiService';
 
 export const LoginFrom = () => {
           const [email, setEmail] = useState('');
           const [password, setPassword] = useState('');
           const [error, setError] = useState('');
 
-          const { login } = useContext(AuthContext);
+          const { login } = useContext(AuthContext);  // Destructure login from context
           const navigate = useNavigate();
 
           const handleSubmit = async (e) => {
@@ -23,18 +21,16 @@ export const LoginFrom = () => {
                               // Call the loginUser function from the API client
                               const response = await loginUser({ email, password });
 
-                              const token = response.data.token;
-                              const requiresOnboarding = response.data.requiresOnboarding;
-                              const isAdmin = response.data.isAdmin;
-                              login(token); 
+                              const { token, requiresOnboarding, user, isAdmin } = response.data;  // Ensure you get user info along with token
+                              debugger;
+                              login(token, user); 
 
                               if (requiresOnboarding) {
                                         navigate('/onboarding');
-                              } else if (isAdmin) {
-                                        navigate('/admin');
                               } else {
-                                        navigate('/dashboard');
+                                        navigate(isAdmin ? '/admin' : '/dashboard');
                               }
+
                     } catch (error) {
                               setError(error.response?.data?.message || 'Login failed');
                     }

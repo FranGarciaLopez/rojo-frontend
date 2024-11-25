@@ -2,89 +2,99 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply font-sans antialiased bg-gray-50;
+}
+
 h1 {
-          @apply mb-20 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl
+  @apply mb-12 text-5xl font-extrabold tracking-tight leading-tight text-gray-900 md:text-6xl lg:text-7xl;
 }
 
 h2 {
-          @apply text-xl font-semibold text-gray-800 mb-5;
+  @apply text-2xl font-bold text-gray-800 mb-6 tracking-tight;
 }
 
 h3 {
-          @apply text-lg font-semibold text-gray-800;
+  @apply text-xl font-medium text-gray-700 mb-4;
 }
 
 h4 {
-          @apply font-semibold text-gray-800;
+  @apply text-lg font-semibold text-gray-700 mb-3;
 }
 
+/* Paragraphs */
 p {
-          @apply text-sm mb-1;
+  @apply text-base leading-relaxed text-gray-600 mb-3;
 }
 
 button {
-          @apply text-white font-bold py-2 px-4 rounded;
-}
-
-form {
-          @apply flex flex-col px-6 py-6 rounded-lg w-full shadow-3xl space-y-4 gap-2 max-w-2xl;
+  @apply text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-gray-300 transition-all duration-300;
 }
 
 span {
-          @apply font-bold text-gray-700 text-lg;
+  @apply font-bold text-gray-700 text-lg;
+}
+
+form {
+  @apply flex flex-col px-8 py-6 rounded-xl w-full shadow-3xl space-y-4 gap-3 bg-gray-50 max-w-2xl mx-auto;
 }
 
 label {
-          @apply text-lg font-bold text-gray-700 max-w-2xl;
+  @apply text-base font-medium text-gray-700;
 }
 
 input,
 textarea,
 select {
-          @apply bg-white border border-gray-300 text-gray-800 text-sm rounded-lg p-2.5 w-full max-w-2xl;
+  @apply bg-gray-100 border border-gray-300 text-gray-800 text-base rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full;
 }
 
 .centered-elements {
-          @apply flex items-center justify-center min-h-screen w-full max-w-4xl m-auto px-6 py-6;
-        }
-        
+  @apply flex flex-col items-center justify-center min-h-screen w-full max-w-5xl mx-auto px-6 py-6 bg-gray-50;
+}
+
 
 .upload-container {
-          @apply flex flex-col items-center gap-6 px-6 py-10 w-full h-full;
+  @apply flex flex-col items-center gap-6 px-6 py-10 w-full h-full;
 }
 
 .upload-text-container {
-          @apply flex flex-col items-center justify-center gap-2;
+  @apply flex flex-col items-center justify-center gap-2;
 }
 
 .upload-button {
-          @apply bg-primary-400 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 ease-in-out;
+  @apply bg-primary-400 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 ease-in-out;
 }
 
 .upload-button:hover {
-          @apply bg-primary-200;
+  @apply bg-primary-200;
 }
 
 .upload-support-text {
-          @apply font-bold text-gray-600 text-lg;
-}
-
-@keyframes enhanceHeader {
-          to {
-
-                    background-filter: blur(5px);
-                    color: black;
-          }
+  @apply font-bold text-gray-600 text-lg;
 }
 
 nav {
-          @apply top-0 left-0 w-full z-50 shadow-md;
-
-          animation: enhanceHeader linear both;
-          animation-timeline: scroll(root);
-          animation-range: 0% 50px;
+  @apply bg-white shadow-md;
 }
 
 section {
-          @apply bg-white flex items-center flex-grow;
+  @apply bg-white flex items-center flex-grow;
+}
+
+.masonry-grid>div {
+  break-inside: avoid;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
