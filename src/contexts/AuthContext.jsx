@@ -8,20 +8,20 @@ const AuthProvider = ({ children }) => {
           const [user, setUser] = useState(null);
           const [loading, setLoading] = useState(true);
 
+
+          // Fetch user data from the backend when the token is available
           useEffect(() => {
-                    
                     if (authToken) {
-                              axios.get('http://localhost:3000/user', {
-                                        headers: {
-                                                  Authorization: `Bearer ${authToken}`,
-                                        },
-                              })
+                              axios
+                                        .get('http://localhost:3000/user', {
+                                                  headers: { Authorization: `Bearer ${authToken}` },
+                                        })
                                         .then((response) => {
-                                                  setUser(response.data);
+                                                  setUser(response.data.user); // Ensure `response.data.user` includes `isAdministrator`
                                         })
                                         .catch((error) => {
                                                   console.error(error);
-                                                  logout(); 
+                                                  logout();  // Si ocurre un error en la obtención de datos, logout
                                         })
                                         .finally(() => {
                                                   setLoading(false);
@@ -31,16 +31,19 @@ const AuthProvider = ({ children }) => {
                     }
           }, [authToken]);
 
+          // Login function
           const login = (token) => {
                     setAuthToken(token);
-                    localStorage.setItem('token', token);
-                    setLoading(true);
+                    localStorage.setItem('token', token); // Save token to localStorage
+                    setLoading(true); // Start loading while fetching user data
           };
 
+          // Register function (calls login after registration)
           const register = (token) => {
-                    login(token); 
+                    login(token);
           };
 
+          // Logout function to clear auth state
           const logout = () => {
                     setAuthToken(null);
                     setUser(null);
