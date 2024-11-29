@@ -22,7 +22,7 @@ export const LoginFrom = () => {
                               const response = await loginUser({ email, password });
 
                               const { token, requiresOnboarding, user, isAdmin } = response.data;  // Ensure you get user info along with token
-                              debugger;
+                              
                               login(token, user); 
 
                               if (requiresOnboarding) {

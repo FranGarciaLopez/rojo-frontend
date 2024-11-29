@@ -132,12 +132,7 @@ export const Dashboard = () => {
                                                                                           className="bg-white p-6 rounded-lg shadow-xl hover:shadow-3xl transition duration-200 ease-in-out flex flex-col h-full"
                                                                                 >
                                                                                           <h2>{activity.title}</h2>
-                                                                                          <img
-                                                                                                    src={activity.photos[0]}
-                                                                                                    alt={activity.title}
-                                                                                                    width="100%"
-                                                                                                    height="50%"
-                                                                                          />
+                                                                                          <img src={activity.photos[0]} alt={activity.title} width="100%" height="200" />
 
                                                                                           {/* Content that needs to be pushed to the bottom */}
                                                                                           <div className="flex flex-col mt-5 flex-grow justify-end">

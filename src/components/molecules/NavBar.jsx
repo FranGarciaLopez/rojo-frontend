@@ -25,7 +25,7 @@ const NavBar = () => {
                                         className={`bg-white border-gray-200 fixed top-0 left-0 w-full z-50 p-2 transition-all ease-in-out duration-300 ${isScrolled ? "bg-opacity-80 shadow-md backdrop-blur-md" : ""
                                                   }`}
                               >
-                                        <div className="max-w-xl flex justify-end items-center mx-auto p-4">
+                                        <div className="max-w-7xl flex justify-end items-center mx-auto p-4">
                                                   {/* Burger Button (Mobile) */}
                                                   <button
                                                             type="button"
@@ -74,13 +74,32 @@ const NavBar = () => {
 
                                                                       {authToken ? (
                                                                                 <>
+
+                                                                                          <div className="flex items-center -mx-2">
+                                                                                                    <Link to="/" className="mx-2 text-gray-900 text-sm font-medium">
+                                                                                                              Dashboard</Link>
+                                                                                          </div>
+                                                                                          <div className="flex items-center -mx-2">
+                                                                                                    <Link to="/Blog" className="mx-2 text-gray-900 text-sm font-medium">
+                                                                                                              Blog</Link>
+                                                                                          </div>
                                                                                           <div className="flex items-center">
-                                                                                                    <Link to="/usersettings" className="text-lg text-gray-900 font-medium">
+                                                                                                    <Link to="/usersettings" className="text-sm text-gray-900 font-medium">
                                                                                                               <i className="fas fa-cog"></i> User Settings
                                                                                                     </Link>
                                                                                           </div>
 
                                                                                           <div className="flex items-center">
+
+                                                                                                    <button
+                                                                                                              className="flex items-center justify-center gap-5 bg-green-400 text-sm font-medium hover:bg-green-500 text-white px-4 py-2 rounded-lg"
+                                                                                                    >
+
+                                                                                                              <i className="fas fa-handshake color-black"></i>
+                                                                                                              <span className="mr-2">Subscribe</span>
+
+                                                                                                    </button>
+
                                                                                                     <button
                                                                                                               onClick={logout}
                                                                                                               className="text-lg text-gray-900 font-medium bg-gray-200 px-4 py-2 rounded-lg"
@@ -109,30 +128,36 @@ const NavBar = () => {
                                                   <div className="hidden md:flex w-full justify-between items-center gap-5">
                                                             {authToken ? (
                                                                       <>
-                                                                                <div className="flex items-center -mx-2">
-                                                                                          <Link to="/Blog" className="mx-2 text-gray-900 text-sm font-medium">
-                                                                                                    Blog</Link>
-                                                                                </div>
-                                                                                <div className="flex items-center -mx-2">
-                                                                                          <Link to="/usersettings" className="mx-2 text-gray-900 text-sm font-medium"> <i className="fas fa-cog"></i> User Settings</Link>
+                                                                                <div
+                                                                                          className={`flex items-start gap-5 flex-grow`}
+                                                                                >
+                                                                                          <Link to="/" className="text-lg font-semibold text-gray-900">
+                                                                                                    Dashboard
+                                                                                          </Link>
+                                                                                          <div className="flex items-center">
+                                                                                                    <Link to="/Blog" className="mx-2 text-lg font-small">
+                                                                                                              Blog</Link>
+                                                                                          </div>
+                                                                                          <div className="flex items-center">
+                                                                                                    <Link to="/usersettings" className="mx-2 text-lg font-small"> <i className="fas fa-cog"></i> User Settings</Link>
+                                                                                          </div>
+
                                                                                 </div>
 
-                                                                                <div className="flex items-center -mx-2">
+                                                                                <div className="flex items-center">
+                                                                                          <button
+                                                                                                    className="flex items-center justify-center gap-5 bg-green-400 text-sm font-medium hover:bg-green-500 text-white px-4 py-2 rounded-lg"
+                                                                                          >
+
+                                                                                                    <i className="fas fa-handshake color-black"></i>
+                                                                                                    <span className="mr-2">Subscribe</span>
+
+                                                                                          </button>
                                                                                           <button onClick={logout} className="mx-2 text-gray-900 text-sm font-medium">
                                                                                                     Logout
                                                                                           </button>
                                                                                 </div>
 
-                                                                                {/* <Link to="/usersettings" className="text-sm text-gray-900 font-medium">
-                                                                                          <i className="fas fa-cog"></i> User Settings
-                                                                                </Link>
-
-                                                                                <button
-                                                                                          onClick={logout}
-                                                                                          className="text-sm text-gray-900 font-medium bg-gray-200 px-4 py-2 rounded-lg"
-                                                                                >
-                                                                                          Logout
-                                                                                </button> */}
                                                                       </>
                                                             ) : (
                                                                       <>
