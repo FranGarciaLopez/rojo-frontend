@@ -8,9 +8,11 @@ import { Register } from "./components/organisms/Register";
 import { Dashboard } from "./components/organisms/Dashboard";
 import { AdminDashboard } from "./components/organisms/AdminDashboard";
 import { OnboardingDashboard } from "./components/organisms/OnboardingDashboard";
+import { Blog } from "./components/organisms/Blog";
 import { UserSettings } from "./components/organisms/UserSettings";
 import { CreateEvent } from "./components/molecules/CreateEventForm";
-
+import { ForgotPassword } from "./components/organisms/ForgotPassword";
+import { EditEvent } from "./components/molecules/EditEvent";
 function App() {
        const { authToken } = useContext(AuthContext);
 
@@ -27,14 +29,21 @@ function App() {
                             <Route path="/home" element={<Home />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
+                            <Route path="/usersettings" element={<UserSettings />} />
+                            <Route path="/CreateEventForm" element={<CreateEvent />} />
+                            <Route path="/blog" element={<Blog />} />
+                            <Route path="/forgotpassword" element={<ForgotPassword />} />
+                            <Route path="/edit-event/:id" element={<EditEvent />} />
+
+
                             <Route path="/usersettings" element=
                                    {authToken ? <UserSettings /> : <Navigate to="/login" />}
                             />
-                            
+
                             <Route path="/CreateEventForm"
                                    element={
                                           authToken ? <CreateEvent /> : <Navigate to="/login" />
-                                   } 
+                                   }
                             />
 
                             {/* Protected Routes */}
