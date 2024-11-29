@@ -45,7 +45,6 @@ export const UserSettingsForm = () => {
                     setPreferedCategory(user.categoryName.categoryName);
                     setPreferedCity(user.preferedCity.name);
                     setIsAdmin(user.isAdministrator);
-                    debugger;
                } catch (error) {
                     console.error("Error fetching data:", error);
                } finally {
