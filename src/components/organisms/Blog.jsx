@@ -4,12 +4,15 @@ import NavBar from "../molecules/NavBar";
 import GridSection from "../atoms/GridSection";
 import Buttons from "../atoms/Buttons";
 import { Dashboard } from "./Dashboard";
+import {Subscribe} from "../organisms/Subscribe";
 
 
 export const Blog = () => {
   const [blogs, setBlogs] = useState([]); // State to hold the blog data
 
-  const [showModal, setShowModal] = useState(false);
+  const [showSubscribe, setShowSubscribe] = useState(false);
+
+
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -27,7 +30,8 @@ export const Blog = () => {
   }, []);
 
   const handleSubscribeClick = () => {
-    setShowModal(true);  // Mostrar el modal de suscripción
+    // Alternar el estado showSubscribe
+    setShowSubscribe((prev) => !prev);
   };
 
   
@@ -58,9 +62,12 @@ export const Blog = () => {
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <path d="M2 12l5 5L22 6" />
       </svg>
+      {showSubscribe && <Subscribe />}
       
     </button>
-   
+
+ 
+
 
  
    
