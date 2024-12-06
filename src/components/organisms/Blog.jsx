@@ -47,7 +47,7 @@ export const Blog = () => {
   <h1 className="text-5xl sm:text-6xl font-Roboto Sans text-center text-gray-800  opacity-80">
   Welcome to Our Blog
 </h1>
-  <p className="mt-4 text-lg sm:text-xl text-center font-light opacity-80">
+  <p className="mt-8 text-lg sm:text-xl text-center font-bold ">
     Stay updated with the latest posts, tips, and insights from our blog.
   </p>
 

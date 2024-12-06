@@ -2,11 +2,17 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import {Subscribe} from "../organisms/Subscribe";
 
 const NavBar = () => {
           const { authToken, logout } = useContext(AuthContext);
           const [isMenuOpen, setIsMenuOpen] = useState(false);
           const [isScrolled, setIsScrolled] = useState(false);
+          const [showSubscribe, setShowSubscribe] = useState(false);
+          const handleSubscribeClick = () => {
+         
+            setShowSubscribe((prev) => !prev);
+          };
 
           // Handle scroll to apply enhanceHeader animation
           useEffect(() => {
@@ -92,12 +98,15 @@ const NavBar = () => {
                                                                                           <div className="flex items-center">
 
                                                                                                     <button 
+                                                                                                      onClick={handleSubscribeClick}
                                                                                                             className="flex items-center justify-center gap-5 bg-green-400 text-sm font-medium hover:bg-green-500 text-white px-4 py-2 rounded-lg"
                                                                                                     > 
 
                                                                                                               <i className="fas fa-handshake color-black"></i>
                                                                                                           
                                                                                                               <span  className="mr-2">Subscribe</span>
+                                                                                                              {showSubscribe && <Subscribe />}  
+                                                                                                            
 
                                                                                                     </button>
 
@@ -146,9 +155,10 @@ const NavBar = () => {
                                                                                 </div>
 
                                                                                 <div className="flex items-center">
-                                                                                          <button
+                                                                                          <button  onClick={handleSubscribeClick}
                                                                                                     className="flex items-center justify-center gap-5 bg-green-400 text-sm font-medium hover:bg-green-500 text-white px-4 py-2 rounded-lg"
                                                                                           >
+                                                                                              {showSubscribe && <Subscribe />}  
 
                                                                                                     <i className="fas fa-handshake color-black"></i>
                                                                                                     <span className="mr-2">Subscribe</span>
