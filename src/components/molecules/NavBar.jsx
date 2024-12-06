@@ -91,12 +91,13 @@ const NavBar = () => {
 
                                                                                           <div className="flex items-center">
 
-                                                                                                    <button
-                                                                                                              className="flex items-center justify-center gap-5 bg-green-400 text-sm font-medium hover:bg-green-500 text-white px-4 py-2 rounded-lg"
-                                                                                                    >
+                                                                                                    <button 
+                                                                                                            className="flex items-center justify-center gap-5 bg-green-400 text-sm font-medium hover:bg-green-500 text-white px-4 py-2 rounded-lg"
+                                                                                                    > 
 
                                                                                                               <i className="fas fa-handshake color-black"></i>
-                                                                                                              <span className="mr-2">Subscribe</span>
+                                                                                                          
+                                                                                                              <span  className="mr-2">Subscribe</span>
 
                                                                                                     </button>
 

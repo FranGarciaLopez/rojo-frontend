@@ -5,8 +5,11 @@ import GridSection from "../atoms/GridSection";
 import Buttons from "../atoms/Buttons";
 import { Dashboard } from "./Dashboard";
 
+
 export const Blog = () => {
   const [blogs, setBlogs] = useState([]); // State to hold the blog data
+
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -22,6 +25,10 @@ export const Blog = () => {
 
     fetchBlogs();
   }, []);
+
+  const handleSubscribeClick = () => {
+    setShowModal(true);  // Mostrar el modal de suscripción
+  };
 
   
 
@@ -42,6 +49,8 @@ export const Blog = () => {
 
 
   <button
+   onClick={handleSubscribeClick}
+    
       className="flex items-center py-3 px-6 bg-white-500 text-white text-xl font-semibold rounded-full hover:bg-green-300 transition duration-300 ease-in-out"
     >
       <span className="mr-2">Subscribe</span>
