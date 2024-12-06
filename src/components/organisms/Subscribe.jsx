@@ -1,0 +1,129 @@
+import React, { useState } from 'react';
+
+export const Subscribe = () => {
+  const [email, setEmail] = useState('');
+  const [showSubscribe, setShowSubscribe] = useState(true);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); 
+
+  const handleSubscribe = async () => {
+    if (!email) {
+      setSuccessMessage('Please enter a valid email!');
+      return;
+    }
+
+   
+    setIsSubmitting(true); 
+
+    try {
+     
+      const response = await fetch('http://localhost:3000/subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }), 
+      });
+
+      if (response.ok) {
+        setSuccessMessage('You have successfully subscribed! A confirmation email has been sent.');
+        setTimeout(() => {
+          setSuccessMessage('');
+          setEmail('');
+        }, 5000); 
+      } else {
+        setSuccessMessage('There was an error subscribing. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setSuccessMessage('An error occurred. Please try again later.');
+    } finally {
+      setIsSubmitting(false); 
+    }
+  };
+
+  const handleClose = () => {
+
+    setShowSubscribe(false);
+  };
+
+  const handledelete = () => {
+
+    setEmail('');
+  };
+
+
+  const handleModalClick = (e) => {
+  
+    e.stopPropagation();
+  };
+
+  const handleOverlayClick = () => {
+
+    setShowSubscribe(false);
+  };
+
+  return (
+    <>
+      {showSubscribe && (
+        <div
+          className="fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50"
+          onClick={handleOverlayClick}
+        >
+          <div
+            className="bg-white p-6 rounded-lg shadow-lg sm:w-96 relative"
+            onClick={handleModalClick} 
+          >
+            <div className="flex items-center justify-between">
+              <button
+                onClick={handleClose}
+                className="absolute top-4 right-4 flex items-center justify-center gap-2 bg-gray-300 text-sm font-medium hover:bg-gray-500 text-white px-4 py-2 rounded-lg"
+              >
+                X
+              </button>
+              <h2 className="text-lg font-semibold text-gray-900">Subscribe to Newsletter</h2>
+            </div>
+
+            <p className="text-sm text-gray-600 mt-2">Enter your email to subscribe to our newsletter.</p>
+
+            {successMessage && (
+              <div className="mt-4 bg-green-100 text-green-800 p-3 rounded-md">
+                {successMessage}
+              </div>
+            )}
+
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="name@example.com"
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+
+            <div className="mt-6 flex justify-between">
+              {}
+              <button
+                onClick={handleSubscribe}
+                disabled={isSubmitting}
+                className={`flex items-center justify-center gap-7 ${isSubmitting ? 'bg-gray-400' : 'bg-green-400'} text-sm font-medium hover:bg-green-500 text-white px-9 py-2 rounded-lg`}
+              >
+                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+              </button>
+
+             
+              <button
+                onClick={handledelete}
+                className="flex items-center justify-center gap-7 bg-gray-300 text-sm font-medium hover:bg-gray-500 text-white px-12 py-2 rounded-lg"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+
+

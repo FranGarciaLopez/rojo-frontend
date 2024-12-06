@@ -4,9 +4,15 @@ import NavBar from "../molecules/NavBar";
 import GridSection from "../atoms/GridSection";
 import Buttons from "../atoms/Buttons";
 import { Dashboard } from "./Dashboard";
+import {Subscribe} from "../organisms/Subscribe";
+
 
 export const Blog = () => {
   const [blogs, setBlogs] = useState([]); // State to hold the blog data
+
+  const [showSubscribe, setShowSubscribe] = useState(false);
+
+
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -23,6 +29,11 @@ export const Blog = () => {
     fetchBlogs();
   }, []);
 
+  const handleSubscribeClick = () => {
+    // Alternar el estado showSubscribe
+    setShowSubscribe((prev) => !prev);
+  };
+
   
 
   return (
@@ -36,12 +47,14 @@ export const Blog = () => {
   <h1 className="text-5xl sm:text-6xl font-Roboto Sans text-center text-gray-800  opacity-80">
   Welcome to Our Blog
 </h1>
-  <p className="mt-4 text-lg sm:text-xl text-center font-light opacity-80">
+  <p className="mt-8 text-lg sm:text-xl text-center font-bold ">
     Stay updated with the latest posts, tips, and insights from our blog.
   </p>
 
 
   <button
+   onClick={handleSubscribeClick}
+    
       className="flex items-center py-3 px-6 bg-white-500 text-white text-xl font-semibold rounded-full hover:bg-green-300 transition duration-300 ease-in-out"
     >
       <span className="mr-2">Subscribe</span>
@@ -49,9 +62,12 @@ export const Blog = () => {
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <path d="M2 12l5 5L22 6" />
       </svg>
+      {showSubscribe && <Subscribe />}
       
     </button>
-   
+
+ 
+
 
  
    
