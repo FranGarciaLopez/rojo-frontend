@@ -28,7 +28,10 @@ export const Subscribe = () => {
       if (response.ok) {
         setSuccessMessage(
           "You have successfully subscribed! A confirmation email has been sent."
+          
         );
+        setMessageType("success");
+      
         setTimeout(() => {
           setSuccessMessage("");
           setEmail("");
@@ -36,6 +39,12 @@ export const Subscribe = () => {
       } else {
         setSuccessMessage("You are already subscribed to the newsletter.");
         setMessageType("error");
+
+        setTimeout(() => {
+          setSuccessMessage("");
+          setEmail("");
+        }, 5000);
+      
       }
     } catch (error) {
       console.error("Error:", error);
@@ -43,7 +52,7 @@ export const Subscribe = () => {
       setSuccessMessage("An error occurred. Please try again later.");
     } finally {
       setIsSubmitting(false);
-      setMessageType("error");
+   
     }
   };
 
