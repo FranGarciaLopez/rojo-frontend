@@ -80,7 +80,7 @@ export const Blog = () => {
          
             className="bg-white p-6 rounded-lg shadow-xl hover:shadow-3xl transition duration-200 ease-in-out"
           >
-            {           console.log(blog.user.avatar)}
+          
     
             <h2>{blog.title}</h2>
             <img src={blog.photo} alt={blog.title} width="100%" height="200" />

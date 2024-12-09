@@ -1,65 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export const Subscribe = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [showSubscribe, setShowSubscribe] = useState(true);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false); 
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [messageType, setMessageType] = useState("");
 
   const handleSubscribe = async () => {
     if (!email) {
-      setSuccessMessage('Please enter a valid email!');
+      setSuccessMessage("Please enter a valid email!");
+      setMessageType("error");
       return;
     }
 
-   
-    setIsSubmitting(true); 
+    setIsSubmitting(true);
 
     try {
-     
-      const response = await fetch('http://localhost:3000/subscription', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/subscription", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }), 
+        body: JSON.stringify({ email }),
       });
 
       if (response.ok) {
-        setSuccessMessage('You have successfully subscribed! A confirmation email has been sent.');
+        setSuccessMessage(
+          "You have successfully subscribed! A confirmation email has been sent."
+        );
         setTimeout(() => {
-          setSuccessMessage('');
-          setEmail('');
-        }, 5000); 
+          setSuccessMessage("");
+          setEmail("");
+        }, 5000);
       } else {
-        setSuccessMessage('There was an error subscribing. Please try again later.');
+        setSuccessMessage("You are already subscribed to the newsletter.");
+        setMessageType("error");
       }
     } catch (error) {
-      console.error('Error:', error);
-      setSuccessMessage('An error occurred. Please try again later.');
+      console.error("Error:", error);
+      setMessageType("error");
+      setSuccessMessage("An error occurred. Please try again later.");
     } finally {
-      setIsSubmitting(false); 
+      setIsSubmitting(false);
+      setMessageType("error");
     }
   };
 
   const handleClose = () => {
-
     setShowSubscribe(false);
   };
 
   const handledelete = () => {
-
-    setEmail('');
+    setEmail("");
   };
 
-
   const handleModalClick = (e) => {
-  
     e.stopPropagation();
   };
 
   const handleOverlayClick = () => {
-
     setShowSubscribe(false);
   };
 
@@ -72,7 +72,7 @@ export const Subscribe = () => {
         >
           <div
             className="bg-white p-6 rounded-lg shadow-lg sm:w-96 relative"
-            onClick={handleModalClick} 
+            onClick={handleModalClick}
           >
             <div className="flex items-center justify-between">
               <button
@@ -81,13 +81,23 @@ export const Subscribe = () => {
               >
                 X
               </button>
-              <h2 className="text-lg font-semibold text-gray-900">Subscribe to Newsletter</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Subscribe to Newsletter
+              </h2>
             </div>
 
-            <p className="text-sm text-gray-600 mt-2">Enter your email to subscribe to our newsletter.</p>
+            <p className="text-sm text-gray-600 mt-2">
+              Enter your email to subscribe to our newsletter.
+            </p>
 
             {successMessage && (
-              <div className="mt-4 bg-green-100 text-green-800 p-3 rounded-md">
+              <div
+                className={`mt-4 p-3 rounded-md ${
+                  messageType === "error"
+                    ? "bg-red-100 text-red-800"
+                    : "bg-green-100 text-green-800"
+                }`}
+              >
                 {successMessage}
               </div>
             )}
@@ -105,12 +115,13 @@ export const Subscribe = () => {
               <button
                 onClick={handleSubscribe}
                 disabled={isSubmitting}
-                className={`flex items-center justify-center gap-7 ${isSubmitting ? 'bg-gray-400' : 'bg-green-400'} text-sm font-medium hover:bg-green-500 text-white px-9 py-2 rounded-lg`}
+                className={`flex items-center justify-center gap-7 ${
+                  isSubmitting ? "bg-gray-400" : "bg-green-400"
+                } text-sm font-medium hover:bg-green-500 text-white px-9 py-2 rounded-lg`}
               >
-                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+                {isSubmitting ? "Subscribing..." : "Subscribe"}
               </button>
 
-             
               <button
                 onClick={handledelete}
                 className="flex items-center justify-center gap-7 bg-gray-300 text-sm font-medium hover:bg-gray-500 text-white px-12 py-2 rounded-lg"
@@ -124,6 +135,3 @@ export const Subscribe = () => {
     </>
   );
 };
-
-
-
