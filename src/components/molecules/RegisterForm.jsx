@@ -55,6 +55,9 @@ export const RegisterForm = () => {
                             city,
                             dateOfBirth,
                      });
+
+       debugger;
+
                      if (response.error) {
                             setError(response.error);
                             return;
