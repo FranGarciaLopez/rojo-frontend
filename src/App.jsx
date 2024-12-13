@@ -13,6 +13,8 @@ import { UserSettings } from "./components/organisms/UserSettings";
 import { CreateEvent } from "./components/molecules/CreateEventForm";
 import { ForgotPassword } from "./components/organisms/ForgotPassword";
 import { EditEvent } from "./components/molecules/EditEvent";
+import { EventGroupPage } from "./components/organisms/EventGroupPage";
+
 function App() {
        const { authToken } = useContext(AuthContext);
 
@@ -25,15 +27,36 @@ function App() {
                                    element={authToken ? <Navigate to="/dashboard" /> : <Navigate to="/home" />}
                             />
 
+                            <Route path="/events/:eventId/groups/:groupId" element={<EventGroupPage />} />
+
+
                             {/* Define other routes */}
                             <Route path="/home" element={<Home />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
-                            <Route path="/usersettings" element={<UserSettings />} />
-                            <Route path="/CreateEventForm" element={<CreateEvent />} />
-                            <Route path="/blog" element={<Blog />} />
-                            <Route path="/forgotpassword" element={<ForgotPassword />} />
-                            <Route path="/edit-event/:id" element={<EditEvent />} />
+
+
+                            <Route path="/CreateEventForm"
+                                   element={authToken ?
+                                          <CreateEvent /> :
+                                          <Navigate to="/login" />
+                                   } />
+
+
+                            <Route path="/blog"
+                                   element={authToken ?
+                                          <Blog /> :
+                                          <Navigate to="/login" />
+                                   } />
+
+                            <Route path="/forgotpassword"
+                                   element={<ForgotPassword />} />
+
+                            <Route path="/edit-event/:id"
+                                   element={authToken ?
+                                          <EditEvent /> :
+                                          <Navigate to="/login" />
+                                   } />
 
 
                             <Route path="/usersettings" element=
