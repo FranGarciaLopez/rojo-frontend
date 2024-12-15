@@ -31,6 +31,7 @@ function ImageUpload({ setPhotos }) {
         const data = await response.json();
         console.log("Uploaded successfully:", data);
         setUploadedImages([]); 
+        setPhotos([]);
       } else {
         console.error("Upload failed");
       }

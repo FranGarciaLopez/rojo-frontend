@@ -23,6 +23,7 @@ export const UserSettingsForm = () => {
   const { authToken } = useContext(AuthContext);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+ 
 
  
 
@@ -60,6 +61,33 @@ export const UserSettingsForm = () => {
     };
     fetchUser();
   }, [authToken]);
+
+  const handleDeleteAccount = async () => {
+    const confirmation = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
+  
+    if (confirmation) {
+      try {
+        const response = await fetch('http://localhost:3000/delete', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`, // Agregar el token de autenticación aquí
+          },
+        });
+  
+        if (response.ok) {
+          alert('Your account has been successfully deleted.');
+          navigate('/home')
+        } else {
+          alert('There was an error deleting your account. Please try again.');
+        }
+  
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        alert('There was an error deleting your account. Please try again later.');
+      }
+    }
+  };
 
 
 
@@ -175,7 +203,7 @@ export const UserSettingsForm = () => {
                     type="button"
                     value="Delete account"
                     className="bg-red-600 hover:bg-red-800"
-                    onClick={() => {}}
+                    onClick={handleDeleteAccount}
                   />
                 }
               />
