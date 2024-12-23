@@ -1,14 +1,20 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import io from 'socket.io-client';
 import { AuthContext } from '../../contexts/AuthContext';
 
-const socket = io('http://localhost:3000'); // Asegúrate de que la URL sea correcta
+const socket = io('http://localhost:3000');
 
 const ChatInterface = ({ groupId }) => {
     const { user } = useContext(AuthContext);
-    const [messages, setMessages] = useState([]); // Mensajes del chat
-    const [newMessage, setNewMessage] = useState(''); // Mensaje que se escribe
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState('');
     const [error, setError] = useState(null);
+
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     useEffect(() => {
         if (!groupId) {
@@ -16,25 +22,27 @@ const ChatInterface = ({ groupId }) => {
             return;
         }
 
-        // Unirse al grupo
+        // Join the group
         socket.emit('joinGroup', groupId);
 
-        // Cargar historial de mensajes
+        // Fetch chat history
         socket.on('chatHistory', (history) => {
             setMessages(history || []);
+            scrollToBottom(); // Scroll to the bottom on loading history
         });
 
-        // Escuchar mensajes nuevos
+        // Listen for new messages
         socket.on('receiveMessage', (message) => {
             setMessages((prevMessages) => [...prevMessages, message]);
+            scrollToBottom(); // Scroll to the bottom when a new message arrives
         });
 
-        // Manejar errores de conexión
-        socket.on('connect_error', (err) => {
+        // Handle connection errors
+        socket.on('connect_error', () => {
             setError('Failed to connect to the chat server.');
         });
 
-        // Limpiar cuando el componente se desmonte
+        // Clean up on unmount
         return () => {
             socket.emit('leaveGroup', groupId);
             socket.off('chatHistory');
@@ -42,7 +50,6 @@ const ChatInterface = ({ groupId }) => {
         };
     }, [groupId]);
 
-    // Enviar mensaje
     const sendMessage = () => {
         if (!newMessage.trim()) {
             setError('Cannot send an empty message.');
@@ -55,14 +62,29 @@ const ChatInterface = ({ groupId }) => {
             content: newMessage,
         };
 
-        // Emitir mensaje
+        // Optimistically update the UI
+        const tempMessage = {
+            _id: `temp-${Date.now()}`,
+            author: {
+                firstname: user.firstname,
+                lastname: user.lastname,
+            },
+            content: newMessage,
+            timestamp: new Date().toISOString(),
+        };
+        setMessages((prevMessages) => [...prevMessages, tempMessage]);
+        scrollToBottom();
+
+        // Emit the message
         socket.emit('sendMessage', message, (ack) => {
             if (ack?.error) {
                 setError(ack.error);
-            } else {
-                setNewMessage('');
+                console.error('Message send error:', ack.error);
             }
         });
+
+        // Clear the input field
+        setNewMessage('');
     };
 
     return (
@@ -70,7 +92,7 @@ const ChatInterface = ({ groupId }) => {
             <h2>Group Chat</h2>
             {error && <p className="error">{error}</p>}
 
-            {/* Mostrar mensajes */}
+            {/* Chat Messages */}
             <div
                 className="chat-messages"
                 style={{
@@ -85,8 +107,7 @@ const ChatInterface = ({ groupId }) => {
                     {messages.map((msg) => (
                         <div key={msg._id} className="mb-2">
                             <strong className="text-blue-600">
-                            {msg.author?.firstname + " " + msg.author?.lastname|| 'Unknown User'}:
-
+                                {msg.author?.firstname + ' ' + msg.author?.lastname || 'Unknown User'}:
                             </strong>{' '}
                             {msg.content}
                             <span className="text-gray-500 text-sm ml-2">
@@ -94,11 +115,11 @@ const ChatInterface = ({ groupId }) => {
                             </span>
                         </div>
                     ))}
+                    <div ref={messagesEndRef} />
                 </div>
-
             </div>
 
-            {/* Entrada de mensaje */}
+            {/* Message Input */}
             <div className="chat-input flex flex-row gap-5">
                 <input
                     type="text"
