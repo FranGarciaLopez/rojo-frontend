@@ -2,50 +2,47 @@ import React, { useEffect, useState, useContext } from 'react';
 import io from 'socket.io-client';
 import { AuthContext } from '../../contexts/AuthContext';
 
-const socket = io('http://localhost:3000'); // Update to match your server's address
+const socket = io('http://localhost:3000'); // Asegúrate de que la URL sea correcta
 
 const ChatInterface = ({ groupId }) => {
-    const { user } = useContext(AuthContext); // Assuming AuthContext provides user details
-    const [messages, setMessages] = useState([]); // Store chat messages
-    const [newMessage, setNewMessage] = useState(''); // Store the input message
-    const [error, setError] = useState(null); // Store errors
+    const { user } = useContext(AuthContext);
+    const [messages, setMessages] = useState([]); // Mensajes del chat
+    const [newMessage, setNewMessage] = useState(''); // Mensaje que se escribe
+    const [error, setError] = useState(null);
 
-    // Join group and fetch chat history when component mounts
     useEffect(() => {
         if (!groupId) {
             setError('Invalid group ID.');
             return;
         }
 
-        // Join the group
+        // Unirse al grupo
         socket.emit('joinGroup', groupId);
 
-        // Listen for incoming messages
+        // Cargar historial de mensajes
+        socket.on('chatHistory', (history) => {
+            setMessages(history || []);
+        });
+
+        // Escuchar mensajes nuevos
         socket.on('receiveMessage', (message) => {
             setMessages((prevMessages) => [...prevMessages, message]);
         });
 
-        // Listen for chat history
-        socket.on('chatHistory', (history) => {
-            setMessages(history);
-        });
-
-        // Handle errors
+        // Manejar errores de conexión
         socket.on('connect_error', (err) => {
             setError('Failed to connect to the chat server.');
-            console.error('Socket connection error:', err);
         });
 
-        // Cleanup on unmount
+        // Limpiar cuando el componente se desmonte
         return () => {
             socket.emit('leaveGroup', groupId);
-            socket.off('receiveMessage');
             socket.off('chatHistory');
-            socket.disconnect();
+            socket.off('receiveMessage');
         };
     }, [groupId]);
 
-    // Send a new message
+    // Enviar mensaje
     const sendMessage = () => {
         if (!newMessage.trim()) {
             setError('Cannot send an empty message.');
@@ -58,11 +55,10 @@ const ChatInterface = ({ groupId }) => {
             content: newMessage,
         };
 
-        // Emit the message to the server
+        // Emitir mensaje
         socket.emit('sendMessage', message, (ack) => {
             if (ack?.error) {
                 setError(ack.error);
-                console.error('Message send error:', ack.error);
             } else {
                 setNewMessage('');
             }
@@ -74,30 +70,46 @@ const ChatInterface = ({ groupId }) => {
             <h2>Group Chat</h2>
             {error && <p className="error">{error}</p>}
 
-            {/* Chat messages */}
-            <div className="chat-messages" style={{ height: '300px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
-                {messages.map((msg, idx) => (
-                    <div key={idx} className="message">
-                        <strong>{msg.sender?.firstname || 'Unknown User'}:</strong> {msg.content}
-                        <span style={{ fontSize: '0.8rem', color: '#888' }}> ({new Date(msg.timestamp).toLocaleTimeString()})</span>
-                    </div>
-                ))}
+            {/* Mostrar mensajes */}
+            <div
+                className="chat-messages"
+                style={{
+                    height: '300px',
+                    overflowY: 'scroll',
+                    border: '1px solid #ccc',
+                    padding: '10px',
+                    marginBottom: '10px',
+                }}
+            >
+                <div className="chat-messages overflow-y-auto max-h-80">
+                    {messages.map((msg) => (
+                        <div key={msg._id} className="mb-2">
+                            <strong className="text-blue-600">
+                            {msg.author?.firstname + " " + msg.author?.lastname|| 'Unknown User'}:
+
+                            </strong>{' '}
+                            {msg.content}
+                            <span className="text-gray-500 text-sm ml-2">
+                                {new Date(msg.timestamp).toLocaleString()}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+
             </div>
 
-            {/* Message input */}
-            <div className="chat-input">
+            {/* Entrada de mensaje */}
+            <div className="chat-input flex flex-row gap-5">
                 <input
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type your message..."
                     className="chat-input-box"
-                    style={{ width: '80%', padding: '10px', marginRight: '10px' }}
                 />
                 <button
                     onClick={sendMessage}
-                    className="chat-send-button"
-                    style={{ padding: '10px 20px', backgroundColor: '#007BFF', color: '#fff', border: 'none', borderRadius: '4px' }}
+                    className="bg-blue-600 hover:bg-blue-700"
                 >
                     Send
                 </button>
