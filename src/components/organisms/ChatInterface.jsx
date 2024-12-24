@@ -2,7 +2,8 @@ import React, { useEffect, useState, useContext, useRef } from 'react';
 import io from 'socket.io-client';
 import { AuthContext } from '../../contexts/AuthContext';
 
-const socket = io('http://localhost:3000');
+// Use the backend's deployed URL for production
+const socket = io('http://localhost:3000'); // Replace with your deployed backend URL
 
 const ChatInterface = ({ groupId }) => {
     const { user } = useContext(AuthContext);
@@ -28,13 +29,15 @@ const ChatInterface = ({ groupId }) => {
         // Fetch chat history
         socket.on('chatHistory', (history) => {
             setMessages(history || []);
-            scrollToBottom(); // Scroll to the bottom on loading history
+            scrollToBottom();
         });
 
-        // Listen for new messages
+        // Listen for new messages and avoid duplicates
         socket.on('receiveMessage', (message) => {
-            setMessages((prevMessages) => [...prevMessages, message]);
-            scrollToBottom(); // Scroll to the bottom when a new message arrives
+            if (message.sender !== socket.id) { // Avoid displaying messages sent by this user
+                setMessages((prevMessages) => [...prevMessages, message]);
+                scrollToBottom();
+            }
         });
 
         // Handle connection errors
@@ -62,20 +65,22 @@ const ChatInterface = ({ groupId }) => {
             content: newMessage,
         };
 
-        // Optimistically update the UI
+        // Optimistically update the UI with user details
         const tempMessage = {
-            _id: `temp-${Date.now()}`,
+            _id: `temp-${Date.now()}`, // Temporary ID for the message
             author: {
-                firstname: user.firstname,
-                lastname: user.lastname,
+                firstname: user.firstname, // Use user's firstname
+                lastname: user.lastname,   // Use user's lastname
             },
             content: newMessage,
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().toISOString(), // Generate current timestamp
         };
+
+        // Add the message optimistically to the local messages state
         setMessages((prevMessages) => [...prevMessages, tempMessage]);
         scrollToBottom();
 
-        // Emit the message
+        // Emit the message to the server
         socket.emit('sendMessage', message, (ack) => {
             if (ack?.error) {
                 setError(ack.error);
@@ -103,20 +108,18 @@ const ChatInterface = ({ groupId }) => {
                     marginBottom: '10px',
                 }}
             >
-                <div className="chat-messages overflow-y-auto max-h-80">
-                    {messages.map((msg) => (
-                        <div key={msg._id} className="mb-2">
-                            <strong className="text-blue-600">
-                                {msg.author?.firstname + ' ' + msg.author?.lastname || 'Unknown User'}:
-                            </strong>{' '}
-                            {msg.content}
-                            <span className="text-gray-500 text-sm ml-2">
-                                {new Date(msg.timestamp).toLocaleString()}
-                            </span>
-                        </div>
-                    ))}
-                    <div ref={messagesEndRef} />
-                </div>
+                {messages.map((msg) => (
+                    <div key={msg._id} className="mb-2">
+                        <strong className="text-blue-600">
+                            {msg.author?.firstname + ' ' + msg.author?.lastname || 'Unknown User'}:
+                        </strong>{' '}
+                        {msg.content}
+                        <span className="text-gray-500 text-sm ml-2">
+                            {new Date(msg.timestamp).toLocaleString()}
+                        </span>
+                    </div>
+                ))}
+                <div ref={messagesEndRef} />
             </div>
 
             {/* Message Input */}

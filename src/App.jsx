@@ -27,7 +27,11 @@ function App() {
                                    element={authToken ? <Navigate to="/dashboard" /> : <Navigate to="/home" />}
                             />
 
-                            <Route path="/events/:eventId/groups/:groupId" element={<EventGroupPage />} />
+                            <Route path="/events/:eventId/groups/:groupId" 
+                                   element={authToken ?
+                                          <EventGroupPage /> :
+                                          <Navigate to="/login" />
+                                   } />
 
 
                             {/* Define other routes */}
