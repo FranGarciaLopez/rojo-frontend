@@ -22,8 +22,9 @@ export const Blog = () => {
   }, []);
 
   const handleSubscribeClick = () => {
-    setShowSubscribe((prev) => !prev);
+    setShowSubscribe((prev) =>{return !prev} );
   };
+
 
   return (
     <>
