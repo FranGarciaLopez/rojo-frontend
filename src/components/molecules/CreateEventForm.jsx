@@ -7,6 +7,7 @@ import NavBar from '../molecules/NavBar';
 import InputText from "../atoms/InputText";
 
 import UploadImage from "../molecules/UploadImage";
+import { useNavigate } from 'react-router-dom';
 
 import Buttons from "../atoms/Buttons";
 export const CreateEvent = () => {
@@ -26,12 +27,14 @@ export const CreateEvent = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
-
+  
    
     const refs = {
         title: useRef(null),
         city: useRef(null),
     };
+
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -100,6 +103,12 @@ export const CreateEvent = () => {
                     setCategory('');
                     setPhotos([]); 
                     setError(null); 
+
+
+
+                    setTimeout(() => {
+                        navigate('/admin');
+                    }, 3000);
                   
 
                 }

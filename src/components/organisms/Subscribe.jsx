@@ -60,9 +60,7 @@ export const Subscribe = () => {
     setShowSubscribe(false);
   };
 
-  const handledelete = () => {
-    setEmail("");
-  };
+  
 
   const handleModalClick = (e) => {
     e.stopPropagation();
@@ -126,17 +124,12 @@ export const Subscribe = () => {
                 disabled={isSubmitting}
                 className={`flex items-center justify-center gap-7 ${
                   isSubmitting ? "bg-gray-400" : "bg-green-400"
-                } text-sm font-medium hover:bg-green-500 text-white px-9 py-2 rounded-lg`}
+                } text-sm font-medium hover:bg-green-500 text-white px-9 py-2 rounded-lg w-max mx-auto`}
               >
                 {isSubmitting ? "Subscribing..." : "Subscribe"}
               </button>
 
-              <button
-                onClick={handledelete}
-                className="flex items-center justify-center gap-7 bg-gray-300 text-sm font-medium hover:bg-gray-500 text-white px-12 py-2 rounded-lg"
-              >
-                Cancel
-              </button>
+             
             </div>
           </div>
         </div>

@@ -85,6 +85,36 @@ export const AdminDashboard = () => {
                     }
           };
 
+          const handleDeleteEvent = async (eventId) => {
+        
+            const confirmDelete = window.confirm("Are you sure you want to delete this event?");
+            if (!confirmDelete) return; 
+          
+            try {
+              const response = await fetch(`http://localhost:3000/events/eventdelete/${eventId}`, {
+                method: 'DELETE',
+              });
+          
+              if (response.ok) {
+              
+                const updatedEventsResponse = await getEvents(authToken); 
+                if (Array.isArray(updatedEventsResponse.data)) {
+                  setEvents(updatedEventsResponse.data); 
+                } else {
+                  console.error("Expected events data to be an array, got:", updatedEventsResponse.data);
+                }
+          
+                alert("Event deleted successfully"); 
+              } else {
+                throw new Error("Error deleting event");
+              }
+            } catch (error) {
+              console.error("Error deleting event", error);
+              alert("Error deleting event");
+            }
+          };
+          
+
           return (
                     <>
                               <NavBar />
@@ -126,7 +156,7 @@ export const AdminDashboard = () => {
                                                                       columns={["title", "city", "dateTime", "category"]}
                                                                       data={currentEvents}
                                                                       onEdit={event => handleEditEvent(event)}
-                                                                      onDelete={(id) => console.log("Delete event with ID:", id)}
+                                                                      onDelete={(id ) => handleDeleteEvent(id)}
                                                             />
                                                             <Pagination
                                                                       currentPage={currentPageEvents}
