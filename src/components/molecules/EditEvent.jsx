@@ -36,8 +36,6 @@ export const EditEvent = () => {
                                         const citiesResponse = await fetchCities(authToken);
                                         const categoriesResponse = await fetchActivitiesCategories(authToken);
 
-                                        console.log("Categories Response:", categoriesResponse);
-
                                         setCities(citiesResponse.data || []);
                                         setCategories(categoriesResponse.data || []); // Use `.data` to access the array
 

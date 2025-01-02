@@ -51,14 +51,10 @@ export const UserSettingsForm = () => {
         setEmail(data.user.email);
         setdayOfTheWeek(data.user.dayOfTheWeek);
         setPreferedCategory(data.user.categoryName.categoryName);
-        console.log('categoryName',data.user.categoryName);
 
         setPreferedCity(data.user.preferedCity.name);
-        console.log('preferedCity',data.user.preferedCity.name);
         setAvatar(data.user.avatar);
-        console.log(avatar);
       } catch (error) {
-        console.log("Error fetching user data", error);
         setError(error);
       }
     };

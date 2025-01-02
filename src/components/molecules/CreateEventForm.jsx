@@ -93,7 +93,6 @@ export const CreateEvent = () => {
                 );
 
                 if (eventResponse.status === 201) {
-                    console.log("Event created successfully");
                     setUploadSuccess(true);
 
                     setTitle('');

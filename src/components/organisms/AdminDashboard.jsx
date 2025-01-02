@@ -79,7 +79,6 @@ export const AdminDashboard = () => {
 
                     if (event && event._id) {
                               navigate(`/edit-event/${event._id}`);
-                              console.log("Navigating to edit event with ID:", event._id);
                     } else {
                               console.error('Event ID is missing or event is undefined');
                     }

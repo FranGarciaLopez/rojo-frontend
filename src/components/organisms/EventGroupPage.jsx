@@ -15,7 +15,6 @@ export const EventGroupPage = () => {
         const fetchData = async () => {
             try {
                 const eventData = await getEventById(authToken, eventId);
-                console.log(eventData.data); // Check the structure
                 setEvent(eventData.data);
             } catch (error) {
                 console.error('Error fetching event data:', error);

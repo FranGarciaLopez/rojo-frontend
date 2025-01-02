@@ -2,15 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const AvatarEdit = ({ value , onAvatarChange}) => {
-  console.log("value", value);
-
 
   const [avatarUrl, setAvatarUrl] = useState(value );
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const { authToken } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
- 
 
   useEffect(() => {
     if(!file && !previewUrl){
@@ -20,8 +17,6 @@ const AvatarEdit = ({ value , onAvatarChange}) => {
     }
    
   }, [value]);
-
-
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
