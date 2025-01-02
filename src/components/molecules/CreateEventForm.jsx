@@ -53,7 +53,7 @@ export const CreateEvent = () => {
             setIsUploading(true);
 
             const photoResponse = await axios.post(
-                "https://rojo-backend.onrender.com//photos/upload",
+                "https://rojo-backend.onrender.com/photos/upload",
                 formDataPhotos,
                 {
                     headers: {
