@@ -13,7 +13,7 @@ const AuthProvider = ({ children }) => {
           useEffect(() => {
                     if (authToken) {
                               axios
-                                        .get('https://dashboard.render.com://dashboard.render.com/user', {
+                                        .get('https://rojo-backend.onrender.com://dashboard.render.com/user', {
                                                   headers: { Authorization: `Bearer ${authToken}` },
                                         })
                                         .then((response) => {

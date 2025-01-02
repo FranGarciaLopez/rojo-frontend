@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-          baseURL: 'https://dashboard.render.com',
+          baseURL: 'https://rojo-backend.onrender.com',
           headers: { 'Content-Type': 'application/json' },
 });
 

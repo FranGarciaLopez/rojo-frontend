@@ -91,7 +91,7 @@ export const AdminDashboard = () => {
             if (!confirmDelete) return; 
           
             try {
-              const response = await fetch(`https://dashboard.render.com://dashboard.render.com/events/eventdelete/${eventId}`, {
+              const response = await fetch(`https://rojo-backend.onrender.com://dashboard.render.com/events/eventdelete/${eventId}`, {
                 method: 'DELETE',
               });
           
