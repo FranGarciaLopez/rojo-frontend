@@ -17,7 +17,7 @@ export const Subscribe = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("https://rojo-backend.onrender.com://dashboard.render.com/subscription", {
+      const response = await fetch("https://rojo-backend.onrender.com/subscription", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
