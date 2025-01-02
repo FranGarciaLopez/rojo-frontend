@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import { AuthContext } from '../../contexts/AuthContext';
 
 // Use the backend's deployed URL for production
-const socket = io('http://localhost:3000'); // Replace with your deployed backend URL
+const socket = io('http://https://dashboard.render.com'); // Replace with your deployed backend URL
 
 const ChatInterface = ({ groupId }) => {
     const { user } = useContext(AuthContext);

@@ -53,7 +53,7 @@ export const CreateEvent = () => {
             setIsUploading(true);
 
             const photoResponse = await axios.post(
-                "http://localhost:3000/photos/upload",
+                "https://dashboard.render.com//photos/upload",
                 formDataPhotos,
                 {
                     headers: {
@@ -83,7 +83,7 @@ export const CreateEvent = () => {
                 };
 
                 const eventResponse = await axios.post(
-                    "http://localhost:3000/events/eventregister",
+                    "http://https://dashboard.render.com/events/eventregister",
                     formDataEvent,
                     {
                         headers: {
@@ -123,7 +123,7 @@ export const CreateEvent = () => {
     useEffect(() => {
         const fetchCities = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/cities/cities");
+                const response = await axios.get("http://https://dashboard.render.com/cities/cities");
                 setCities(response.data);
             } catch (error) {
                 console.error("Error fetching cities:", error.message);
@@ -136,7 +136,7 @@ export const CreateEvent = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/categories/categories");
+                const response = await axios.get("http://https://dashboard.render.com/categories/categories");
                 setCategories(response.data);
             } catch (error) {
                 console.error("Error fetching categories:", error.message);

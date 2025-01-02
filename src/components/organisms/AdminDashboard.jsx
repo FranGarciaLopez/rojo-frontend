@@ -91,7 +91,7 @@ export const AdminDashboard = () => {
             if (!confirmDelete) return; 
           
             try {
-              const response = await fetch(`http://localhost:3000/events/eventdelete/${eventId}`, {
+              const response = await fetch(`http://https://dashboard.render.com/events/eventdelete/${eventId}`, {
                 method: 'DELETE',
               });
           

@@ -10,7 +10,7 @@ export const Blog = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("http://localhost:3000/blogs/blogs");
+        const response = await fetch("http://https://dashboard.render.com/blogs/blogs");
         const data = await response.json();
         setBlogs(data.blogs);
       } catch (error) {

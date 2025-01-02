@@ -27,7 +27,7 @@ export const Dashboard = () => {
 
               const fetchActivities = async () => {
                      try {
-                            const response = await fetch("http://localhost:3000/events/events", {
+                            const response = await fetch("http://https://dashboard.render.com/events/events", {
                                    headers: { Authorization: `Bearer ${authToken}` },
                             });
                             if (!response.ok) throw new Error("Failed to fetch activities.");
@@ -41,7 +41,7 @@ export const Dashboard = () => {
               const fetchGroups = async () => {
                      try {
                             const groupDetailsPromises = user.groups.map((groupId) =>
-                                   fetch(`http://localhost:3000/groups/findgroupbyid/${groupId}`, {
+                                   fetch(`http://https://dashboard.render.com/groups/findgroupbyid/${groupId}`, {
                                           headers: { Authorization: `Bearer ${authToken}` },
                                    }).then((res) => res.json())
                             );
@@ -79,7 +79,7 @@ export const Dashboard = () => {
        const interestedInAEvent = async (eventId) => {
               try {
                   setLoadingEvent(eventId);
-                  const response = await fetch(`http://localhost:3000/events/signup`, {
+                  const response = await fetch(`http://https://dashboard.render.com/events/signup`, {
                       method: "POST",
                       headers: {
                           Authorization: `Bearer ${authToken}`,

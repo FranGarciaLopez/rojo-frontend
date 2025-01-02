@@ -22,7 +22,7 @@ function ImageUpload({ setPhotos }) {
     uploadedImages.forEach((file) => formData.append("photos", file));
 
     try {
-      const response = await fetch("http://localhost:3000/photos/upload", {
+      const response = await fetch("http://https://dashboard.render.com/photos/upload", {
         method: "POST",
         body: formData,
       });

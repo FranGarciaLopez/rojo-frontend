@@ -13,7 +13,7 @@ const AuthProvider = ({ children }) => {
           useEffect(() => {
                     if (authToken) {
                               axios
-                                        .get('http://localhost:3000/user', {
+                                        .get('http://https://dashboard.render.com/user', {
                                                   headers: { Authorization: `Bearer ${authToken}` },
                                         })
                                         .then((response) => {

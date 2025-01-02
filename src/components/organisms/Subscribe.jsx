@@ -17,7 +17,7 @@ export const Subscribe = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:3000/subscription", {
+      const response = await fetch("http://https://dashboard.render.com/subscription", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
