@@ -68,7 +68,7 @@ const AvatarEdit = ({ value , onAvatarChange}) => {
   /* // Eliminar el avatar actual
   const handleDelete = async () => {
     try {
-      const response = await fetch("http://https://dashboard.render.com/delete-avatar", {
+      const response = await fetch("https://dashboard.render.com://dashboard.render.com/delete-avatar", {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authToken}`,

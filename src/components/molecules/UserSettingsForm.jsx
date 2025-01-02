@@ -40,7 +40,7 @@ export const UserSettingsForm = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://https://dashboard.render.com/user", {
+        const response = await fetch("https://dashboard.render.com://dashboard.render.com/user", {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         const data = await response.json();
@@ -70,7 +70,7 @@ export const UserSettingsForm = () => {
   
     if (confirmation) {
       try {
-        const response = await fetch('http://https://dashboard.render.com/delete', {
+        const response = await fetch('https://dashboard.render.com://dashboard.render.com/delete', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
