@@ -1,6 +1,6 @@
 import React from "react";
 import GridSection from "../atoms/GridSection";
-import ActivitiesCard from "../molecules/ActivitiesCard";
+import Card from "./Card";
 import Buttons from "../atoms/Buttons";
 
 const ActivitiesSection = ({
@@ -16,7 +16,7 @@ const ActivitiesSection = ({
                     {/* Grid Section */}
                     <GridSection>
                               {activities.slice(0, visibleItems).map((activity) => (
-                                        <ActivitiesCard
+                                        <Card
                                                   key={activity._id}
                                                   activity={activity}
                                                   interestedInAEvent={interestedInAEvent}

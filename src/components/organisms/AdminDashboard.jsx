@@ -13,21 +13,12 @@ export const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [alert, setAlert] = useState(null); // Unified alert management
-  const { authToken } = useContext(AuthContext);
-  const { user } = useContext(AuthContext);
+  const [alert, setAlert] = useState(null);
+  const { authToken, user } = useContext(AuthContext);
   const [currentPageUsers, setCurrentPageUsers] = useState(1);
   const [currentPageEvents, setCurrentPageEvents] = useState(1);
   const usersPerPage = 5;
   const eventsPerPage = 5;
-
-  const indexOfLastUser = currentPageUsers * usersPerPage;
-  const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
-
-  const indexOfLastEvent = currentPageEvents * eventsPerPage;
-  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
-  const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
 
   const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_API_BASE_URL;
@@ -36,9 +27,12 @@ export const AdminDashboard = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
+
+        // Fetch users
         const usersResponse = await getUsers();
         setUsers(usersResponse.data.users);
 
+        // Fetch events
         const eventsResponse = await getEvents(authToken);
         if (Array.isArray(eventsResponse.data)) {
           setEvents(eventsResponse.data);
@@ -55,8 +49,27 @@ export const AdminDashboard = () => {
     fetchData();
   }, [authToken]);
 
-  const handlePageClickUsers = (pageNumber) => setCurrentPageUsers(pageNumber);
+  const totalPagesUsers = Math.ceil(users.length / usersPerPage);
+  const totalPagesEvents = Math.ceil(events.length / eventsPerPage);
 
+  const pageNumbersUsers = Array.from(
+    { length: totalPagesUsers },
+    (_, i) => i + 1
+  );
+  const pageNumbersEvents = Array.from(
+    { length: totalPagesEvents },
+    (_, i) => i + 1
+  );
+
+  const indexOfLastUser = currentPageUsers * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  const indexOfLastEvent = currentPageEvents * eventsPerPage;
+  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
+  const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
+
+  const handlePageClickUsers = (pageNumber) => setCurrentPageUsers(pageNumber);
   const handlePageClickEvents = (pageNumber) => setCurrentPageEvents(pageNumber);
 
   const handleEditEvent = (event) => {
@@ -68,7 +81,9 @@ export const AdminDashboard = () => {
   };
 
   const handleDeleteEvent = async (eventId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this event?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this event?"
+    );
     if (!confirmDelete) return;
 
     try {
@@ -109,7 +124,9 @@ export const AdminDashboard = () => {
         )}
 
         <div className="p-10 max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8 text-gray-800">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold mb-8 text-gray-800">
+            Admin Dashboard
+          </h1>
 
           {/* Analytics Section */}
           <div className="my-8">
@@ -125,7 +142,7 @@ export const AdminDashboard = () => {
               </div>
               <div className="p-4 bg-gray-100 rounded-lg shadow-md">
                 <h3 className="text-2xl font-bold">Created Events</h3>
-                <p className="text-xl">{user.organizedEvents}</p>
+                <p className="text-xl">{user?.organizedEvents || 0}</p>
               </div>
             </GridSection>
           </div>
@@ -150,8 +167,8 @@ export const AdminDashboard = () => {
               />
               <Pagination
                 currentPage={currentPageEvents}
-                totalPages={Math.ceil(events.length / eventsPerPage)}
-                pageNumbers={Array.from({ length: totalPagesEvents }, (_, i) => i + 1)}
+                totalPages={totalPagesEvents}
+                pageNumbers={pageNumbersEvents}
                 handlePageClick={handlePageClickEvents}
               />
             </>
@@ -165,8 +182,8 @@ export const AdminDashboard = () => {
           />
           <Pagination
             currentPage={currentPageUsers}
-            totalPages={Math.ceil(users.length / usersPerPage)}
-            pageNumbers={Array.from({ length: totalPagesUsers }, (_, i) => i + 1)}
+            totalPages={totalPagesUsers}
+            pageNumbers={pageNumbersUsers}
             handlePageClick={handlePageClickUsers}
           />
         </div>

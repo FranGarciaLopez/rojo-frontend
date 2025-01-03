@@ -48,7 +48,6 @@ export const EditEvent = () => {
                                                             description: fetchedEvent.description || "",
                                                             photos: fetchedEvent.photos || [],
                                                   });
-                                                  debugger;
                                         } else {
                                                   setError("Event not found");
                                         }
@@ -60,7 +59,6 @@ export const EditEvent = () => {
                               }
                     };
 
-                    debugger
                     fetchData();
           }, [id, authToken]);
 
