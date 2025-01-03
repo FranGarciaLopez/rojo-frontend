@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { loginUser } from "../../api/apiService";
@@ -9,17 +9,15 @@ import Alert from "../atoms/Alert";
 const LoginForm = () => {
           const [email, setEmail] = useState("");
           const [password, setPassword] = useState("");
-          const [alert, setAlert] = useState(null); // State to manage alert visibility
-          const { login } = useContext(AuthContext);
+          const [alert, setAlert] = useState(null);
+          const { login, loading, user } = useContext(AuthContext);
           const navigate = useNavigate();
 
           const handleSubmit = async (e) => {
                     e.preventDefault();
-
                     try {
                               const response = await loginUser({ email, password });
                               const { token, requiresOnboarding, user, isAdmin } = response.data;
-
                               login(token, user);
 
                               if (requiresOnboarding) {
@@ -30,30 +28,31 @@ const LoginForm = () => {
                     } catch (error) {
                               const errorMessage =
                                         error.response?.data?.message || "Invalid credentials";
-                              setAlert({ message: errorMessage, type: "error" }); // Set the alert
+                              setAlert({ message: errorMessage, type: "error" });
                     }
           };
 
+          useEffect(() => {
+                    if (user) {
+                              navigate(user.isAdmin ? "/admin" : "/dashboard");
+                    }
+          }, [user, navigate]);
+
+          if (loading) return <div>Loading...</div>;
+
           return (
                     <div className="flex flex-grow justify-center items-center bg-white">
-                              <form
-                                        onSubmit={(e) => handleSubmit(e)}
-                              >
-                                        {/* Title */}
+                              <form onSubmit={handleSubmit}>
                                         <h2 className="text-center mb-8">Login</h2>
-
-                                        {/* Alert Display */}
                                         {alert && (
                                                   <div className="relative top-0 right-0 w-full px-4">
                                                             <Alert
                                                                       message={alert.message}
                                                                       type={alert.type}
-                                                                      onClose={() => setAlert(null)} // Dismiss alert
+                                                                      onClose={() => setAlert(null)}
                                                             />
                                                   </div>
                                         )}
-
-                                        {/* Input Fields */}
                                         <div className="space-y-4 mb-4">
                                                   <InputText
                                                             type="email"
@@ -70,8 +69,6 @@ const LoginForm = () => {
                                                             required
                                                   />
                                         </div>
-
-                                        {/* Submit Button */}
                                         <div className="mt-4">
                                                   <Buttons
                                                             type="submit"
@@ -79,12 +76,13 @@ const LoginForm = () => {
                                                             className="bg-blue-600 hover:bg-blue-800"
                                                   />
                                         </div>
-
-                                        {/* Footer Links */}
                                         <div className="text-center mt-4">
                                                   <p className="text-gray-700">
                                                             Don't have an account?{" "}
-                                                            <Link to="/register" className="text-blue-600 hover:underline">
+                                                            <Link
+                                                                      to="/register"
+                                                                      className="text-blue-600 hover:underline"
+                                                            >
                                                                       Register
                                                             </Link>
                                                   </p>

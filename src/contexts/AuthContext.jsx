@@ -1,10 +1,12 @@
-import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-          const [authToken, setAuthToken] = useState(localStorage.getItem('token') || null);
+          const [authToken, setAuthToken] = useState(
+                    localStorage.getItem("token") || null
+          );
           const [user, setUser] = useState(null);
           const [loading, setLoading] = useState(true);
           const baseURL = import.meta.env.VITE_API_BASE_URL;
@@ -16,10 +18,10 @@ const AuthProvider = ({ children }) => {
                                                   headers: { Authorization: `Bearer ${authToken}` },
                                         })
                                         .then((response) => {
-                                                  setUser(response.data.user); 
+                                                  setUser(response.data.user);
                                         })
                                         .catch((error) => {
-                                                  console.error(error);
+                                                  console.error("Error fetching user:", error);
                                                   logout();
                                         })
                                         .finally(() => {
@@ -30,26 +32,35 @@ const AuthProvider = ({ children }) => {
                     }
           }, [authToken]);
 
-          // Login function
-          const login = (token) => {
+          const login = async (token) => {
                     setAuthToken(token);
-                    localStorage.setItem('token', token);
+                    localStorage.setItem("token", token);
                     setLoading(true);
-          };
 
-          const register = (token) => {
-                    login(token);
+                    try {
+                              const response = await axios.get(`${baseURL}/user`, {
+                                        headers: { Authorization: `Bearer ${token}` },
+                              });
+                              setUser(response.data.user);
+                    } catch (error) {
+                              console.error("Failed to fetch user data:", error);
+                              logout();
+                    } finally {
+                              setLoading(false);
+                    }
           };
 
           const logout = () => {
                     setAuthToken(null);
                     setUser(null);
-                    localStorage.removeItem('token');
+                    localStorage.removeItem("token");
           };
 
           return (
-                    <AuthContext.Provider value={{ authToken, user, setUser, login, register, logout, loading }}>
-                              {children}
+                    <AuthContext.Provider
+                              value={{ authToken, user, setUser, login, logout, loading }}
+                    >
+                              {!loading && children}
                     </AuthContext.Provider>
           );
 };
