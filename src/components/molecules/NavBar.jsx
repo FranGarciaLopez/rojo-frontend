@@ -125,10 +125,17 @@ const NavBar = () => {
                                                                                           </Link>
 
                                                                                           <div className="flex items-center">
+                                                                                                    <Link to="/register" className="text-lg text-gray-900 font-medium">
+                                                                                                              Register
+                                                                                                    </Link>
+                                                                                          </div>
+
+                                                                                          <div className="flex items-center">
                                                                                                     <Link to="/login" className="text-lg text-gray-900 font-medium">
                                                                                                               Login
                                                                                                     </Link>
                                                                                           </div>
+
                                                                                 </>
                                                                       )}
                                                             </div>
@@ -176,9 +183,15 @@ const NavBar = () => {
                                                                                           Home
                                                                                 </Link>
 
-                                                                                <Link to="/login" className="text-sm text-gray-900 font-medium">
-                                                                                          Login
-                                                                                </Link>
+                                                                                <div className="flex items-center gap-5">
+                                                                                  <Link to="/register" className="text-lg text-gray-900 font-medium">
+                                                                                            Register
+                                                                                  </Link>
+
+                                                                                  <Link to="/login" className="text-sm text-gray-900 font-medium">
+                                                                                            Login
+                                                                                  </Link>
+                                                                                </div>
                                                                       </>
                                                             )}
                                                   </div>
