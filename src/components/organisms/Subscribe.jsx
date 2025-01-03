@@ -62,8 +62,6 @@ export const Subscribe = () => {
     setShowSubscribe(false);
   };
 
-  
-
   const handleModalClick = (e) => {
     e.stopPropagation();
   };
@@ -76,7 +74,7 @@ export const Subscribe = () => {
     <>
       {showSubscribe && (
         <div
-          className="fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50"
+          className="fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 z-10"
           onClick={handleOverlayClick}
         >
           <div

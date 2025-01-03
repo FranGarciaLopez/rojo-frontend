@@ -19,7 +19,7 @@ const BlogCard = ({ blog }) => {
                               <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-800/60 to-transparent"></div>
 
                               {/* Content Overlay */}
-                              <div className="relative z-10 flex flex-col justify-end h-full p-4">
+                              <div className="relative z-1 flex flex-col justify-end h-full p-4">
                                                   <h2 className="text-xl font-semibold text-white">{blog.title}</h2>
                                         <div>
                                                   <p className="text-sm text-white line-clamp-2">

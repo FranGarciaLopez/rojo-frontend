@@ -105,7 +105,6 @@ export const Dashboard = () => {
             });
 
             if (response.ok) {
-                const data = await response.json();
                 setUser((prevUser) => ({
                     ...prevUser,
                     interestedEvents: [...prevUser.interestedEvents, eventId],
