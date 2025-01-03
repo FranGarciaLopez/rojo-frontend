@@ -21,7 +21,7 @@ export const RegisterForm = () => {
        const [dateOfBirth, setDateOfBirth] = useState('');
        const { register } = useContext(AuthContext);
        const navigate = useNavigate();
-       const [error, setError] = useState('');
+       const [alert, setAlert] = useState(null);
 
        const [city, setCity] = useState('');
        const { cities, loading } = useCities();
@@ -56,16 +56,12 @@ export const RegisterForm = () => {
                             dateOfBirth,
                      });
 
-       debugger;
-
-                     if (response.error) {
-                            setError(response.error);
-                            return;
-                     }
                      register(response);
                      navigate('/login');
               } catch (error) {
-                     setError(error.message);
+                     const errorMessage =
+                            error.response?.data?.message || "Bad request";
+                     setAlert({ message: errorMessage, type: "error" });
               }
        }
 
@@ -75,7 +71,15 @@ export const RegisterForm = () => {
                             onSubmit={handleSubmit}
                      >
                             <h2 className='text-center'>Register</h2>
-                            {error && <Alert message={error} />}
+                            {alert && (
+                                   <div className="relative top-0 right-0 w-full px-4">
+                                          <Alert
+                                                 message={alert.message}
+                                                 type={alert.type}
+                                                 onClose={() => setAlert(null)}
+                                          />
+                                   </div>
+                            )}
 
                             <div className="space-y-5">
 
