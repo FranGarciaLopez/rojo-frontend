@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import io from 'socket.io-client';
 import { AuthContext } from '../../contexts/AuthContext';
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-// Use the backend's deployed URL for production
-const socket = io('https://rojo-backend.onrender.com'); // Replace with your deployed backend URL
+const socket = io(baseURL);
 
 const ChatInterface = ({ groupId }) => {
     const { user } = useContext(AuthContext);

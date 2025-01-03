@@ -5,13 +5,14 @@ function ImageUpload({ setPhotos }) {
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   const handleDrop = (event) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
     const images = files.filter(file => file.type.startsWith("image/"));
     setUploadedImages((prevImages) => [...prevImages, ...images]);
-    setPhotos((prevPhotos) => [...prevPhotos, ...images]);  
+    setPhotos((prevPhotos) => [...prevPhotos, ...images]);
   };
 
   const handleUpload = async () => {
@@ -22,7 +23,7 @@ function ImageUpload({ setPhotos }) {
     uploadedImages.forEach((file) => formData.append("photos", file));
 
     try {
-      const response = await fetch("https://rojo-backend.onrender.com/photos/upload", {
+      const response = await fetch(`${baseURL}/photos/upload`, {
         method: "POST",
         body: formData,
       });
@@ -30,7 +31,7 @@ function ImageUpload({ setPhotos }) {
       if (response.ok) {
         const data = await response.json();
         console.log("Uploaded successfully:", data);
-        setUploadedImages([]); 
+        setUploadedImages([]);
         setPhotos([]);
       } else {
         console.error("Upload failed");
@@ -69,10 +70,10 @@ function ImageUpload({ setPhotos }) {
       )}
       <button
         onClick={handleUpload}
-      
+
         disabled={isUploading || uploadedImages.length === 0}
       >
-      
+
       </button>
       <div>
         <span className="text-caption font-caption text-subtext-color text-center">

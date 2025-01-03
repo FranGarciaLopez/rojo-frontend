@@ -6,11 +6,12 @@ import { Subscribe } from "../organisms/Subscribe";
 export const Blog = () => {
   const [blogs, setBlogs] = useState([]); // State to hold the blog data
   const [showSubscribe, setShowSubscribe] = useState(false);
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("https://rojo-backend.onrender.com/blogs/blogs");
+        const response = await fetch(`${baseURL}/blogs/blogs`);
         const data = await response.json();
         setBlogs(data.blogs);
       } catch (error) {

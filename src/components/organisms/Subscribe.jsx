@@ -7,6 +7,8 @@ export const Subscribe = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [messageType, setMessageType] = useState("");
 
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
+
   const handleSubscribe = async () => {
     if (!email) {
       setSuccessMessage("Please enter a valid email!");
@@ -17,7 +19,7 @@ export const Subscribe = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("https://rojo-backend.onrender.com/subscription", {
+      const response = await fetch(`${baseURL}/subscription`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

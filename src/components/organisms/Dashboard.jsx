@@ -18,6 +18,9 @@ export const Dashboard = () => {
               city: false,
               day: false,
        });
+
+       const baseURL = import.meta.env.VITE_API_BASE_URL;
+
        const [groupDetails, setGroupDetails] = useState([]);
        const [loadingEvent, setLoadingEvent] = useState(null);
        const navigate = useNavigate();
@@ -27,7 +30,7 @@ export const Dashboard = () => {
 
               const fetchActivities = async () => {
                      try {
-                            const response = await fetch("https://rojo-backend.onrender.com/events/events", {
+                            const response = await fetch(`${baseURL}/events/events`, {
                                    headers: { Authorization: `Bearer ${authToken}` },
                             });
                             if (!response.ok) throw new Error("Failed to fetch activities.");
@@ -41,7 +44,7 @@ export const Dashboard = () => {
               const fetchGroups = async () => {
                      try {
                             const groupDetailsPromises = user.groups.map((groupId) =>
-                                   fetch(`https://rojo-backend.onrender.com/groups/findgroupbyid/${groupId}`, {
+                                   fetch(`${baseURL}/groups/findgroupbyid/${groupId}`, {
                                           headers: { Authorization: `Bearer ${authToken}` },
                                    }).then((res) => res.json())
                             );

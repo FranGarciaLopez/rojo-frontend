@@ -23,9 +23,7 @@ export const UserSettingsForm = () => {
   const { authToken } = useContext(AuthContext);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
- 
-
- 
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   const refs = {
     firstname: useRef(null),
@@ -40,7 +38,7 @@ export const UserSettingsForm = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("https://rojo-backend.onrender.com/user", {
+        const response = await fetch(`${baseURL}/user`, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         const data = await response.json();
@@ -63,33 +61,30 @@ export const UserSettingsForm = () => {
 
   const handleDeleteAccount = async () => {
     const confirmation = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
-  
+
     if (confirmation) {
       try {
-        const response = await fetch('https://rojo-backend.onrender.com/delete', {
+        const response = await fetch(`${baseURL}/delete`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`, // Agregar el token de autenticación aquí
+            'Authorization': `Bearer ${authToken}`,
           },
         });
-  
+
         if (response.ok) {
           alert('Your account has been successfully deleted.');
           navigate('/home')
         } else {
           alert('There was an error deleting your account. Please try again.');
         }
-  
+
       } catch (error) {
         console.error('Error deleting user:', error);
         alert('There was an error deleting your account. Please try again later.');
       }
     }
   };
-
-
-
 
   return (
     <>
@@ -116,7 +111,7 @@ export const UserSettingsForm = () => {
             <h2>Account</h2>
             <p>Update your profile and personal details here</p>
 
-            <AvatarEdit value={avatar}  onAvatarChange={setAvatar}></AvatarEdit>
+            <AvatarEdit value={avatar} onAvatarChange={setAvatar}></AvatarEdit>
 
             <div className="flex flex-col gap-4 w-full">
               <Label>First Name</Label>

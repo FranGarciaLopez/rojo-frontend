@@ -27,8 +27,9 @@ export const CreateEvent = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
-  
-   
+
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
+
     const refs = {
         title: useRef(null),
         city: useRef(null),
@@ -53,7 +54,7 @@ export const CreateEvent = () => {
             setIsUploading(true);
 
             const photoResponse = await axios.post(
-                "https://rojo-backend.onrender.com/photos/upload",
+                `${baseURL}/photos/upload`,
                 formDataPhotos,
                 {
                     headers: {
@@ -76,14 +77,12 @@ export const CreateEvent = () => {
                     city,
                     description,
                     dateTime,
-
                     category,
-
                     photos: uploadedPhotos,
                 };
 
                 const eventResponse = await axios.post(
-                    "https://rojo-backend.onrender.com/events/eventregister",
+                    `${baseURL}/events/eventregister`,
                     formDataEvent,
                     {
                         headers: {
@@ -100,15 +99,13 @@ export const CreateEvent = () => {
                     setDescription('');
                     setDateTime('');
                     setCategory('');
-                    setPhotos([]); 
-                    setError(null); 
-
-
+                    setPhotos([]);
+                    setError(null);
 
                     setTimeout(() => {
                         navigate('/admin');
                     }, 3000);
-                  
+
 
                 }
             }
@@ -122,7 +119,7 @@ export const CreateEvent = () => {
     useEffect(() => {
         const fetchCities = async () => {
             try {
-                const response = await axios.get("https://rojo-backend.onrender.com/cities/cities");
+                const response = await axios.get(`${baseURL}/cities/cities`);
                 setCities(response.data);
             } catch (error) {
                 console.error("Error fetching cities:", error.message);
@@ -135,7 +132,7 @@ export const CreateEvent = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get("https://rojo-backend.onrender.com/categories/categories");
+                const response = await axios.get(`${baseURL}/categories/categories`);
                 setCategories(response.data);
             } catch (error) {
                 console.error("Error fetching categories:", error.message);
@@ -265,8 +262,8 @@ export const CreateEvent = () => {
                                 {uploadSuccess && (
                                     <div className="text-green-500">
                                         Photos uploaded successfully!
-                                        
-                  </div>
+
+                                    </div>
                                 )}
                                 {error && <div className="text-red-500">{error}</div>}
                             </div>

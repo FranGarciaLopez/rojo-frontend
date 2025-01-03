@@ -1,7 +1,8 @@
 import axios from 'axios';
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const apiClient = axios.create({
-          baseURL: 'https://rojo-backend.onrender.com',
+          baseURL: baseURL,
           headers: { 'Content-Type': 'application/json' },
 });
 
