@@ -1,5 +1,5 @@
 
-import { LoginFrom } from "../molecules/LoginFrom";
+import LoginFrom from "../molecules/LoginFrom";
 import NavBar from "../molecules/NavBar";
 
 export const Login = () => {

@@ -1,6 +1,16 @@
-const ActivityCard = ({ activity, interestedInAEvent, interestedEvents, loadingEvent }) => {
-          
+import React from "react";
+
+const ActivityCard = ({ activity, interestedInAEvent, interestedEvents, loadingEvent, addToast }) => {
           const isAlreadyInterested = interestedEvents.includes(activity._id);
+
+          const handleInterestClick = async () => {
+                    try {
+                              await interestedInAEvent(activity._id);
+                              addToast("You have successfully shown interest in this event.", "success");
+                    } catch (error) {
+                              addToast("An error occurred while showing interest in this event.", "error");
+                    }
+          };
 
           return (
                     <div className="bg-white p-6 rounded-lg shadow-xl hover:shadow-3xl transition duration-200 ease-in-out flex flex-col">
@@ -18,7 +28,7 @@ const ActivityCard = ({ activity, interestedInAEvent, interestedEvents, loadingE
                                         {activity.city && <p>City: {activity.city.name}</p>}
                               </div>
                               <button
-                                        onClick={() => interestedInAEvent(activity._id)}
+                                        onClick={handleInterestClick}
                                         disabled={isAlreadyInterested || loadingEvent === activity._id}
                                         className={`btn ${isAlreadyInterested
                                                             ? "btn-disabled bg-gray-400 hover:bg-gray-500"
@@ -34,6 +44,5 @@ const ActivityCard = ({ activity, interestedInAEvent, interestedEvents, loadingE
                     </div>
           );
 };
-
 
 export default ActivityCard;

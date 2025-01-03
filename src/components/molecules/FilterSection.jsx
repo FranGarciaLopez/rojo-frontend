@@ -10,6 +10,8 @@ const FilterSection = ({ filterText, setFilterText, selectedFilters, setSelected
                     />
                     <div className="flex gap-6">
                               {["category", "day", "city"].map((filterType) => (
+                                        /* show category, day , city */
+
                                         <label key={filterType} className="flex items-center cursor-pointer gap-2">
                                                   Filter by {user[filterType]?.name || user[filterType]}
                                                   <input

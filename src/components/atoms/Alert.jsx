@@ -1,37 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const Alert = ({ message, className, ...others }) => {
-
+const Alert = ({ message, type = "info", onClose, duration = 5000 }) => {
           const [isVisible, setIsVisible] = useState(true);
 
-          const closeAlert = () => {
-                    setIsVisible(false);
+          useEffect(() => {
+                    if (duration) {
+                              const timer = setTimeout(() => {
+                                        setIsVisible(false);
+                                        if (onClose) onClose();
+                              }, duration);
+                              return () => clearTimeout(timer);
+                    }
+          }, [duration, onClose]);
+
+          if (!isVisible) return null;
+
+          const typeClasses = {
+                    success: "bg-green-100 text-green-700 border-green-400",
+                    warning: "bg-yellow-100 text-yellow-700 border-yellow-400",
+                    error: "bg-red-100 text-red-700 border-red-400",
+                    info: "bg-blue-100 text-blue-700 border-blue-400",
           };
 
-          if(!isVisible) return null
+          const typeClass = typeClasses[type] || typeClasses.info;
 
           return (
-                    /* role from others */
-                    <div id="alert-border-2" className={`${className}`} {...others}>
-                              <svg className="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                              </svg>
-                              <div className="ms-3 text-sm font-medium">
-                                        {message}
-                              </div>
-                              <button type="button"
-                                        className="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2
-                                        focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center 
-                                        h-8 w-8"
-                                        onClick={closeAlert}       
+                    <div
+                              className={`flex items-center justify-center p-4 mb-2 border rounded-lg shadow-lg ${typeClass}`}
+                              role="alert"
+                    >
+                              <div className="ml-3 text-sm font-medium">{message}</div>
+                              <button
+                                        onClick={() => {
+                                                  setIsVisible(false);
+                                                  if (onClose) onClose();
+                                        }}
+                                        className="ml-4 bg-transparent text-current hover:text-gray-500"
                               >
-                                        <span className="sr-only">Dismiss</span>
-                                        <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                  <path stroke="currentColor" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                        </svg>
+                                        ✖
                               </button>
                     </div>
-          )
+          );
 };
 
 export default Alert;
