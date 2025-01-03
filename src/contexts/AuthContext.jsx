@@ -7,21 +7,20 @@ const AuthProvider = ({ children }) => {
           const [authToken, setAuthToken] = useState(localStorage.getItem('token') || null);
           const [user, setUser] = useState(null);
           const [loading, setLoading] = useState(true);
+          const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-
-          // Fetch user data from the backend when the token is available
           useEffect(() => {
                     if (authToken) {
                               axios
-                                        .get('https://rojo-backend.onrender.com/user', {
+                                        .get(`${baseURL}/user`, {
                                                   headers: { Authorization: `Bearer ${authToken}` },
                                         })
                                         .then((response) => {
-                                                  setUser(response.data.user); // Ensure `response.data.user` includes `isAdministrator`
+                                                  setUser(response.data.user); 
                                         })
                                         .catch((error) => {
                                                   console.error(error);
-                                                  logout();  // Si ocurre un error en la obtención de datos, logout
+                                                  logout();
                                         })
                                         .finally(() => {
                                                   setLoading(false);
@@ -34,16 +33,14 @@ const AuthProvider = ({ children }) => {
           // Login function
           const login = (token) => {
                     setAuthToken(token);
-                    localStorage.setItem('token', token); // Save token to localStorage
-                    setLoading(true); // Start loading while fetching user data
+                    localStorage.setItem('token', token);
+                    setLoading(true);
           };
 
-          // Register function (calls login after registration)
           const register = (token) => {
                     login(token);
           };
 
-          // Logout function to clear auth state
           const logout = () => {
                     setAuthToken(null);
                     setUser(null);
@@ -51,7 +48,7 @@ const AuthProvider = ({ children }) => {
           };
 
           return (
-                    <AuthContext.Provider value={{ authToken, user, login, register, logout, loading }}>
+                    <AuthContext.Provider value={{ authToken, user, setUser, login, register, logout, loading }}>
                               {children}
                     </AuthContext.Provider>
           );

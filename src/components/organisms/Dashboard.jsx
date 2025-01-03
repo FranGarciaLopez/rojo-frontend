@@ -7,7 +7,7 @@ import FilterSection from "../molecules/FilterSection";
 import ActivitiesSection from "../molecules/ActivitiesSection";
 
 export const Dashboard = () => {
-       const { authToken, user } = useContext(AuthContext);
+       const { authToken, user, setUser } = useContext(AuthContext);
        const [activities, setActivities] = useState([]);
        const [preferredCity, setPreferredCity] = useState("");
        const [filterText, setFilterText] = useState("");
@@ -78,35 +78,48 @@ export const Dashboard = () => {
 
        const interestedInAEvent = async (eventId) => {
               try {
-                  setLoadingEvent(eventId);
-                  const response = await fetch(`https://rojo-backend.onrender.com/events/signup`, {
-                      method: "POST",
-                      headers: {
-                          Authorization: `Bearer ${authToken}`,
-                          "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ eventId }),
-                  });
-                  if (response.ok) {
-                      const data = await response.json();
-          
-                      // Update user's interestedEvents locally
-                      setUser((prevUser) => ({
-                          ...prevUser,
-                          interestedEvents: [...prevUser.interestedEvents, eventId],
-                      }));
-          
-                      alert(data.message || "You are now interested in this event.");
-                  } else {
-                      const errorData = await response.json();
-                      alert(errorData.message || "Failed to show interest in this event.");
-                  }
+                     setLoadingEvent(eventId);
+                     const response = await fetch(`${baseURL}/events/signup`, {
+                            method: "POST",
+                            headers: {
+                                   Authorization: `Bearer ${authToken}`,
+                                   "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ eventId }),
+                     });
+
+
+                     if (response.ok) {
+                            const data = await response.json().catch((err) => {
+                                   console.error("Failed to parse JSON:", err);
+                                   return null;
+                            });
+
+                            if (data) {
+                                   setUser((prevUser) => ({
+                                          ...prevUser,
+                                          interestedEvents: [...prevUser.interestedEvents, eventId],
+                                   }));
+
+                                   alert(data.message || "You are now interested in this event.");
+                            } else {
+                                   alert("Request succeeded but no response data was returned.");
+                            }
+                     } else {
+                            const errorData = await response.json().catch((err) => {
+                                   console.error("Failed to parse error JSON:", err);
+                                   return null;
+                            });
+                            alert(errorData?.message || "Failed to show interest in this event.");
+                     }
               } catch (err) {
-                  alert("Network error: Unable to process your request.");
+                     console.error("Network Error:", err);
+                     alert("Network error: Unable to process your request.");
               } finally {
-                  setLoadingEvent(null);
+                     setLoadingEvent(null);
               }
-          };
+       };
+
 
        return (
               <>

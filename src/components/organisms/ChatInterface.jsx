@@ -23,29 +23,24 @@ const ChatInterface = ({ groupId }) => {
             return;
         }
 
-        // Join the group
         socket.emit('joinGroup', groupId);
 
-        // Fetch chat history
         socket.on('chatHistory', (history) => {
             setMessages(history || []);
             scrollToBottom();
         });
 
-        // Listen for new messages and avoid duplicates
         socket.on('receiveMessage', (message) => {
-            if (message.sender !== socket.id) { // Avoid displaying messages sent by this user
+            if (message.sender !== socket.id) {
                 setMessages((prevMessages) => [...prevMessages, message]);
                 scrollToBottom();
             }
         });
 
-        // Handle connection errors
         socket.on('connect_error', () => {
             setError('Failed to connect to the chat server.');
         });
 
-        // Clean up on unmount
         return () => {
             socket.emit('leaveGroup', groupId);
             socket.off('chatHistory');
@@ -65,22 +60,19 @@ const ChatInterface = ({ groupId }) => {
             content: newMessage,
         };
 
-        // Optimistically update the UI with user details
         const tempMessage = {
-            _id: `temp-${Date.now()}`, // Temporary ID for the message
+            _id: `temp-${Date.now()}`, 
             author: {
-                firstname: user.firstname, // Use user's firstname
-                lastname: user.lastname,   // Use user's lastname
+                firstname: user.firstname, 
+                lastname: user.lastname,  
             },
             content: newMessage,
-            timestamp: new Date().toISOString(), // Generate current timestamp
+            timestamp: new Date().toISOString(),
         };
 
-        // Add the message optimistically to the local messages state
         setMessages((prevMessages) => [...prevMessages, tempMessage]);
         scrollToBottom();
 
-        // Emit the message to the server
         socket.emit('sendMessage', message, (ack) => {
             if (ack?.error) {
                 setError(ack.error);
@@ -88,7 +80,6 @@ const ChatInterface = ({ groupId }) => {
             }
         });
 
-        // Clear the input field
         setNewMessage('');
     };
 

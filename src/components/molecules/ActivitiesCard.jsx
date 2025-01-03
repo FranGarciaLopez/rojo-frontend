@@ -1,5 +1,5 @@
 const ActivityCard = ({ activity, interestedInAEvent, interestedEvents, loadingEvent }) => {
-          // Check if the activity is already in the interested events list
+          
           const isAlreadyInterested = interestedEvents.includes(activity._id);
 
           return (
@@ -20,7 +20,10 @@ const ActivityCard = ({ activity, interestedInAEvent, interestedEvents, loadingE
                               <button
                                         onClick={() => interestedInAEvent(activity._id)}
                                         disabled={isAlreadyInterested || loadingEvent === activity._id}
-                                        className={`btn ${isAlreadyInterested ? "btn-disabled bg-gray-400 hover:bg-gray-500" : "btn-primary bg-blue-600 hover:bg-blue-700"}`}
+                                        className={`btn ${isAlreadyInterested
+                                                            ? "btn-disabled bg-gray-400 hover:bg-gray-500"
+                                                            : "btn-primary bg-blue-600 hover:bg-blue-700"
+                                                  }`}
                               >
                                         {loadingEvent === activity._id
                                                   ? "Processing..."
@@ -31,5 +34,6 @@ const ActivityCard = ({ activity, interestedInAEvent, interestedEvents, loadingE
                     </div>
           );
 };
+
 
 export default ActivityCard;
