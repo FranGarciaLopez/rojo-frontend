@@ -6,7 +6,7 @@ const AvatarEdit = ({ value, onAvatarChange }) => {
     const [avatarUrl, setAvatarUrl] = useState(value);
     const [file, setFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
-    const [alert, setAlert] = useState(null); // Unified alert management
+    const [alert, setAlert] = useState(null);
     const { authToken } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
     const baseURL = import.meta.env.VITE_API_BASE_URL;
@@ -61,7 +61,7 @@ const AvatarEdit = ({ value, onAvatarChange }) => {
     };
 
     return (
-        <div className="relative w-200 h-200">
+        <div className="grid place-items-center">
             {/* Alert Section */}
             {alert && (
                 <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md">
@@ -73,15 +73,19 @@ const AvatarEdit = ({ value, onAvatarChange }) => {
                 </div>
             )}
 
-            <div className="flex items-center">
-                <img
-                    src={previewUrl || avatarUrl}
-                    alt=""
-                    className="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-indigo-300 dark:ring-indigo-500"
-                />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
+                {/* Avatar */}
+                <div className="grid place-items-center place-items-center">
+                    <img
+                        src={previewUrl || avatarUrl}
+                        alt="Avatar"
+                        className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 object-cover rounded-full ring-4 ring-blue-500"
+                    />
+                </div>
 
-                <div className="flex flex-col space-y-5 sm:ml-8">
-                    <label className="py-3.5 px-7 text-base font-medium text-indigo-100 focus:outline-none bg-[#202142] rounded-lg border border-indigo-200 hover:bg-indigo-900 focus:z-10 focus:ring-4 focus:ring-indigo-200 cursor-pointer">
+                {/* Form Actions */}
+                <div className="flex flex-col items-center justify-center gap-4">
+                    <label className="block w-full text-center py-2 px-6 bg-indigo-500 text-white rounded-lg cursor-pointer hover:bg-indigo-600 focus:outline-none focus:ring focus:ring-indigo-300">
                         Change Picture
                         <input
                             type="file"
@@ -93,7 +97,9 @@ const AvatarEdit = ({ value, onAvatarChange }) => {
 
                     <button
                         onClick={handleSaveChanges}
-                        className="py-3 px-5 bg-blue-500 text-white rounded"
+                        className={`py-2 px-6 w-full bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300 ${
+                            loading ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
                         disabled={loading}
                     >
                         {loading ? "Saving..." : "Save Picture"}
