@@ -3,16 +3,17 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getEventById, fetchCities, fetchActivitiesCategories } from "../../api/apiService"; // Adjust API imports
 import { AuthContext } from "../../contexts/AuthContext";
 import NavBar from "./NavBar";
+import { updateEvent } from "../../api/apiService";
 
 export const EditEvent = () => {
-          const { user } = useContext(AuthContext);
+
           const [formData, setFormData] = useState({
                     title: "",
                     city: "",
                     dateTime: "",
                     category: "",
                     description: "",
-                    photos: [], // Array of photos
+                    photos: [],
           });
           const [loading, setLoading] = useState(true);
           const [error, setError] = useState(null);
@@ -37,7 +38,7 @@ export const EditEvent = () => {
                                         const categoriesResponse = await fetchActivitiesCategories(authToken);
 
                                         setCities(citiesResponse.data || []);
-                                        setCategories(categoriesResponse.data || []); // Use `.data` to access the array
+                                        setCategories(categoriesResponse.data || []);
 
                                         if (fetchedEvent) {
                                                   setFormData({
@@ -71,17 +72,40 @@ export const EditEvent = () => {
           };
 
           const handleFileChange = (e) => {
-                    const files = Array.from(e.target.files);
-                    setFormData({
-                              ...formData,
-                              photos: files,
-                    });
+                    const files = Array.from(e.target.files).map((file) => ({
+                              file,
+                              preview: URL.createObjectURL(file), // Preview for UI display
+                    }));
+                    setFormData((prevData) => ({
+                              ...prevData,
+                              photos: [...prevData.photos, ...files], // Append new files
+                    }));
           };
 
           const handleSubmit = async (e) => {
                     e.preventDefault();
+
+                    const formDataToSend = new FormData();
+                    formDataToSend.append("title", formData.title);
+                    formDataToSend.append("city", formData.city);
+                    formDataToSend.append("dateTime", formData.dateTime);
+                    formDataToSend.append("category", formData.category);
+                    formDataToSend.append("description", formData.description);
+
+                    // Add photos
+                    formData.photos.forEach((photo) => {
+                              if (typeof photo === "string") {
+                                        // Existing photo URL
+                                        formDataToSend.append("existingPhotos[]", photo);
+                              } else if (photo.file) {
+                                        // New file upload
+                                        formDataToSend.append("photos", photo.file);
+                              }
+                    });
+
                     try {
-                              const response = await updateEvent(authToken, id, formData);
+                              const response = await updateEvent(authToken, id, formDataToSend);
+
                               if (response.status === 200) {
                                         navigate("/admin");
                               } else {
@@ -93,14 +117,15 @@ export const EditEvent = () => {
                     }
           };
 
+
           if (loading) return <p className="text-center text-lg">Loading event details...</p>;
           if (error) return <p className="text-center text-red-500 text-lg">{error}</p>;
 
           return (
                     <>
                               <NavBar />
-                              <div className="max-w-4xl mx-auto p-8 my-4">
-                                        <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-6">
+                              <div className="max-w-4xl mx-auto p-8">
+                                        <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg my-5">
                                                   <h1 className="text-4xl font-bold mb-6 text-center text-blue-600">Edit Event</h1>
 
                                                   {/* Title */}
@@ -155,7 +180,7 @@ export const EditEvent = () => {
                                                   <div className="mb-4">
                                                             <label htmlFor="category" className="block text-gray-700 font-semibold mb-2">Category</label>
                                                             <div className="mb-4">
-                                                                      
+
                                                                       <select
                                                                                 id="category"
                                                                                 name="category"
@@ -217,6 +242,7 @@ export const EditEvent = () => {
                                                   <button
                                                             type="submit"
                                                             className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                                                            onClick={handleSubmit}
                                                   >
                                                             Save Changes
                                                   </button>
