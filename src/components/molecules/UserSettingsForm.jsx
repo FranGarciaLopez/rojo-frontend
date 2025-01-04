@@ -204,7 +204,7 @@ export const UserSettingsForm = () => {
                 <CustomAlert
                   variant="error"
                   title="Delete account"
-                  description="Permanently remove your account. This action is not reversible."
+                  description=" Permanently remove your account. This action is not reversible."
                   actions={
                     <Buttons
                       type="button"

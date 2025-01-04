@@ -41,7 +41,7 @@ const LoginForm = () => {
           if (loading) return <div>Loading...</div>;
 
           return (
-                    <div className="flex flex-grow justify-center items-center bg-white">
+                    <div className="flex flex-grow justify-center items-center bg-white p-6">
                               <form onSubmit={handleSubmit}>
                                         <h2 className="text-center mb-8">Login</h2>
                                         {alert && (
