@@ -57,13 +57,19 @@ export const RegisterForm = () => {
                      });
 
                      register(response);
-                     navigate('/login');
+                     setTimeout(() => {
+                            navigate('/login'); // Delay navigation slightly
+                        }, 0);
               } catch (error) {
-                     const errorMessage =
-                            error.response?.data?.message || "Bad request";
-                     setAlert({ message: errorMessage, type: "error" });
+                     // Check if the error response status is in the 4xx range
+                     if (error.response?.status >= 400 && error.response?.status < 500) {
+                            const errorMessage = error.response?.data?.message || "Bad request";
+                            setAlert({ message: errorMessage, type: "error" });
+                     } else {
+                            console.error("Unexpected error:", error); 
+                     }
               }
-       }
+       };
 
        return (
               <div className="flex flex-grow py-6 px-6 justify-center items-center bg-white">

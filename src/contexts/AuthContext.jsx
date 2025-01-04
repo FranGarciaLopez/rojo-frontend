@@ -50,6 +50,11 @@ const AuthProvider = ({ children }) => {
                     }
           };
 
+          const register = (token) => {
+                    login(token);
+          };
+
+
           const logout = () => {
                     setAuthToken(null);
                     setUser(null);
@@ -58,7 +63,7 @@ const AuthProvider = ({ children }) => {
 
           return (
                     <AuthContext.Provider
-                              value={{ authToken, user, setUser, login, logout, loading }}
+                              value={{ authToken, user, setUser, login, register, logout, loading }}
                     >
                               {!loading && children}
                     </AuthContext.Provider>

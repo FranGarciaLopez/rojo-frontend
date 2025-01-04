@@ -4,11 +4,16 @@ import { Link } from 'react-router-dom';
 const Hero = () => {
           return (
                     <section>
-                              <div className="px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+                              <div className="px-4 mx-auto max-w--xl text-center lg:py-16 lg:px-12">
 
                                         <h1>
                                                   Join Today to connect with the <span className="text-blue-800/50 text-4xl md:text-5xl lg:text-6xl">world</span>
                                         </h1>
+
+                                        <p className="text-lg md:text-xl mb-12 max-w-3xl mx-auto mt-4">
+                                                  Experience the best in social networking with cutting-edge features
+                                                  and a global community at your fingertips.
+                                        </p>
 
                                         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                                                   <Link to="/register" className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg
