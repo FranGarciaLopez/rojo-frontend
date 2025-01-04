@@ -34,7 +34,7 @@ export const Blog = () => {
         onSubscribeClick={handleSubscribeClick}
         showSubscribe={showSubscribe}
       />
-      <div className="px-6 mt-8">
+      <div className="px-6 mt-8 max-w-7xl mx-auto">
         <GridSection>
           {blogs.map((blog) => (
             <BlogCard key={blog._id} blog={blog} />
