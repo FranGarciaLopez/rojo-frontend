@@ -1,6 +1,6 @@
 const EventDetails = ({ event }) => {
           return (
-                    <div className="bg-white shadow-md rounded-lg p-6 mt-8">
+                    <div className="bg-white shadow-md rounded-lg p-6 m-5">
                               <h2 className="text-xl font-bold">{event.title || "No Title"}</h2>
                               <p className="text-gray-600">{event.description || "No Description"}</p>
                               <p className="text-gray-600">
@@ -10,7 +10,7 @@ const EventDetails = ({ event }) => {
                                         Location: {event.city?.name || "No City"}
                               </p>
                               <p className="text-gray-600">
-                                        Category: {event.category || "No Category"}
+                                        Category: {event.category?.categoryName || "No Category"}
                               </p>
                               <div className="photos">
                                         {event.photos && event.photos.length > 0 ? (

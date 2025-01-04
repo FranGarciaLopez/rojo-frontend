@@ -27,7 +27,7 @@ export const EventGroupPage = () => {
     return (
         <>
         <NavBar />
-        <div className="max-w-4xl mx-auto py-8">
+        <div className="max-w-7xl mx-auto py-8">
             {event && (
                 <div className="mb-4">
                     <EventDetails event={event} />    
@@ -35,7 +35,7 @@ export const EventGroupPage = () => {
             )}
 
             {/* ChatInterface para manejar el chat del grupo */}
-            <div className="chat-container bg-gray-100 p-4 rounded-lg shadow-lg">
+            <div className="chat-container bg-gray-100 p-4 rounded-lg shadow-lg m-5">
                 <ChatInterface groupId={groupId} />
             </div>
         </div>
