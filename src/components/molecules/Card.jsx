@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import EventDetails from "../molecules/EventDetails";
 
 const Card = ({
   activity,
@@ -23,9 +22,11 @@ const Card = ({
     navigate(`/events/${activity._id}`); // Navigate to EventDetails
   };
 
-  const photoUrl = activity.photos && activity.photos[0]
+  const photoUrl = activity.photos[0]
     ? activity.photos[0]
     : "https://via.placeholder.com/400";
+
+    debugger
 
   return (
     <div
