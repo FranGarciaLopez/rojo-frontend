@@ -22,8 +22,6 @@ const Card = ({
     navigate(`/events/${activity._id}`); // Navigate to EventDetails
   };
 
-  console.log("Photo URL:", activity.photos[0]);
-
   const photoUrl = activity.photos?.[0] || "https://via.placeholder.com/150";
 
   return (
