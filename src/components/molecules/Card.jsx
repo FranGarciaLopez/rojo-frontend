@@ -22,8 +22,6 @@ const Card = ({
     navigate(`/events/${activity._id}`); // Navigate to EventDetails
   };
 
-  const photoUrl = activity.photos?.[0] || "https://via.placeholder.com/150";
-
   return (
     <div
       className="relative group overflow-hidden rounded-lg shadow-lg ease-in-out cursor-pointer h-96 w-full mb-8"
@@ -33,7 +31,11 @@ const Card = ({
       <div
         className="absolute inset-0 bg-center bg-cover bg-no-repeat transition-transform duration-500 group-hover:scale-110"
         style={{
-          backgroundImage: `url(${photoUrl})`,
+          backgroundImage: `url(${activity.photos[0]
+                        .split("/upload/")[0]
+                        .concat(
+                            "/upload/w_600,h_800,c_fill/"
+                        )}${activity.photos[0].split("/upload/")[1]})`,
         }}
       ></div>
 
