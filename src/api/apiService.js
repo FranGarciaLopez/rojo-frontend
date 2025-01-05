@@ -35,7 +35,7 @@ export const getEvents = (authToken) =>
           });
 
 export const getEventById = (authToken, id) =>
-          apiClient.get(`/events/events/${id}`, {
+          apiClient.get(`/events/${id}`, {
                     headers: { Authorization: `Bearer ${authToken}` },
           });
 
@@ -43,3 +43,21 @@ export const updateEvent = (authToken, event, data) =>
           apiClient.patch(`/events/editevent/${event}`, data, {
                     headers: { Authorization: `Bearer ${authToken}` },
           });
+
+// Blogs
+export const getBlogs = (authToken) =>
+          apiClient.get('/blogs/blogs', {
+                    headers: { Authorization: `Bearer ${authToken}` },
+          });
+
+export const getBlogById = async (authToken, id) => {
+          try {
+                    const response = await apiClient.get(`/blogs/${id}`, {
+                              headers: { Authorization: `Bearer ${authToken}` },
+                    });
+                    return response.data.blog;
+          } catch (error) {
+                    console.error("Error fetching blog by ID:", error.response?.data || error.message);
+                    throw error;
+          }
+};

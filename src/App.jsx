@@ -2,18 +2,30 @@ import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, AuthContext } from "./contexts/AuthContext"; // Use AuthContext
 import { PrivateRoute } from "./components/PrivateRoute";
+
+// Public Pages
 import { Home } from "./components/organisms/Home";
 import { Login } from "./components/organisms/Login";
 import { Register } from "./components/organisms/Register";
-import { Dashboard } from "./components/organisms/Dashboard";
-import { AdminDashboard } from "./components/organisms/AdminDashboard";
-import { OnboardingDashboard } from "./components/organisms/OnboardingDashboard";
-import { Blog } from "./components/organisms/Blog";
-import { UserSettings } from "./components/organisms/UserSettings";
-import { CreateEvent } from "./components/molecules/CreateEventForm";
 import { ForgotPassword } from "./components/organisms/ForgotPassword";
+
+// User Pages
+import { Dashboard } from "./components/organisms/Dashboard";
+import { UserSettings } from "./components/organisms/UserSettings";
+import { OnboardingDashboard } from "./components/organisms/OnboardingDashboard";
+
+// Admin Pages
+import { AdminDashboard } from "./components/organisms/AdminDashboard";
+
+// Blog Pages
+import { Blog } from "./components/organisms/Blog";
+import { BlogPageDetails } from "./components/molecules/BlogDetailsPage";
+
+// Event Pages
+import { CreateEvent } from "./components/molecules/CreateEventForm";
 import { EditEvent } from "./components/molecules/EditEvent";
 import { EventGroupPage } from "./components/organisms/EventGroupPage";
+import EventDetails from "./components/molecules/EventDetails";
 
 function App() {
        const { authToken } = useContext(AuthContext);
@@ -21,59 +33,33 @@ function App() {
        return (
               <Router>
                      <Routes>
-                            {/* Redirect "/" based on authentication status */}
+                            {/* Redirect Root Path */}
                             <Route
                                    path="/"
                                    element={authToken ? <Navigate to="/dashboard" /> : <Navigate to="/home" />}
                             />
 
-                            <Route path="/events/:eventId/groups/:groupId" 
-                                   element={authToken ?
-                                          <EventGroupPage /> :
-                                          <Navigate to="/login" />
-                                   } />
-
-
-                            {/* Define other routes */}
+                            {/* Public Routes */}
                             <Route path="/home" element={<Home />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
+                            <Route path="/forgotpassword" element={<ForgotPassword />} />
 
-
-                            <Route path="/CreateEventForm"
-                                   element={authToken ?
-                                          <CreateEvent /> :
-                                          <Navigate to="/login" />
-                                   } />
-
-
-                            <Route path="/blog"
-                                   element={authToken ?
-                                          <Blog /> :
-                                          <Navigate to="/login" />
-                                   } />
-
-                            <Route path="/forgotpassword"
-                                   element={<ForgotPassword />} />
-
-                            <Route path="/edit-event/:id"
-                                   element={authToken ?
-                                          <EditEvent /> :
-                                          <Navigate to="/login" />
-                                   } />
-
-
-                            <Route path="/usersettings" element=
-                                   {authToken ? <UserSettings /> : <Navigate to="/login" />}
-                            />
-
-                            <Route path="/CreateEventForm"
+                            {/* User Routes */}
+                            <Route
+                                   path="/dashboard"
                                    element={
-                                          authToken ? <CreateEvent /> : <Navigate to="/login" />
+                                          <PrivateRoute>
+                                                 <Dashboard />
+                                          </PrivateRoute>
                                    }
                             />
-
-                            {/* Protected Routes */}
+                            <Route
+                                   path="/usersettings"
+                                   element={
+                                          authToken ? <UserSettings /> : <Navigate to="/login" />
+                                   }
+                            />
                             <Route
                                    path="/onboarding"
                                    element={
@@ -83,18 +69,20 @@ function App() {
                                    }
                             />
 
-
-                            {/* Normal user dashboard route */}
+                            {/* Blog Route */}
                             <Route
-                                   path="/dashboard"
+                                   path="/blog"
                                    element={
-                                          <PrivateRoute>
-                                                 <Dashboard />
-                                          </PrivateRoute>
+                                          authToken ? <Blog /> : <Navigate to="/login" />
                                    }
                             />
 
-                            {/* Admin route with restricted access */}
+                            <Route
+                                   path="/blog/:id"
+                                   element={ authToken ? <BlogPageDetails /> : <Navigate to="/login" /> }
+                            />
+
+                            {/* Admin Routes */}
                             <Route
                                    path="/admin"
                                    element={
@@ -104,7 +92,34 @@ function App() {
                                    }
                             />
 
-                            {/* Catch-all route for non-existing routes */}
+                            {/* Event Routes */}
+                            <Route
+                                   path="/create-event"
+                                   element={
+                                          authToken ? <CreateEvent /> : <Navigate to="/login" />
+                                   }
+                            />
+                            <Route
+                                   path="/edit-event/:id"
+                                   element={
+                                          authToken ? <EditEvent /> : <Navigate to="/login" />
+                                   }
+                            />
+                            <Route
+                                   path="/events/:eventId/groups/:groupId"
+                                   element={
+                                          authToken ? <EventGroupPage /> : <Navigate to="/login" />
+                                   }
+                            />
+
+                            <Route
+                                   path="/events/:id"
+                                   element={
+                                          authToken ? <EventDetails /> : <Navigate to="/login" />
+                                   }
+                            />
+
+                            {/* Catch-All Route */}
                             <Route path="*" element={<h1>Not Found</h1>} />
                      </Routes>
               </Router>
