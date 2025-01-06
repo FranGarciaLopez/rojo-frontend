@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../molecules/NavBar";
 import { AuthContext } from "../../contexts/AuthContext";
-import { getUsers, getEvents, deleteUserByAdmin } from "../../api/apiService";
+import { getUsers, getEvents, deleteUserByAdmin, createGroups, deleteGroups } from "../../api/apiService";
 import Pagination from "../molecules/Pagination";
 import Table from "../molecules/Table";
 import GridSection from "../atoms/GridSection";
+import Buttons from "../atoms/Buttons";
+import AdminDashboardSkeleton from "../skeletons/AdminDashboardSkeleton";
 import { EventsTable } from "../molecules/EventsTable";
 import { useNavigate } from "react-router-dom";
 import Alert from "../atoms/Alert";
@@ -80,6 +82,48 @@ export const AdminDashboard = () => {
     }
   };
 
+  const handleCreateEvent = () => {
+    navigate("/create-event");
+  };
+
+  const handleCreateGroup = async () => {
+    try {
+      const response = await createGroups(authToken);
+
+      if (response.status === 200 || response.status === 201) {
+        setAlert({ message: "Groups created successfully.", type: "success" });
+      } else {
+        const errorData = await response.json();
+        setAlert({
+          message: errorData.message || "Error creating groups.",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      setAlert({ message: "Error creating groups. Please try again later.", type: "error" });
+      console.error("Error creating groups:", error);
+    }
+  };
+
+  const handleDeleteGroup = async () => {
+    try {
+      const response = await deleteGroups(authToken);
+
+      if (response.status === 200) {
+        setAlert({ message: "Groups deleted successfully.", type: "success" });
+      } else {
+        const errorData = await response.json();
+        setAlert({
+          message: errorData.message || "Error deleting groups.",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      setAlert({ message: "Error deleting groups. Please try again later.", type: "error" });
+      console.error("Error deleting groups:", error);
+    }
+  };
+
   const handleDeleteEvent = async (eventId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this event?"
@@ -131,6 +175,15 @@ export const AdminDashboard = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <>
+        <NavBar />
+        <AdminDashboardSkeleton />
+      </>
+    );
+  }
+
   return (
     <>
       <NavBar />
@@ -146,10 +199,29 @@ export const AdminDashboard = () => {
           </div>
         )}
 
-        <div className="p-10 max-w-6xl mx-auto">
+        <div className="px-4 py-20 max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold mb-8 text-gray-800">
             Admin Dashboard
           </h1>
+
+          {/* Buttons Section */}
+          <div className="flex gap-4 mb-8">
+            <Buttons
+              value="Create Event"
+              className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
+              onClick={handleCreateEvent}
+            />
+            <Buttons
+              value="Create Groups"
+              className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600"
+              onClick={handleCreateGroup}
+            />
+            <Buttons
+              value="Delete Groups"
+              className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600"
+              onClick={handleDeleteGroup}
+            />
+          </div>
 
           {/* Analytics Section */}
           <div className="my-8">
@@ -172,12 +244,6 @@ export const AdminDashboard = () => {
 
           {/* Manage Events Section */}
           <h2 className="text-2xl font-semibold mb-4 text-gray-700">Events</h2>
-          <button
-            onClick={() => navigate("/create-event")}
-            className="mb-4 bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
-          >
-            Create New Event
-          </button>
           {loading ? (
             <p>Loading events...</p>
           ) : (
