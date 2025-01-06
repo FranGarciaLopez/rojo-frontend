@@ -1,48 +1,33 @@
-import React, { useState, useRef, useEffect } from "react";
-
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-
-import * as SubframeCore from "@subframe/core";
-import NavBar from '../molecules/NavBar';
+import NavBar from "../molecules/NavBar";
 import InputText from "../atoms/InputText";
-
 import UploadImage from "../molecules/UploadImage";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 import Buttons from "../atoms/Buttons";
+import { AuthContext } from "../../contexts/AuthContext";
+
 export const CreateEvent = () => {
+    const { user, authToken } = useContext(AuthContext); // Get authenticated user and token
     const [photos, setPhotos] = useState([]);
-
     const [error, setError] = useState("");
-
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [cities, setCities] = useState([]);
     const [dateTime, setDateTime] = useState("");
     const [city, setCity] = useState("");
-
     const [category, setCategory] = useState([]);
     const [categories, setCategories] = useState([]);
-
     const [isUploading, setIsUploading] = useState(false);
-    const [uploadSuccess, setUploadSuccess] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
 
     const baseURL = import.meta.env.VITE_API_BASE_URL;
-
-    const refs = {
-        title: useRef(null),
-        city: useRef(null),
-    };
-
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
+    const uploadImage = async () => {
         if (!photos || photos.length === 0) {
             setError("Please upload at least one photo.");
-            return;
+            return null;
         }
 
         const formDataPhotos = new FormData();
@@ -52,68 +37,91 @@ export const CreateEvent = () => {
 
         try {
             setIsUploading(true);
+            const response = await axios.post(`${baseURL}/photos/upload`, formDataPhotos, {
+                headers: { "Content-Type": "multipart/form-data" },
+                onUploadProgress: (progressEvent) => {
+                    const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    setUploadProgress(percentage);
+                },
+            });
 
-            const photoResponse = await axios.post(
-                `${baseURL}/photos/upload`,
-                formDataPhotos,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                    onUploadProgress: (progressEvent) => {
-                        const percentage = Math.round(
-                            (progressEvent.loaded * 100) / progressEvent.total
-                        );
-                        setUploadProgress(percentage);
-                    },
+            if (response.status === 200) {
+                const uploadedUrls = response.data.urls;
+                if (uploadedUrls && uploadedUrls.length > 0) {
+                    return uploadedUrls;
+                } else {
+                    setError("Upload succeeded but no URLs were returned.");
+                    return null;
                 }
-            );
-
-            if (photoResponse.status === 200) {
-                const uploadedPhotos = photoResponse.data.urls;
-
-                const formDataEvent = {
-                    title,
-                    city,
-                    description,
-                    dateTime,
-                    category,
-                    photos: uploadedPhotos,
-                };
-
-                const eventResponse = await axios.post(
-                    `${baseURL}/events/eventregister`,
-                    formDataEvent,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-
-                if (eventResponse.status === 201) {
-                    setUploadSuccess(true);
-
-                    setTitle('');
-                    setCity('');
-                    setDescription('');
-                    setDateTime('');
-                    setCategory('');
-                    setPhotos([]);
-                    setError(null);
-
-                    setTimeout(() => {
-                        navigate('/admin');
-                    }, 3000);
-
-
-                }
+            } else {
+                setError("Failed to upload images.");
+                return null;
             }
         } catch (error) {
-
-            setError(error.message || "An unexpected error occurred");
-            console.error("Error:", error);
+            console.error("Error uploading images:", error);
+            setError("An error occurred while uploading images.");
+            return null;
+        } finally {
+            setIsUploading(false);
         }
+    };
+
+    const createEvent = async (uploadedPhotos) => {
+        try {
+            const formDataEvent = {
+                title,
+                city,
+                description,
+                dateTime,
+                category,
+                photos: uploadedPhotos,
+                administrator: user._id, // Include administrator ID
+            };
+
+            const response = await axios.post(`${baseURL}/events/eventregister`, formDataEvent, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${authToken}`, // Include token
+                },
+            });
+
+            if (response.status === 201) {
+                // Reset form fields
+                setTitle("");
+                setCity("");
+                setDescription("");
+                setDateTime("");
+                setCategory("");
+                setPhotos([]);
+                setError(null);
+
+                // Navigate back after success
+                setTimeout(() => {
+                    navigate("/admin");
+                }, 3000);
+            } else {
+                setError("Failed to create event.");
+            }
+        } catch (error) {
+            console.error("Error creating event:", error);
+            setError("An error occurred while creating the event.");
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(""); // Reset error state
+
+        // Upload images first
+        const uploadedPhotos = await uploadImage();
+
+        if (!uploadedPhotos || uploadedPhotos.length === 0) {
+            setError("Please upload at least one photo.");
+            return;
+        }
+
+        // If images are successfully uploaded, create the event
+        await createEvent(uploadedPhotos);
     };
 
     useEffect(() => {
@@ -145,7 +153,7 @@ export const CreateEvent = () => {
     return (
         <>
             <NavBar />
-            <div className="h-16"></div> {/* Spacer to prevent overlap */}
+            <div className="h-16"></div> {/* Spacer */}
             <div className="mx-auto px-5 h-screen justify-center items-center flex flex-col gap-6">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                     <div className="w-full items-center gap-2">
@@ -155,7 +163,6 @@ export const CreateEvent = () => {
                         ></i>
 
                         <span className="font-heading-5 font-bold text-default-font">
-                            {" "}
                             Create New Event
                         </span>
                     </div>
@@ -211,10 +218,13 @@ export const CreateEvent = () => {
                     <UploadImage setPhotos={setPhotos} />
                     <Buttons
                         type="submit"
-                        value="Create Event"
-                        className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+                        value={isUploading ? "Uploading..." : "Create Event"}
+                        className={`bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded ${isUploading ? "cursor-not-allowed opacity-50" : ""
+                            }`}
+                        disabled={isUploading}
                     />
                 </form>
+                {error && <p className="text-red-600 mt-4">{error}</p>}
             </div>
         </>
     );
