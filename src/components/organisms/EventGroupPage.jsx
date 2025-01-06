@@ -5,6 +5,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import NavBar from "../molecules/NavBar";
 import ChatInterface from "./ChatInterface";
 import EventDetails from "../molecules/EventDetails";
+import { EventDetailsSkeleton } from "../skeletons/EventDetailsSkeleton";
 
 export const EventGroupPage = () => {
   const { eventId, groupId } = useParams();
@@ -33,11 +34,11 @@ export const EventGroupPage = () => {
         {event ? (
           <EventDetails event={event} />
         ) : (
-          <p className="text-center text-lg text-red-500">{error || "Loading event details..."}</p>
+          <EventDetailsSkeleton />
         )}
 
         {/* Chat interface */}
-        <div className="chat-container bg-gray-100 p-4 rounded-lg shadow-lg mt-5">
+        <div className="bg-gray-100 p-4 rounded-lg shadow-lg mt-5">
           <ChatInterface groupId={groupId} />
         </div>
       </div>
