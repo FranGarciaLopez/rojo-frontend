@@ -72,17 +72,26 @@ export const Dashboard = () => {
 
     const filteredActivities = activities.filter((activity) => {
         const lowerCaseFilter = filterText.toLowerCase();
+    
+        // Matches the filter text in activity title or description
         const matchesFilterText =
             (activity.title?.toLowerCase() || "").includes(lowerCaseFilter) ||
             (activity.description?.toLowerCase() || "").includes(lowerCaseFilter);
-
+    
+        // Check if the category matches the selected category filter or user preference
         const isCategorySelected =
             !selectedFilters.category ||
-            activity.category?.name === user?.categoryName?.categoryName;
-        const isCitySelected = !selectedFilters.city || activity.city?.name === preferredCity;
-        const isDaySelected =
-            !selectedFilters.day || new Date(activity.dateTime).getDay() === new Date().getDay();
+            activity.category?.categoryName === user?.categoryName?.categoryName;
+    
+        // Check if the city matches the selected city filter or user's preferred city
+        const isCitySelected =
+            !selectedFilters.city || activity.city?.name === user?.preferedCity?.name;
+    
+        // Check if the day of the event matches the selected day filter or the user's preferred day
+        const activityDay = new Date(activity.dateTime).toLocaleDateString("en-US", { weekday: "long" });
+        const isDaySelected = !selectedFilters.day || activityDay === user.dayOfTheWeek;
 
+        // Combine all filters
         return matchesFilterText && isCategorySelected && isCitySelected && isDaySelected;
     });
 
