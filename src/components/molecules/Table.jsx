@@ -15,7 +15,7 @@ const Table = ({ columns, data }) => {
                                                   </thead>
                                                   <tbody>
                                                             {data.map((user) => (
-                                                                      <tr key={user.id} className="border-t hover:bg-gray-100 transition 
+                                                                      <tr key={user._id} className="border-t hover:bg-gray-100 transition 
                                                                       delay-50 ease-in-out">
                                                                                 <td className="px-4 py-2">{`${user.firstname} ${user.lastname}`}</td>
                                                                                 <td className="px-4 py-2">{user.email}</td>
@@ -49,7 +49,7 @@ const Table = ({ columns, data }) => {
                                         <div className="lg:hidden">
                                                   {data.map((user) => (
                                                             <div
-                                                                      key={user.id}
+                                                                      key={user._id}
                                                                       className="p-4 mb-4 bg-gray-100 rounded-lg shadow-sm hover:shadow-md cursor-pointer transition duration-200 ease-in-out"
                                                             >
                                                                       <h3 className="font-semibold">{`${user.firstname} ${user.lastname}`}</h3>

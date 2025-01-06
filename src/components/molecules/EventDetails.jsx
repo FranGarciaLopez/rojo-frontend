@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getEventById } from "../../api/apiService";
 import { AuthContext } from "../../contexts/AuthContext";
+import { EventDetailsSkeleton } from "../skeletons/EventDetailsSkeleton";
 
 const EventDetails = ({ event: propEvent }) => {
     const { id } = useParams(); // Extract ID from URL if not passed as a prop
@@ -30,7 +31,7 @@ const EventDetails = ({ event: propEvent }) => {
     }, [id, authToken, propEvent]);
 
     if (loading) {
-        return <p className="text-center text-lg text-gray-600">Loading event details...</p>;
+        return <EventDetailsSkeleton />;
     }
 
     if (error) {
