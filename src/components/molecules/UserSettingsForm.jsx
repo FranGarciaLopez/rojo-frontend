@@ -121,7 +121,7 @@ export const UserSettingsForm = () => {
               <span>Settings</span>
               <SettingsMenu.Item selected={true} label="Account" />
               {isAdmin && (
-                <Link to="/CreateEventForm" className="w-full">
+                <Link to="/create-event" className="w-full">
                   <SettingsMenu.Item selected={false} label="Create new event" />
                 </Link>
               )}
