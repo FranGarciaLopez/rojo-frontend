@@ -1,7 +1,7 @@
 import Buttons from "../atoms/Buttons";
 import Label from "../atoms/Label";
 import InputText from "../atoms/InputText";
-import React, { useState, useRef, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CustomAlert from "../atoms/CustomAlert";
 import SettingsMenu from "../atoms/SettingsMenu";
@@ -9,216 +9,221 @@ import { AuthContext } from "../../contexts/AuthContext";
 import NavBar from "./NavBar";
 import AvatarEdit from "../atoms/AvatarEdit";
 import Alert from "../atoms/Alert";
+import { deleteUser, patchUser } from "../../api/apiService";
 
 export const UserSettingsForm = () => {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [dayOfTheWeek, setDayOfTheWeek] = useState("");
-  const [preferedCategory, setPreferedCategory] = useState("");
-  const [preferedCity, setPreferedCity] = useState("");
-  const [avatar, setAvatar] = useState("");
-  const [alert, setAlert] = useState(null); // Unified alert management
-  const { authToken } = useContext(AuthContext);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const navigate = useNavigate();
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const [dayOfTheWeek, setDayOfTheWeek] = useState("");
+    const [preferedCategory, setPreferedCategory] = useState("");
+    const [preferedCity, setPreferedCity] = useState("");
+    const [avatar, setAvatar] = useState("");
+    const [alert, setAlert] = useState(null); // Unified alert management
+    const { user, authToken, logout } = useContext(AuthContext);
+    const navigate = useNavigate();
 
-  const refs = {
-    firstname: useRef(null),
-    lastname: useRef(null),
-    email: useRef(null),
-    dayOfTheWeek: useRef(null),
-    preferedCategory: useRef(null),
-    preferedCity: useRef(null),
-    avatar: useRef(null),
-  };
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(`${baseURL}/user`, {
-          headers: { Authorization: `Bearer ${authToken}` },
-        });
-        const data = await response.json();
-
-        setIsAdmin(data.user.isAdministrator);
-        setFirstname(data.user.firstname);
-        setLastname(data.user.lastname);
-        setEmail(data.user.email);
-        setDayOfTheWeek(data.user.dayOfTheWeek);
-        setPreferedCategory(data.user.categoryName.categoryName);
-        setPreferedCity(data.user.preferedCity.name);
-        setAvatar(data.user.avatar);
-      } catch (error) {
-        setAlert({ message: "Error fetching user data", type: "error" });
-      }
-    };
-    fetchUser();
-  }, [authToken, baseURL]);
-
-  const handleDeleteAccount = async () => {
-    const confirmation = window.confirm(
-      "Are you sure you want to delete your account? This action cannot be undone."
-    );
-
-    if (confirmation) {
-      try {
-        const response = await fetch(`${baseURL}/delete`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
-
-        if (response.ok) {
-          setAlert({
-            message: "Account successfully deleted.",
-            type: "success",
-          });
-          setTimeout(() => {
-            navigate("/home");
-          }, 3000);
-        } else {
-          setAlert({
-            message: "Failed to delete account. Please try again.",
-            type: "error",
-          });
+    useEffect(() => {
+        // Populate form fields from the user context
+        if (user) {
+            setFirstname(user.firstname || "");
+            setLastname(user.lastname || "");
+            setEmail(user.email || "");
+            setDayOfTheWeek(user.dayOfTheWeek || "");
+            setPreferedCategory(user.categoryName?.categoryName || "");
+            setPreferedCity(user.preferedCity?.name || "");
+            setAvatar(user.avatar || "");
         }
-      } catch (error) {
-        setAlert({
-          message: "Error deleting your account. Please try again later.",
-          type: "error",
-        });
-      }
-    }
-  };
+    }, [user]);
 
-  return (
-    <>
-      <NavBar />
-      <div className="relative">
-        {/* Alert Section */}
-        {alert && (
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md">
-            <Alert
-              message={alert.message}
-              type={alert.type}
-              onClose={() => setAlert(null)}
-            />
-          </div>
-        )}
+    const handleSaveSettings = async (e) => {
+        e.preventDefault();
 
-        <div className="centered-elements">
-          <div className="flex flex-col h-full p-6 gap-6 xl:flex-row">
-            {/* Sidebar - Settings Menu */}
-            <SettingsMenu>
-              <i
-                className="fas fa-arrow-left cursor-pointer"
-                onClick={() => navigate(-1)}
-              ></i>
-              <span>Settings</span>
-              <SettingsMenu.Item selected={true} label="Account" />
-              {isAdmin && (
-                <Link to="/create-event" className="w-full">
-                  <SettingsMenu.Item selected={false} label="Create new event" />
-                </Link>
-              )}
-            </SettingsMenu>
+        const updatedFields = {
+            firstname,
+            lastname,
+            email,
+            dayOfTheWeek,
+            preferedCategory,
+            preferedCity,
+        };
 
-            {/* Form */}
-            <form>
-              <h2>Account</h2>
-              <p>Update your profile and personal details here</p>
+        try {
+            const response = await patchUser(authToken, updatedFields);
 
-              <AvatarEdit value={avatar} onAvatarChange={setAvatar}></AvatarEdit>
+            if (response.ok) {
+                const data = await response.json(); // Parse JSON if response is okay
+                setAlert({ message: data.message, type: "success" });
+            } else {
+                const errorData = await response.json(); // Parse JSON error response
+                setAlert({ message: errorData.message || "Failed to update settings.", type: "error" });
+            }
+        } catch (error) {
+            console.error("Error in handleSaveSettings:", error);
+            setAlert({ message: "Error updating settings. Please try again.", type: "error" });
+        }
+    };
 
-              <div className="flex flex-col gap-4 w-full">
-                <Label>First Name</Label>
-                <InputText
-                  type="text"
-                  value={firstname}
-                  onChange={(e) => setFirstname(e.target.value)}
-                  ref={refs.firstname}
-                  required
-                />
+    const handleDeleteAccount = async () => {
+        const confirmation = window.confirm(
+            "Are you sure you want to delete your account? This action cannot be undone."
+        );
 
-                <Label>Last Name</Label>
-                <InputText
-                  type="text"
-                  value={lastname}
-                  onChange={(e) => setLastname(e.target.value)}
-                  ref={refs.lastname}
-                  required
-                />
+        if (confirmation) {
+            try {
+                const response = await deleteUser(authToken);
 
-                <Label>Email</Label>
-                <InputText
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  ref={refs.email}
-                  required
-                />
+                if (response.ok) {
+                    // Parse the response for a success message
+                    const data = await response.json(); // Correctly parse JSON from the response
+                    setAlert({
+                        message: data.message || "Account successfully deleted.",
+                        type: "success",
+                    });
 
-                <Label>Day of the week</Label>
-                <InputText
-                  type="text"
-                  value={dayOfTheWeek}
-                  onChange={(e) => setDayOfTheWeek(e.target.value)}
-                  ref={refs.dayOfTheWeek}
-                  required
-                />
-              </div>
+                    // Redirect after showing success message
+                    setTimeout(() => {
+                        logout();
+                        navigate("/login");
+                    }, 1000);
+                } else {
+                    // Parse the response for an error message
+                    const errorData = await response.json();
+                    setAlert({
+                        message: errorData.message || "Failed to delete account. Please try again.",
+                        type: "error",
+                    });
+                }
+            } catch (error) {
+                console.error("Error in handleDeleteAccount:", error);
+                setAlert({
+                    message: "Error deleting your account. Please try again later.",
+                    type: "error",
+                });
+            }
+        }
+    };
 
-              {/* Preferences */}
-              <h3>Preferences</h3>
-              <div className="flex flex-col gap-4 w-full">
-                <Label>Prefered City</Label>
-                <InputText
-                  type="text"
-                  value={preferedCity}
-                  onChange={(e) => setPreferedCity(e.target.value)}
-                  ref={refs.preferedCity}
-                  required
-                />
 
-                <Label>Prefered Category</Label>
-                <InputText
-                  type="text"
-                  value={preferedCategory}
-                  onChange={(e) => setPreferedCategory(e.target.value)}
-                  ref={refs.preferedCategory}
-                  required
-                />
-              </div>
+    return (
+        <>
+            <NavBar />
+            <div className="relative">
+                {/* Alert Section */}
+                {alert && (
+                    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md">
+                        <Alert
+                            message={alert.message}
+                            type={alert.type}
+                            onClose={() => setAlert(null)}
+                        />
+                    </div>
+                )}
 
-              <Buttons
-                type="submit"
-                value="Save Settings"
-                className="mt-4 bg-blue-600 hover:bg-blue-800"
-              />
-              <div className="mt-10">
-                <h3>Danger zone</h3>
-                <CustomAlert
-                  variant="error"
-                  title="Delete account"
-                  description=" Permanently remove your account. This action is not reversible."
-                  actions={
-                    <Buttons
-                      type="button"
-                      value="Delete account"
-                      className="bg-red-600 hover:bg-red-800"
-                      onClick={handleDeleteAccount}
-                    />
-                  }
-                />
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+                <div className="centered-elements">
+                    <div className="flex flex-col h-full p-6 gap-6 xl:flex-row">
+                        {/* Sidebar - Settings Menu */}
+                        <SettingsMenu>
+                            <i
+                                className="fas fa-arrow-left cursor-pointer"
+                                onClick={() => navigate(-1)}
+                            ></i>
+                            <span>Settings</span>
+                            <SettingsMenu.Item selected={true} label="Account" />
+                            {user?.isAdministrator && (
+                                <Link to="/create-event" className="w-full">
+                                    <SettingsMenu.Item selected={false} label="Create new event" />
+                                </Link>
+                            )}
+                        </SettingsMenu>
+
+                        {/* Form */}
+                        <form>
+                            <h2>Account</h2>
+                            <p>Update your profile and personal details here</p>
+
+                            <AvatarEdit value={avatar} onAvatarChange={setAvatar}></AvatarEdit>
+
+                            <div className="flex flex-col gap-4 w-full">
+                                <Label>First Name</Label>
+                                <InputText
+                                    type="text"
+                                    value={firstname}
+                                    onChange={(e) => setFirstname(e.target.value)}
+                                    required
+                                />
+
+                                <Label>Last Name</Label>
+                                <InputText
+                                    type="text"
+                                    value={lastname}
+                                    onChange={(e) => setLastname(e.target.value)}
+                                    required
+                                />
+
+                                <Label>Email</Label>
+                                <InputText
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+
+                                <Label>Day of the week</Label>
+                                <InputText
+                                    type="text"
+                                    value={dayOfTheWeek}
+                                    onChange={(e) => setDayOfTheWeek(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            {/* Preferences */}
+                            <h3>Preferences</h3>
+                            <div className="flex flex-col gap-4 w-full">
+                                <Label>Preferred City</Label>
+                                <InputText
+                                    type="text"
+                                    value={preferedCity}
+                                    onChange={(e) => setPreferedCity(e.target.value)}
+                                    required
+                                />
+
+                                <Label>Preferred Category</Label>
+                                <InputText
+                                    type="text"
+                                    value={preferedCategory}
+                                    onChange={(e) => setPreferedCategory(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <Buttons
+                                type="submit"
+                                value="Save Settings"
+                                className="mt-4 bg-blue-600 hover:bg-blue-800"
+                                onClick={handleSaveSettings}
+                            />
+                            <div className="mt-10">
+                                <h3>Danger zone</h3>
+                                <CustomAlert
+                                    variant="error"
+                                    title="Delete account"
+                                    description=" Permanently remove your account. This action is not reversible."
+                                    actions={
+                                        <Buttons
+                                            type="button"
+                                            value="Delete account"
+                                            className="bg-red-600 hover:bg-red-800"
+                                            onClick={handleDeleteAccount}
+                                        />
+                                    }
+                                />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 };
