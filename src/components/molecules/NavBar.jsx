@@ -46,7 +46,7 @@ const NavBar = () => {
           </div>
 
           {/* Links and Buttons (Right Column for Desktop) */}
-          <div className="hidden md:flex justify-center items-center gap-5">
+          <div className="hidden md:flex justify-end items-center gap-5">
             {authToken ? (
               <>
                 {/* Render Blog and Subscribe only if the user is NOT an admin */}
