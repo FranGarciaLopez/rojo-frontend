@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import NavBar from "../molecules/NavBar";
 import { AuthContext } from "../../contexts/AuthContext";
-import { getUsers, getEvents } from "../../api/apiService";
+import { getUsers, getEvents, deleteUserByAdmin } from "../../api/apiService";
 import Pagination from "../molecules/Pagination";
 import Table from "../molecules/Table";
 import GridSection from "../atoms/GridSection";
@@ -108,6 +108,29 @@ export const AdminDashboard = () => {
     }
   };
 
+  const handleDeleteUser = async (userId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+    if (!confirmDelete) return;
+
+    try {
+      const response = await deleteUserByAdmin(authToken, userId);
+
+      if (response.ok) {
+        setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+        setAlert({ message: "User deleted successfully.", type: "success" });
+      } else {
+        const errorData = await response.json();
+        setAlert({
+          message: errorData.message || "Failed to delete user. Please try again.",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      setAlert({ message: "Error deleting user. Please try again later.", type: "error" });
+    }
+  };
+
   return (
     <>
       <NavBar />
@@ -179,6 +202,7 @@ export const AdminDashboard = () => {
           <Table
             columns={["First Name", "Email", "Role", "Actions"]}
             data={currentUsers}
+            onDelete={handleDeleteUser}
           />
           <Pagination
             currentPage={currentPageUsers}
