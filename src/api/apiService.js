@@ -23,6 +23,63 @@ export const updateUserPreferences = (authToken, preferences) =>
           apiClient.put('/update-preferences', preferences, {
                     headers: { Authorization: `Bearer ${authToken}` },
           });
+export const patchUser = async (authToken, updatedFields) => {
+          const baseURL = import.meta.env.VITE_API_BASE_URL;
+
+          try {
+                    const response = await fetch(`${baseURL}/user`, {
+                              method: "PATCH",
+                              headers: {
+                                        "Content-Type": "application/json",
+                                        Authorization: `Bearer ${authToken}`,
+                              },
+                              body: JSON.stringify(updatedFields),
+                    });
+
+                    return response; // Ensure the raw Response object is returned
+          } catch (error) {
+                    console.error("Error in patchUser:", error);
+                    throw error; // Propagate the error to the calling function
+          }
+};
+
+
+export const deleteUser = async (authToken) => {
+          const baseURL = import.meta.env.VITE_API_BASE_URL;
+
+          try {
+                    const response = await fetch(`${baseURL}/profile`, {
+                              method: "DELETE",
+                              headers: {
+                                        Authorization: `Bearer ${authToken}`,
+                              },
+                    });
+
+                    return response; // Ensure the raw Response object is returned
+          } catch (error) {
+                    console.error("Error in deleteUser:", error);
+                    throw error; // Propagate the error to the calling function
+          }
+};
+
+export const deleteUserByAdmin = async (authToken, userId) => {
+          const baseURL = import.meta.env.VITE_API_BASE_URL;
+
+          try {
+                    const response = await fetch(`${baseURL}/user/${userId}`, {
+                              method: "DELETE",
+                              headers: {
+                                        Authorization: `Bearer ${authToken}`,
+                              },
+                    });
+
+                    return response; // Return the raw response
+          } catch (error) {
+                    console.error("Error in deleteUserByAdmin:", error);
+                    throw error;
+          }
+};
+
 
 // Cities and Categories
 export const fetchCities = () => apiClient.get('/cities/cities');
