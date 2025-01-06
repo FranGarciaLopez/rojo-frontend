@@ -8,7 +8,7 @@ import Buttons from "../atoms/Buttons";
 import { AuthContext } from "../../contexts/AuthContext";
 
 export const CreateEvent = () => {
-    const { user, authToken } = useContext(AuthContext); // Get authenticated user and token
+    const { user, authToken } = useContext(AuthContext);
     const [photos, setPhotos] = useState([]);
     const [error, setError] = useState("");
     const [title, setTitle] = useState("");
@@ -16,7 +16,7 @@ export const CreateEvent = () => {
     const [cities, setCities] = useState([]);
     const [dateTime, setDateTime] = useState("");
     const [city, setCity] = useState("");
-    const [category, setCategory] = useState([]);
+    const [category, setCategory] = useState("");
     const [categories, setCategories] = useState([]);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -47,12 +47,7 @@ export const CreateEvent = () => {
 
             if (response.status === 200) {
                 const uploadedUrls = response.data.urls;
-                if (uploadedUrls && uploadedUrls.length > 0) {
-                    return uploadedUrls;
-                } else {
-                    setError("Upload succeeded but no URLs were returned.");
-                    return null;
-                }
+                return uploadedUrls;
             } else {
                 setError("Failed to upload images.");
                 return null;
@@ -75,18 +70,17 @@ export const CreateEvent = () => {
                 dateTime,
                 category,
                 photos: uploadedPhotos,
-                administrator: user._id, // Include administrator ID
+                administrator: user._id,
             };
 
             const response = await axios.post(`${baseURL}/events/eventregister`, formDataEvent, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${authToken}`, // Include token
+                    Authorization: `Bearer ${authToken}`,
                 },
             });
 
             if (response.status === 201) {
-                // Reset form fields
                 setTitle("");
                 setCity("");
                 setDescription("");
@@ -94,11 +88,7 @@ export const CreateEvent = () => {
                 setCategory("");
                 setPhotos([]);
                 setError(null);
-
-                // Navigate back after success
-                setTimeout(() => {
-                    navigate("/admin");
-                }, 3000);
+                navigate("/admin");
             } else {
                 setError("Failed to create event.");
             }
@@ -110,17 +100,14 @@ export const CreateEvent = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(""); // Reset error state
+        setError("");
 
-        // Upload images first
         const uploadedPhotos = await uploadImage();
-
         if (!uploadedPhotos || uploadedPhotos.length === 0) {
             setError("Please upload at least one photo.");
             return;
         }
 
-        // If images are successfully uploaded, create the event
         await createEvent(uploadedPhotos);
     };
 
@@ -154,78 +141,75 @@ export const CreateEvent = () => {
         <>
             <NavBar />
             <div className="h-16"></div> {/* Spacer */}
-            <div className="mx-auto px-5 h-screen justify-center items-center flex flex-col gap-6">
-                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-                    <div className="w-full items-center gap-2">
+            <div className="container mx-auto px-6 py-10">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="flex items-center gap-4 mb-6">
                         <i
-                            className="fas fa-arrow-left cursor-pointer"
+                            className="fas fa-arrow-left cursor-pointer text-gray-600 hover:text-gray-800"
                             onClick={() => window.history.back()}
                         ></i>
-
-                        <span className="font-heading-5 font-bold text-default-font">
-                            Create New Event
-                        </span>
+                        <h1 className="text-2xl font-bold text-gray-800">Create New Event</h1>
                     </div>
-                    <InputText
-                        type="text"
-                        placeholder="Title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full"
-                        required
-                    />
-                    <select
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full"
-                        required
-                    >
-                        <option value="">Choose your City</option>
-                        {cities.map((city) => (
-                            <option key={city._id} value={city.name}>
-                                {city.name}
-                            </option>
-                        ))}
-                    </select>
-                    <select
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full"
-                        required
-                    >
-                        <option value="">Choose a Category</option>
-                        {categories.map((category) => (
-                            <option key={category._id} value={category._id}>
-                                {category.categoryName}
-                            </option>
-                        ))}
-                    </select>
-                    <textarea
-                        rows="5"
-                        placeholder="Description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full"
-                        required
-                    />
-                    <input
-                        type="datetime-local"
-                        value={dateTime}
-                        onChange={(e) => setDateTime(e.target.value)}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full"
-                        required
-                    />
-                    <UploadImage setPhotos={setPhotos} />
-                    <Buttons
-                        type="submit"
-                        value={isUploading ? "Uploading..." : "Create Event"}
-                        className={`bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded ${isUploading ? "cursor-not-allowed opacity-50" : ""
-                            }`}
-                        disabled={isUploading}
-                    />
-                </form>
-                {error && <p className="text-red-600 mt-4">{error}</p>}
-            </div>
+                        <InputText
+                            type="text"
+                            placeholder="Title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="w-full"
+                            required
+                        />
+                        <select
+                            value={city}
+                            onChange={(e) => setCity(e.target.value)}
+                            className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
+                            required
+                        >
+                            <option value="">Choose your City</option>
+                            {cities.map((city) => (
+                                <option key={city._id} value={city.name}>
+                                    {city.name}
+                                </option>
+                            ))}
+                        </select>
+                        <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
+                            required
+                        >
+                            <option value="">Choose a Category</option>
+                            {categories.map((category) => (
+                                <option key={category._id} value={category._id}>
+                                    {category.categoryName}
+                                </option>
+                            ))}
+                        </select>
+                        <textarea
+                            rows="4"
+                            placeholder="Description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
+                            required
+                        />
+                        <input
+                            type="datetime-local"
+                            value={dateTime}
+                            onChange={(e) => setDateTime(e.target.value)}
+                            className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
+                            required
+                        />
+                        <UploadImage setPhotos={setPhotos} />
+                        <Buttons
+                            type="submit"
+                            value={isUploading ? "Uploading..." : "Create Event"}
+                            className={`bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded ${isUploading ? "cursor-not-allowed opacity-50" : ""
+                                }`}
+                            disabled={isUploading}
+                        />
+                    </form>
+                    {error && <p className="text-red-600 mt-4">{error}</p>}
+                </div>
         </>
     );
 };
