@@ -73,7 +73,7 @@ export const deleteUserByAdmin = async (authToken, userId) => {
                               },
                     });
 
-                    return response; // Return the raw response
+                    return response;
           } catch (error) {
                     console.error("Error in deleteUserByAdmin:", error);
                     throw error;
@@ -118,3 +118,24 @@ export const getBlogById = async (authToken, id) => {
                     throw error;
           }
 };
+
+// Groups
+export const createGroups = (authToken) =>
+          apiClient.post(
+                    '/groups/create',
+                    {},
+                    {
+                              headers: { Authorization: `Bearer ${authToken}` },
+                    }
+          );
+
+export const deleteGroups = (authToken) =>
+          apiClient.delete('/groups/eraseall', {
+                    headers: { Authorization: `Bearer ${authToken}` },
+          });
+
+// Groups by User
+export const getGroupsByUserId = (authToken, userId) =>
+          apiClient.get(`/groups/user/${userId}`, {
+                    headers: { Authorization: `Bearer ${authToken}` },
+          });
