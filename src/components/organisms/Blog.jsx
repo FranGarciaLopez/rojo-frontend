@@ -3,9 +3,11 @@ import NavBar from "../molecules/NavBar";
 import GridSection from "../atoms/GridSection";
 import BlogHeroSection from "../molecules/BlogHeroSection";
 import BlogCard from "../molecules/BlogCard";
+import BlogSkeleton from "../skeletons/BlogSkeleton";
 
 export const Blog = () => {
   const [blogs, setBlogs] = useState([]); // State to hold the blog data
+  const [loading, setLoading] = useState(true); // Loading state
   const [showSubscribe, setShowSubscribe] = useState(false);
   const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -17,6 +19,8 @@ export const Blog = () => {
         setBlogs(data.blogs);
       } catch (error) {
         console.error("Error fetching blogs:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -26,6 +30,15 @@ export const Blog = () => {
   const handleSubscribeClick = () => {
     setShowSubscribe((prev) => !prev);
   };
+
+  if (loading) {
+    return (
+      <>
+        <NavBar />
+        <BlogSkeleton />
+      </>
+    );
+  }
 
   return (
     <>

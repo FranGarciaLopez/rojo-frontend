@@ -6,6 +6,8 @@ import GroupSection from "../molecules/GroupSection";
 import FilterSection from "../molecules/FilterSection";
 import ActivitiesSection from "../molecules/ActivitiesSection";
 import Alert from "../atoms/Alert";
+import DashboardSkeleton from "../skeletons/DashboardSkeleton";
+import { getGroupsByUserId, getEvents } from "../../api/apiService";
 
 export const Dashboard = () => {
     const { authToken, user, setUser } = useContext(AuthContext);
@@ -19,9 +21,9 @@ export const Dashboard = () => {
         day: false,
     });
     const [groupDetails, setGroupDetails] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [loadingEvent, setLoadingEvent] = useState(null);
-    const [alert, setAlert] = useState(null); // Alert state
-    const baseURL = import.meta.env.VITE_API_BASE_URL;
+    const [alert, setAlert] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -34,64 +36,45 @@ export const Dashboard = () => {
             setPreferredCity(user.preferedCity.name);
         }
 
-        const fetchActivities = async () => {
+        const fetchDashboardData = async () => {
             try {
-                const response = await fetch(`${baseURL}/events/events`, {
-                    headers: { Authorization: `Bearer ${authToken}` },
-                });
-                if (!response.ok) throw new Error("Failed to fetch activities.");
-                const data = await response.json();
-                setActivities(data);
+                setLoading(true);
+
+                const [eventsResponse, userGroupsResponse] = await Promise.all([
+                    getEvents(authToken),
+                    getGroupsByUserId(authToken, user._id),
+                ]);
+
+                setActivities(eventsResponse.data);
+                setGroupDetails(userGroupsResponse.data);
             } catch (err) {
-                console.error("Error fetching activities:", err);
-                setAlert({ message: "Failed to load activities.", type: "error" });
+                console.error("Error fetching dashboard data:", err);
+                setAlert({ message: "Failed to load dashboard data.", type: "error" });
+            } finally {
+                setLoading(false);
             }
         };
 
-        const fetchGroups = async () => {
-            try {
-                const groupDetailsPromises = user.groups.map((groupId) =>
-                    fetch(`${baseURL}/groups/findgroupbyid/${groupId}`, {
-                        headers: { Authorization: `Bearer ${authToken}` },
-                    }).then((res) => {
-                        if (!res.ok) throw new Error("Failed to fetch group details.");
-                        return res.json();
-                    })
-                );
-                const data = await Promise.all(groupDetailsPromises);
-                setGroupDetails(data);
-            } catch (err) {
-                console.error("Error fetching group details:", err);
-                setAlert({ message: "Failed to load group details.", type: "error" });
-            }
-        };
-
-        fetchActivities();
-        fetchGroups();
-    }, [authToken, user, baseURL, navigate]);
+        fetchDashboardData();
+    }, [authToken, user, navigate]);
 
     const filteredActivities = activities.filter((activity) => {
         const lowerCaseFilter = filterText.toLowerCase();
-    
-        // Matches the filter text in activity title or description
+
         const matchesFilterText =
             (activity.title?.toLowerCase() || "").includes(lowerCaseFilter) ||
             (activity.description?.toLowerCase() || "").includes(lowerCaseFilter);
-    
-        // Check if the category matches the selected category filter or user preference
+
         const isCategorySelected =
             !selectedFilters.category ||
             activity.category?.categoryName === user?.categoryName?.categoryName;
-    
-        // Check if the city matches the selected city filter or user's preferred city
-        const isCitySelected =
-            !selectedFilters.city || activity.city?.name === user?.preferedCity?.name;
-    
-        // Check if the day of the event matches the selected day filter or the user's preferred day
-        const activityDay = new Date(activity.dateTime).toLocaleDateString("en-US", { weekday: "long" });
-        const isDaySelected = !selectedFilters.day || activityDay === user.dayOfTheWeek;
 
-        // Combine all filters
+        const isCitySelected =
+            !selectedFilters.city || activity.city?.name === preferredCity;
+
+        const isDaySelected =
+            !selectedFilters.day || new Date(activity.dateTime).getDay() === new Date().getDay();
+
         return matchesFilterText && isCategorySelected && isCitySelected && isDaySelected;
     });
 
@@ -130,10 +113,19 @@ export const Dashboard = () => {
         }
     };
 
+    if (loading) {
+        return (
+            <>
+                <NavBar />
+                <DashboardSkeleton />
+            </>
+        );
+    }
+
     return (
         <>
             <NavBar />
-            <div className="py-20 px-6 flex flex-col items-center justify-center mx-auto max-w-7xl">
+            <div className="py-20 px-4 flex flex-col items-center justify-center mx-auto max-w-7xl">
                 {alert && (
                     <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
                         <Alert
@@ -143,7 +135,11 @@ export const Dashboard = () => {
                         />
                     </div>
                 )}
-                <GroupSection groupDetails={groupDetails} openEventGroupPage={openEventGroupPage} />
+                <GroupSection
+                    groupDetails={groupDetails}
+                    openEventGroupPage={openEventGroupPage}
+                    userId={user._id}
+                />
                 <FilterSection
                     filterText={filterText}
                     setFilterText={setFilterText}
