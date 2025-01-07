@@ -45,7 +45,7 @@ const EventDetails = ({ event: propEvent }) => {
     const photoUrl = `
     ${event.photos[0]
             .split("/upload/")[0]
-            .concat("/upload/w_600,h_800,c_fill/")
+            .concat("/upload/ar_16:9,c_fill/")
         }${event.photos[0].split("/upload/")[1]}
     `;
 
