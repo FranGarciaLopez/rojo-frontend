@@ -26,6 +26,7 @@ import { CreateEvent } from "./components/molecules/CreateEventForm";
 import { EditEvent } from "./components/molecules/EditEvent";
 import { EventGroupPage } from "./components/organisms/EventGroupPage";
 import EventDetails from "./components/molecules/EventDetails";
+import NotFound from "./components/organisms/NotFound";
 
 function App() {
        const { authToken } = useContext(AuthContext);
@@ -73,13 +74,13 @@ function App() {
                             <Route
                                    path="/blog"
                                    element={
-                                          authToken ? <Blog /> : <Navigate to="/login" />
+                                          <Blog />
                                    }
                             />
 
                             <Route
                                    path="/blog/:id"
-                                   element={ authToken ? <BlogPageDetails /> : <Navigate to="/login" /> }
+                                   element={ <BlogPageDetails /> }
                             />
 
                             {/* Admin Routes */}
@@ -120,7 +121,7 @@ function App() {
                             />
 
                             {/* Catch-All Route */}
-                            <Route path="*" element={<h1>Not Found</h1>} />
+                            <Route path="*" element={<NotFound />} />
                      </Routes>
               </Router>
        );
