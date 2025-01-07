@@ -41,7 +41,7 @@ export const EventsTable = ({ columns, data, onEdit, onDelete }) => {
                                                   {data.map((event) => (
                                                             <div
                                                                       key={event._id}
-                                                                      className="p-4 mb-4 bg-gray-100 rounded-lg shadow-sm hover:shadow-md cursor-pointer transition duration-200 ease-in-out"
+                                                                      className="p-4 mb-4 bg-gray-100 rounded-lg shadow-sm hover:shadow-lg transition duration-200 ease-in-out"
                                                             >
                                                                       <h3 className="font-semibold">{event.title}</h3>
                                                                       <p className="text-gray-600">City: {event.city ? event.city.name : "N/A"}</p>
