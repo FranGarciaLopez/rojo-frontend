@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import FeaturesSection from '../molecules/FeaturesSection';
 const Hero = () => {
           return (
                     <section>
@@ -15,6 +15,7 @@ const Hero = () => {
                                                   and a global community at your fingertips.
                                         </p>
 
+                                        <FeaturesSection />
                                         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                                                   <Link to="/register" className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg
                                                    bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 transition ease-in-out duration-200">
