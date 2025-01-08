@@ -130,6 +130,7 @@ export const RegisterForm = () => {
                                                  onChange={(e) => setPassword(e.target.value)}
                                                  ref={refs.password}
                                                  required
+                                                 autoComplete="off"
                                           />
                                    </div>
 
