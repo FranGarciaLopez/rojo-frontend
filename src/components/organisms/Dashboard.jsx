@@ -26,6 +26,7 @@ export const Dashboard = () => {
     const [alert, setAlert] = useState(null);
     const navigate = useNavigate();
 
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
     useEffect(() => {
         if (!authToken || !user) {
             navigate("/login");
