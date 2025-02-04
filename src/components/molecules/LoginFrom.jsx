@@ -42,7 +42,7 @@ const LoginForm = () => {
 
           return (
                     <div className="flex flex-grow justify-center items-center bg-white p-6">
-                              <form onSubmit={handleSubmit}>
+                              <form onSubmit={handleSubmit} data-testid="login-form">
                                         <h2 className="text-center mb-8">Login</h2>
                                         {alert && (
                                                   <div className="relative top-0 right-0 w-full px-4">
