@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite & yarn test --watch",
+    "dev": "concurrently \"vite\" \"yarn test --watch\"",
     "build": "vite build",
     "test": "vitest",
     "test:watch": "vitest --watch",
@@ -37,6 +37,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.2",
     "cypress": "^13.15.1",
     "eslint": "^9.9.0",
     "eslint-plugin-react": "^7.35.0",
