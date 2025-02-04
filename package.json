@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite & yarn test --watch",
     "build": "vite build",
     "test": "vitest",
     "test:watch": "vitest --watch",
