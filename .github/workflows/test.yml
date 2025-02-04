@@ -1,0 +1,22 @@
+name: Run tests on Push
+
+on: 
+  push:
+    branches:
+      - main
+      - fran-develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Run Tests
+        run: yarn test
