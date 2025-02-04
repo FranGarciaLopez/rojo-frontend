@@ -2,7 +2,9 @@ import React from "react";
 
 const DashboardSkeleton = () => {
     return (
-        <div className="py-20 px-4 flex flex-col items-center justify-center mx-auto max-w-7xl animate-pulse">
+        <div className="py-20 px-4 flex flex-col items-center justify-center mx-auto max-w-7xl animate-pulse"
+            data-testid="dashboard-skeleton"
+        >
             {/* Alert Skeleton */}
             <div className="w-full h-12 bg-gray-200 rounded-md mb-6"></div>
 

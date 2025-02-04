@@ -2,7 +2,9 @@ import React from "react";
 
 const AdminDashboardSkeleton = () => {
   return (
-    <div className="px-4 py-20 max-w-7xl mx-auto animate-pulse">
+    <div className="px-4 py-20 max-w-7xl mx-auto animate-pulse"
+      data-testid="admin-dashboard-skeleton"
+    >
       {/* Title Skeleton */}
       <div className="h-8 bg-gray-200 rounded-md w-1/3 mb-8"></div>
 
