@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite & yarn test --watch",
     "build": "vite build",
     "test": "vitest",
+    "test:watch": "vitest --watch",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -14,10 +15,10 @@
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@subframe/core": "^1.128.0",
-    "@testing-library/react": "^16.2.0",
     "axios": "^1.7.7",
     "dotenv": "^16.4.7",
     "feather-icons": "^4.29.2",
+    "husky": "^9.1.7",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -30,7 +31,7 @@
     "@eslint/js": "^9.9.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.0.1",
+    "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -43,9 +44,15 @@
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
     "jsdom": "^25.0.1",
+    "lint-staged": "^15.4.3",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13",
     "vite": "^5.4.8",
     "vitest": "^3.0.5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ]
   }
 }
