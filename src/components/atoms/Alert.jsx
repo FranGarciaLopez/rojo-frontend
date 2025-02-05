@@ -28,6 +28,7 @@ const Alert = ({ message, type = "info", onClose, duration = 5000 }) => {
                     <div
                               className={`flex items-center justify-center p-4 mb-2 border rounded-lg shadow-lg ${typeClass}`}
                               role="alert"
+                              data-testid="alert"
                     >
                               <div className="ml-3 text-sm font-medium">{message}</div>
                               <button
@@ -36,6 +37,7 @@ const Alert = ({ message, type = "info", onClose, duration = 5000 }) => {
                                                   if (onClose) onClose();
                                         }}
                                         className="ml-4 bg-transparent text-current hover:text-gray-500"
+                                        data-testid="close-alert-button"
                               >
                                         ✖
                               </button>

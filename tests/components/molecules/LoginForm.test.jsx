@@ -24,16 +24,6 @@ vi.mock('../../../src/contexts/AuthContext', async (importOriginal) => {
           }
 });
 
-vi.mock("../../../src/components/molecules/NavBar", () => ({
-          _esModule: true,
-          default: () => (
-                    <nav data-testid="navbar">
-                              Mock NavBar
-                              <button data-testid="logout-button">Logout</button>
-                    </nav>
-          )
-}));
-
 vi.mock("../../../src/components/organisms/Dashboard", () => ({
           _esModule: true,
           default: () => (
