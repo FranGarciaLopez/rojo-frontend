@@ -48,6 +48,10 @@ export const Dashboard = () => {
 
                 setActivities(eventsResponse.data);
                 setGroupDetails(userGroupsResponse.data);
+
+                if (eventsResponse.data.length === 0) {
+                    setAlert({ message: "No events found.", type: "info" });
+                }
             } catch (err) {
                 console.error("Error fetching dashboard data:", err);
                 setAlert({ message: "Failed to load dashboard data.", type: "error" });

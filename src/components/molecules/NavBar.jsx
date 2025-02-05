@@ -38,6 +38,7 @@ const NavBar = () => {
             <Link
               to="/"
               className="text-lg font-medium text-gray-900 whitespace-nowrap"
+              data-testid="home-link"
             >
               Home
             </Link>
@@ -49,6 +50,7 @@ const NavBar = () => {
               <Link
                 to="/blog"
                 className="text-lg font-medium text-gray-900 whitespace-nowrap"
+                data-testid="blog-link"
               >
                 Blog
               </Link>
@@ -58,6 +60,8 @@ const NavBar = () => {
                 <Link
                   to="/usersettings"
                   className="text-lg font-medium text-gray-900 whitespace-nowrap"
+                  data-testid="user-settings-link"
+
                 >
                   <i className="fas fa-cog"></i> User Settings
                 </Link>

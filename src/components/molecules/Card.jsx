@@ -24,6 +24,7 @@ const Card = ({
 
     return (
         <div
+            data-testid="event-card"
             className="relative group overflow-hidden rounded-lg shadow-lg ease-in-out cursor-pointer h-96 w-full mb-8"
             onClick={handleCardClick}
         >
