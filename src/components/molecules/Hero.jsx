@@ -4,7 +4,9 @@ import FeaturesSection from '../molecules/FeaturesSection';
 const Hero = () => {
           return (
                     <section>
-                              <div className="px-4 mx-auto max-w--xl text-center lg:py-16 lg:px-12">
+                              <div className="px-4 mx-auto max-w--xl text-center lg:py-16 lg:px-12"
+                                        data-testid="hero"
+                              >
 
                                         <h1>
                                                   Join Today to connect with the <span className="text-blue-800/50 text-4xl md:text-5xl lg:text-6xl">world</span>
