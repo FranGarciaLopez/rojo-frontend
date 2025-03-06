@@ -17,11 +17,11 @@ const LoginForm = () => {
                     e.preventDefault();
                     try {
                               const response = await loginUser({ email, password });
-                              const { token, requiresOnboarding, user, isAdmin } = response.data;
+                              const { token, user, isAdmin } = response.data;
                               login(token, user);
 
-                              if (requiresOnboarding) {
-                                        navigate("/onboarding");
+                              if (user.requiresOnboarding) {
+                                        navigate(`/onboarding/${user._id}`);
                               } else {
                                         navigate(isAdmin ? "/admin" : "/dashboard");
                               }

@@ -1,58 +1,72 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import OnboardingStepOne from './../atoms/OnboardingStepOne';
-import { updateUserPreferences } from '../../api/apiService'; // Import the new function
+import OnboardingStepOne from '../molecules/OnboardingStepOne';
+import { getQuestionnaireAnswers, getQuestionnaireQuestions, sendQuestionnaireData, updateUserPreferences } from '../../api/apiService';
 import { AuthContext } from '../../contexts/AuthContext';
 
 export default function Onboarding() {
-          const [currentStep, setCurrentStep] = useState(0);
+          const [questionnaire, setQuestionnaire] = useState({ questions: [], answers: {} });
           const navigate = useNavigate();
-          const { authToken } = useContext(AuthContext);
+          const { authToken, user } = useContext(AuthContext);
+          const userId = user?._id;
+          useEffect(() => {
+                    const fetchQuestionnaire = async () => {
+                              try {
+                                        const questionsResponse = await getQuestionnaireQuestions(authToken);
+                                        const answersResponse = await getQuestionnaireAnswers(authToken);
+
+                                        setQuestionnaire({
+                                                  questions: questionsResponse ? questionsResponse.split(';') : [],
+                                                  answers: answersResponse
+                                                            ? answersResponse.split('|').map((group) => group.split(';'))
+                                                            : {},
+                                        });
+                              } catch (error) {
+                                        console.error('Error obteniendo los datos del cuestionario:', error);
+                              }
+                    };
+
+                    if (authToken) fetchQuestionnaire();
+          }, [authToken]);
 
           const handleSubmit = async (data) => {
                     try {
-                              const { city, categoryName, dayOfTheWeek } = data;
-
-                              // Prepare the preferences object
-                              const preferences = {
-                                        city,
-                                        categoryName,
-                                        dayOfTheWeek,
-                              };
-
-                              // Call updateUserPreferences with authToken and preferences
-                              const response = await updateUserPreferences(authToken, preferences);
-
-                              if (response.status === 200) {
-                                        navigate('/'); // Navigate to the home or desired page
-                              } else {
-                                        console.error('Failed to update preferences');
+                              if (!data.questionnaireAnswers || data.questionnaireAnswers.length === 0) {
+                                        console.error("No se enviaron respuestas.");
+                                        return;
                               }
+
+                              if (!userId) {
+                                        console.error("Error: userId is missing!");
+                                        return;
+                              }
+
+                              const requestBody = { id: userId, A_str: data.questionnaireAnswers };
+
+                              await sendQuestionnaireData(requestBody, authToken);
+
+                              // ✅ Update user preferences after questionnaire submission
+                              await updateUserPreferences(authToken, {
+                                        city: "Madrid",
+                                        categoryName: "Fairs",
+                                        dayOfTheWeek: "Monday", // Replace with real user input if needed
+                              });
+
+                              navigate("/dashboard");
                     } catch (error) {
-                              console.error('Error submitting user data:', error);
+                              console.error("Error enviando el cuestionario:", error);
                     }
           };
 
-          const steps = [
-                    <OnboardingStepOne onSubmit={handleSubmit} />,
-          ];
-
           return (
-                    <div className="flex flex-col justify-evenly h-screen p-10 gap-5">
-                              <h1>Step {currentStep + 1}</h1>
-                              {steps[currentStep]}
+                    <>
+                              <h1 className="text-3xl font-bold text-center my-10">Cuestionario</h1>
+                              <OnboardingStepOne
+                                        onSubmit={handleSubmit}
+                                        questions={questionnaire.questions}
+                                        previousAnswers={questionnaire.answers}
+                              />
 
-                              {/* Optionally, add "Next" button */}
-                              <div className="flex flex-row items-end">
-                                        {currentStep < steps.length - 1 && (
-                                                  <button
-                                                            onClick={() => setCurrentStep(currentStep + 1)}
-                                                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                                                  >
-                                                            Next
-                                                  </button>
-                                        )}
-                              </div>
-                    </div>
+                    </>
           );
 }

@@ -5,11 +5,13 @@ export const EventsTable = ({ columns, data, onEdit, onDelete }) => {
                     <div className="mb-12">
                               <div className="overflow-x-auto">
                                         {/* Table for larger screens */}
-                                        <table className="table-auto w-full text-left hidden lg:table">
+                                        <table
+                                                  data-testid="events-table"
+                                                  className="table-auto w-full text-left hidden lg:table">
                                                   <thead>
-                                                            <tr className="bg-gray-100">
+                                                            <tr className="bg-gray-100 text-center">
                                                                       {columns.map((column, index) => (
-                                                                                <th key={index} className="px-4 py-2">
+                                                                                <th key={`header-${index}`} className="px-4 py-2">
                                                                                           {column.charAt(0).toUpperCase() + column.slice(1)}
                                                                                 </th>
                                                                       ))}
@@ -17,8 +19,9 @@ export const EventsTable = ({ columns, data, onEdit, onDelete }) => {
                                                             </tr>
                                                   </thead>
                                                   <tbody>
-                                                            {data.map((event) => (
-                                                                      <tr key={event._id} className="border-t hover:bg-gray-100 transition delay-50 ease-in-out">
+                                                            {data.map((event, index) => (
+                                                                      <tr key={event._id || event.id || `event-${index}`}
+                                                                                className="border-t hover:bg-gray-100 transition delay-50 ease-in-out">
                                                                                 <td className="px-4 py-2">{event.title}</td>
                                                                                 <td className="px-4 py-2">{event.city ? event.city.name : "N/A"}</td>
                                                                                 <td className="px-4 py-2">{new Date(event.dateTime).toLocaleString()}</td>
@@ -38,9 +41,9 @@ export const EventsTable = ({ columns, data, onEdit, onDelete }) => {
 
                                         {/* Card layout for smaller screens */}
                                         <div className="lg:hidden">
-                                                  {data.map((event) => (
+                                                  {data.map((event, index) => (
                                                             <div
-                                                                      key={event._id}
+                                                                      key={event._id || `event-card-${index}`}
                                                                       className="p-4 mb-4 bg-gray-100 rounded-lg shadow-sm hover:shadow-lg transition duration-200 ease-in-out"
                                                             >
                                                                       <h3 className="font-semibold">{event.title}</h3>
