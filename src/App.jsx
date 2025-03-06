@@ -62,7 +62,7 @@ function App() {
                                    }
                             />
                             <Route
-                                   path="/onboarding"
+                                   path="/onboarding/:id"
                                    element={
                                           <PrivateRoute>
                                                  <OnboardingDashboard />
@@ -80,7 +80,7 @@ function App() {
 
                             <Route
                                    path="/blog/:id"
-                                   element={ <BlogPageDetails /> }
+                                   element={<BlogPageDetails />}
                             />
 
                             {/* Admin Routes */}
@@ -120,6 +120,13 @@ function App() {
                                    }
                             />
 
+
+                            <Route
+                                   path="/events/:id"
+                                   element={
+                                          authToken ? <EventDetails /> : <Navigate to="/login" />
+                                   }
+                            />
                             {/* Catch-All Route */}
                             <Route path="*" element={<NotFound />} />
                      </Routes>

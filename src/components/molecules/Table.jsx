@@ -5,32 +5,32 @@ const Table = ({ columns, data, onDelete, onEdit }) => {
         <div className="mb-12">
             <div className="overflow-x-auto">
                 {/* Table for larger screens */}
-                <table className="table-auto w-full text-left hidden lg:table">
+                <table
+                    data-testid="users-table"
+                    className="table-auto w-full text-left hidden lg:table">
                     <thead>
-                        <tr className="bg-gray-100">
+                        <tr className="bg-gray-100 text-center">
                             {columns.map((column, index) => (
-                                <th key={index} className="px-4 py-2">
+                                <th key={`header-${index}`} className="px-4 py-2">
                                     {column.charAt(0).toUpperCase() + column.slice(1)}
                                 </th>
                             ))}
-                            <th className="px-4 py-2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((user) => (
+                        {data.map((user, index) => (
                             <tr
-                                key={user._id}
+                                key={user._id || user.id || `user-${index}`}
                                 className="border-t hover:bg-gray-100 transition delay-50 ease-in-out"
                             >
                                 <td className="px-4 py-2">{`${user.firstname} ${user.lastname}`}</td>
                                 <td className="px-4 py-2">{user.email}</td>
                                 <td className="px-4 py-2">
                                     <span
-                                        className={`bg-gradient-to-r px-3 py-1 rounded-full text-xs font-semibold hover:scale-105 transform transition-all duration-200 ${
-                                            user.isAdministrator
-                                                ? "from-blue-400 via-blue-500 to-blue-600 text-white"
-                                                : "from-green-400 via-green-500 to-green-600 text-white"
-                                        }`}
+                                        className={`bg-gradient-to-r px-3 py-1 rounded-full text-xs font-semibold hover:scale-105 transform transition-all duration-200 ${user.isAdministrator
+                                            ? "from-blue-400 via-blue-500 to-blue-600 text-white"
+                                            : "from-green-400 via-green-500 to-green-600 text-white"
+                                            }`}
                                     >
                                         {user.isAdministrator ? "Admin" : "User"}
                                     </span>
@@ -56,9 +56,9 @@ const Table = ({ columns, data, onDelete, onEdit }) => {
 
                 {/* Card layout for smaller screens */}
                 <div className="lg:hidden">
-                    {data.map((user) => (
+                    {data.map((user, index) => (
                         <div
-                            key={user._id}
+                            key={user._id || `user-card-${index}`}
                             className="p-4 mb-4 bg-gray-100 rounded-lg shadow-sm hover:shadow-lg transition duration-200 ease-in-out"
                         >
                             <h3 className="font-semibold">{`${user.firstname} ${user.lastname}`}</h3>
@@ -66,9 +66,8 @@ const Table = ({ columns, data, onDelete, onEdit }) => {
                             <p className="text-gray-600">
                                 Role:{" "}
                                 <span
-                                    className={`font-bold ${
-                                        user.isAdministrator ? "text-blue-600" : "text-green-600"
-                                    }`}
+                                    className={`font-bold ${user.isAdministrator ? "text-blue-600" : "text-green-600"
+                                        }`}
                                 >
                                     {user.isAdministrator ? "Admin" : "User"}
                                 </span>
