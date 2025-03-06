@@ -139,3 +139,69 @@ export const getGroupsByUserId = (authToken, userId) =>
           apiClient.get(`/groups/user/${userId}`, {
                     headers: { Authorization: `Bearer ${authToken}` },
           });
+
+
+
+// Get questionnaire data for a specific user
+export const getQuestionnaireData = async (userId, token) => {
+          try {
+                    const response = await apiClient.get(`/questionnaire/get/${userId}`, {
+                              headers: { Authorization: `Bearer ${token}` }
+                    });
+                    return response.data;
+          } catch (error) {
+                    console.error('Error fetching questionnaire data:', error);
+                    throw error;
+          }
+};
+
+export const sendQuestionnaireData = async (data, token) => {
+          try {
+                    const response = await apiClient.post('/questionnaire/send', data, {
+                              headers: { Authorization: `Bearer ${token}` }
+                    });
+                    return response.data;
+          } catch (error) {
+                    console.error('Error sending questionnaire data:', error);
+                    throw error;
+          }
+};
+
+// Get all questionnaires
+export const getAllQuestionnaires = async (token) => {
+          try {
+                    const response = await apiClient.get('/questionnaire/getAll', {
+                              headers: { Authorization: `Bearer ${token}` }
+                    });
+                    return response.data;
+          } catch (error) {
+                    console.error('Error fetching all questionnaires:', error);
+                    throw error;
+          }
+};
+
+// Get questionnaire questions
+export const getQuestionnaireQuestions = async (token) => {
+          try {
+                    const response = await apiClient.get('/questionnaire/getQuestions', {
+                              headers: { Authorization: `Bearer ${token}` }
+                    });
+                    return response.data;
+          } catch (error) {
+                    console.error('Error fetching questionnaire questions:', error);
+                    throw error;
+          }
+};
+
+// Get questionnaire answers
+export const getQuestionnaireAnswers = async (token) => {
+          try {
+                    const response = await apiClient.get('/questionnaire/getAnswer', {
+                              headers: { Authorization: `Bearer ${token}` }
+                    });
+                    return response.data;
+          } catch (error) {
+                    console.error('Error fetching questionnaire answers:', error);
+                    throw error;
+          }
+};
