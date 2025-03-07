@@ -59,20 +59,20 @@ export const RegisterForm = () => {
                      register(response);
                      setTimeout(() => {
                             navigate('/login'); // Delay navigation slightly
-                        }, 0);
+                     }, 0);
               } catch (error) {
                      // Check if the error response status is in the 4xx range
                      if (error.response?.status >= 400 && error.response?.status < 500) {
                             const errorMessage = error.response?.data?.message || "Bad request";
                             setAlert({ message: errorMessage, type: "error" });
                      } else {
-                            console.error("Unexpected error:", error); 
+                            console.error("Unexpected error:", error);
                      }
               }
        };
 
        return (
-              <div className="flex flex-grow py-6 px-6 justify-center items-center bg-white">
+              <div className="flex flex-grow py-6 px-6 justify-center items-center bg-white mt-8 rounded-lg shadow-lg">
                      <form
                             onSubmit={handleSubmit}
                      >

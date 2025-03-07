@@ -22,7 +22,7 @@ const FeaturesSection = () => {
 
   return (
     <section className="py-5">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto ">
         <h2 className="text-3xl font-extrabold text-center mb-8 text-gray-900">
           What You Can Find Here
         </h2>
