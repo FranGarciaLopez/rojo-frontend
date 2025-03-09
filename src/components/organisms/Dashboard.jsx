@@ -5,7 +5,7 @@ import NavBar from "../molecules/NavBar";
 import GroupSection from "../molecules/GroupSection";
 import FilterSection from "../molecules/FilterSection";
 import ActivitiesSection from "../molecules/ActivitiesSection";
-import Alert from "../atoms/Alert";
+import { Alert } from "@/components/ui/alert";
 import DashboardSkeleton from "../skeletons/DashboardSkeleton";
 import { getGroupsByUserId, getEvents } from "../../api/apiService";
 
@@ -27,6 +27,7 @@ export const Dashboard = () => {
     const navigate = useNavigate();
 
     const baseURL = import.meta.env.VITE_API_BASE_URL;
+
     useEffect(() => {
         if (!authToken || !user) {
             navigate("/login");
@@ -130,18 +131,26 @@ export const Dashboard = () => {
     return (
         <>
             <NavBar />
-            <div className="py-20 px-4 flex flex-col items-center justify-center mx-auto max-w-7xl"
+            <div
+                className="py-20 px-4 flex flex-col items-center justify-center mx-auto max-w-7xl"
                 data-testid="dashboard"
             >
                 {alert && (
-                    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
-                        <Alert
-                            message={alert.message}
-                            type={alert.type}
-                            onClose={() => setAlert(null)}
-                        />
-                    </div>
+                    <Alert
+                        variant={
+                            alert.type === "error"
+                                ? "destructive"
+                                : alert.type === "success"
+                                    ? "success"
+                                    : "default"
+                        }
+                        className="mb-4"
+                        onClose={() => setAlert(null)}
+                    >
+                        {alert.message}
+                    </Alert>
                 )}
+
                 <GroupSection
                     groupDetails={groupDetails}
                     openEventGroupPage={openEventGroupPage}

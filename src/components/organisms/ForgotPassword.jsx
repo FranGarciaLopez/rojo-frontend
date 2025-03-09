@@ -35,7 +35,6 @@ export const ForgotPassword = () => {
                     <div className="flex flex-grow h-screen justify-center items-center bg-white px-6 py-6">
                               <form onSubmit={handleSubmit}>
                                         <h2 className="text-center">Forgot Password</h2>
-                                        {/* message or alert */}
 
                                         
                                         {message && <Alert message={message} className="flex items-center p-4 mb-4 text-[#166534] border-t-4 border-[#86efac] bg-[#f0fdf4]"
