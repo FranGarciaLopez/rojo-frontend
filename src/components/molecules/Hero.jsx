@@ -6,7 +6,9 @@ import FeaturesSection from "../molecules/FeaturesSection";
 
 const Hero = () => {
   return (
-    <section className="relative w-full flex-1 flex items-center justify-center">
+    <section className="relative w-full flex-1 flex items-center justify-center"
+      {...props}
+    >
       <Card className="container mx-auto text-center max-w-7xl">
         <CardContent>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight">
