@@ -9,6 +9,7 @@ lerna-debug.log*
 # add other types of installation packages than yarn
 pnpm-lock.yaml
 package-lock.json
+yarn.lock
 
 node_modules
 dist

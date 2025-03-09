@@ -6,17 +6,17 @@ const FeaturesSection = () => {
     {
       title: 'Find Events Near You',
       description: 'Discover events and activities based on your interests.',
-      svgIcon: <i className="fa-solid fa-magnifying-glass"></i>, // Use as SVG
+      svgIcon: <i className="fa-solid fa-magnifying-glass"></i>,
     },
     {
       title: 'Join Activity Groups',
       description: 'Connect with others who share your hobbies and interests.',
-      svgIcon: <i className="fa-solid fa-user"></i>, // Use as SVG
+      svgIcon: <i className="fa-solid fa-user"></i>,
     },
     {
       title: 'Real-Time Chat',
       description: 'Stay connected with your groups through instant messaging.',
-      svgIcon: <i className="fa-solid fa-comments"></i>, // Use as SVG
+      svgIcon: <i className="fa-solid fa-comments"></i>,
     },
   ];
 

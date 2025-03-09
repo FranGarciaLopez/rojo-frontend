@@ -188,7 +188,6 @@ export const AdminDashboard = () => {
     <>
       <NavBar />
       <div className="relative">
-        {/* Alert Section */}
         {alert && (
           <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md">
             <Alert
@@ -204,7 +203,6 @@ export const AdminDashboard = () => {
             Admin Dashboard
           </h1>
 
-          {/* Buttons Section */}
           <div className="flex gap-4 mb-8">
             <Buttons
               value="Create Event"
@@ -223,7 +221,6 @@ export const AdminDashboard = () => {
             />
           </div>
 
-          {/* Analytics Section */}
           <div className="my-8">
             <h2>Analytics</h2>
             <GridSection>
@@ -242,7 +239,6 @@ export const AdminDashboard = () => {
             </GridSection>
           </div>
 
-          {/* Manage Events Section */}
           <h2 className="text-2xl font-semibold mb-4 text-gray-700">Events</h2>
           {loading ? (
             <p>Loading events...</p>
@@ -263,7 +259,6 @@ export const AdminDashboard = () => {
             </>
           )}
 
-          {/* Manage Users Section */}
           <h2 className="text-2xl font-semibold mb-4 text-gray-700">Users</h2>
           <Table
             columns={["First Name", "Email", "Role", "Actions"]}
@@ -281,3 +276,4 @@ export const AdminDashboard = () => {
     </>
   );
 };
+ 

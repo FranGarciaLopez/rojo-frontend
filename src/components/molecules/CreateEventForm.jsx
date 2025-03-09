@@ -140,7 +140,7 @@ export const CreateEvent = () => {
     return (
         <>
             <NavBar />
-            <div className="h-16"></div> {/* Spacer */}
+            <div className="h-16"></div> 
             <div className="container mx-auto px-6 py-10">
                     <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="flex items-center gap-4 mb-6">

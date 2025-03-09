@@ -2,7 +2,7 @@
 const GroupSection = ({ groupDetails, openEventGroupPage }) => (
           <section className="
                     grid grid-cols-1 px-0
-                    md:flex flex-row items-center justify-between w-full px-6 py-4 bg-gray-50">
+                    md:flex flex-row items-center justify-between w-full px-6 py-4">
                     <h1>Explore Activities</h1>
                     <small>
                               {groupDetails.map((group) => (
