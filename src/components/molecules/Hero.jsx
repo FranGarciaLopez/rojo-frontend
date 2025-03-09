@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import FeaturesSection from "../molecules/FeaturesSection";
 
-const Hero = () => {
+const Hero = (props) => {
   return (
     <section className="relative w-full flex-1 flex items-center justify-center"
       {...props}
