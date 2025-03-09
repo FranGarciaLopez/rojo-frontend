@@ -8,6 +8,7 @@ import ActivitiesSection from "../molecules/ActivitiesSection";
 import { Alert } from "@/components/ui/alert";
 import DashboardSkeleton from "../skeletons/DashboardSkeleton";
 import { getGroupsByUserId, getEvents } from "../../api/apiService";
+import { AlertCircle } from "lucide-react";
 
 export const Dashboard = () => {
     const { authToken, user, setUser } = useContext(AuthContext);
@@ -148,6 +149,7 @@ export const Dashboard = () => {
                         className="mb-4"
                         onClose={() => setAlert(null)}
                     >
+                        <AlertCircle className="w-6 h-6 mr-2" data-testid="close-alert-button" />
                         {alert.message}
                     </Alert>
                 )}
