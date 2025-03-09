@@ -1,7 +1,7 @@
 import React from "react";
 import GridSection from "../atoms/GridSection";
 import Card from "./Card";
-import Buttons from "../atoms/Buttons";
+import { Button } from "../ui/button";
 
 const ActivitiesSection = ({
           activities,
@@ -29,11 +29,11 @@ const ActivitiesSection = ({
                     {/* Show More Button */}
                     {visibleItems < activities.length && (
                               <div className="flex justify-center mt-4">
-                                        <Buttons
+                                        <Button type="submit" size="lg" className="w-full"
                                                   onClick={showMoreItems}
-                                                  value="Show More"
-                                                  className="bg-blue-600 hover:bg-blue-700"
-                                        />
+                                        >
+                                                  Show More
+                                        </Button>
                               </div>
                     )}
           </div>
