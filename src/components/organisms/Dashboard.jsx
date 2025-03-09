@@ -137,6 +137,7 @@ export const Dashboard = () => {
             >
                 {alert && (
                     <Alert
+                        data-testid="alert"
                         variant={
                             alert.type === "error"
                                 ? "destructive"
