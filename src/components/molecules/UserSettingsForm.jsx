@@ -255,7 +255,6 @@ export const UserSettingsForm = () => {
                     <h3>Danger zone</h3>
                     <CustomAlert
                         variant="error"
-                        title="Delete account"
                         description=" Permanently remove your account. This action is not reversible."
                         actions={
                             <Dialog>

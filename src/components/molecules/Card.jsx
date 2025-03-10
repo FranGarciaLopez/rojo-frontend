@@ -75,8 +75,8 @@ const Card = ({
                         loadingEvent === activity._id
                     }
                     className={`w-full py-2 mt-4 text-sm font-semibold rounded-lg ${interestedEvents.includes(activity._id)
-                        ? "bg-gray-600 cursor-not-allowed"
-                        : "bg-blue-600 hover:bg-blue-700"
+                        ? "bg-gray-600 cursor-not-allowed text-white"
+                        : "bg-blue-600 hover:bg-blue-700 text-white"
                         }`}
                 >
                     {loadingEvent === activity._id

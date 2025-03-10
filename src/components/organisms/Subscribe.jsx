@@ -30,10 +30,10 @@ export const Subscribe = () => {
       if (response.ok) {
         setSuccessMessage(
           "You have successfully subscribed! A confirmation email has been sent."
-          
+
         );
         setMessageType("success");
-      
+
         setTimeout(() => {
           setSuccessMessage("");
           setEmail("");
@@ -46,7 +46,7 @@ export const Subscribe = () => {
           setSuccessMessage("");
           setEmail("");
         }, 5000);
-      
+
       }
     } catch (error) {
       console.error("Error:", error);
@@ -54,7 +54,7 @@ export const Subscribe = () => {
       setSuccessMessage("An error occurred. Please try again later.");
     } finally {
       setIsSubmitting(false);
-   
+
     }
   };
 
@@ -93,17 +93,16 @@ export const Subscribe = () => {
               </h2>
             </div>
 
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-sm text-secondary mt-2">
               Enter your email to subscribe to our newsletter.
             </p>
 
             {successMessage && (
               <div
-                className={`mt-4 p-3 rounded-md ${
-                  messageType === "error"
-                    ? "bg-red-100 text-red-800"
-                    : "bg-green-100 text-green-800"
-                }`}
+                className={`mt-4 p-3 rounded-md ${messageType === "error"
+                  ? "bg-red-100 text-red-800"
+                  : "bg-green-100 text-green-800"
+                  }`}
               >
                 {successMessage}
               </div>
@@ -114,22 +113,21 @@ export const Subscribe = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@example.com"
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
 
             <div className="mt-6 flex justify-between">
-              {}
+              { }
               <button
                 onClick={handleSubscribe}
                 disabled={isSubmitting}
-                className={`flex items-center justify-center gap-7 ${
-                  isSubmitting ? "bg-gray-400" : "bg-green-400"
-                } text-sm font-medium hover:bg-green-500 text-white px-9 py-2 rounded-lg w-max mx-auto`}
+                className={`flex items-center justify-center gap-7 ${isSubmitting ? "bg-gray-400" : "bg-green-400"
+                  } text-sm font-medium hover:bg-green-500 text-white px-9 py-2 rounded-lg w-max mx-auto`}
               >
                 {isSubmitting ? "Subscribing..." : "Subscribe"}
               </button>
 
-             
+
             </div>
           </div>
         </div>
