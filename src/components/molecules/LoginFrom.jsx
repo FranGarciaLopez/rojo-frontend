@@ -42,8 +42,8 @@ const LoginForm = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-grow justify-center items-center p-6">
-      <Card className="w-full max-w-md">
+    <div className="flex flex-grow justify-center items-center">
+      <Card className="w-full max-w-md m-4">
         <CardContent>
           <form onSubmit={handleSubmit} data-testid="login-form">
             <h2 className="text-center mb-8 text-2xl font-bold">Login</h2>

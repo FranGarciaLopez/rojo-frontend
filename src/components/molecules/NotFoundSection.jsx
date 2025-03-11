@@ -1,10 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from "react"
+import { Link } from "react-router-dom"
+import { Card } from "@/components/ui/card";
+
+import Buttons from "../atoms/Buttons" // Custom Button component
 
 const NotFoundSection = () => {
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="text-center px-4">
+    <div className="flex items-center justify-center h-screen">
+      <Card className="text-center px-6 py-8 border-none shadow-none">
         <h1 className="text-7xl font-bold text-gray-800">404</h1>
         <h2 className="mt-4 text-2xl font-semibold text-gray-700">
           Oops! Page Not Found
@@ -13,16 +16,16 @@ const NotFoundSection = () => {
           The page you’re looking for doesn’t exist or has been moved.
         </p>
         <div className="mt-6">
-          <Link
-            to="/"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg"
-          >
-            Back to Home
+          <Link to="/">
+            <Buttons
+              value="Back to Home"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg"
+            />
           </Link>
         </div>
-      </div>
+      </Card>
     </div>
-  );
-};
+  )
+}
 
-export default NotFoundSection;
+export default NotFoundSection

@@ -1,48 +1,57 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
+// Import shadcn/ui Alert components (adjust the path if needed)
+import {
+          Alert as ShadcnAlert,
+          AlertTitle,
+          AlertDescription,
+} from "@/components/ui/alert"
 
 const Alert = ({ message, type = "info", onClose, duration = 5000 }) => {
-          const [isVisible, setIsVisible] = useState(true);
+          const [isVisible, setIsVisible] = useState(true)
 
           useEffect(() => {
                     if (duration) {
                               const timer = setTimeout(() => {
-                                        setIsVisible(false);
-                                        if (onClose) onClose();
-                              }, duration);
-                              return () => clearTimeout(timer);
+                                        setIsVisible(false)
+                                        onClose?.()
+                              }, duration)
+                              return () => clearTimeout(timer)
                     }
-          }, [duration, onClose]);
+          }, [duration, onClose])
 
-          if (!isVisible) return null;
+          if (!isVisible) return null
 
-          const typeClasses = {
-                    success: "bg-green-100 text-green-700 border-green-400",
-                    warning: "bg-yellow-100 text-yellow-700 border-yellow-400",
-                    error: "bg-red-100 text-red-700 border-red-400",
-                    info: "bg-blue-100 text-blue-700 border-blue-400",
-          };
+          // Map your custom alert types to shadcn/ui "variant"
+          // (You can expand this mapping if you have more use-cases)
+          const variant = type === "error" ? "destructive" : "default"
 
-          const typeClass = typeClasses[type] || typeClasses.info;
+          // Optional: different titles by type
+          const titleMap = {
+                    success: "Success",
+                    warning: "Warning",
+                    error: "Error",
+                    info: "Information",
+          }
+          const alertTitle = titleMap[type] || "Alert"
 
           return (
-                    <div
-                              className={`flex items-center justify-center p-4 mb-2 border rounded-lg shadow-lg ${typeClass}`}
-                              role="alert"
-                              data-testid="alert"
-                    >
-                              <div className="ml-3 text-sm font-medium">{message}</div>
+                    <ShadcnAlert variant={variant} role="alert" data-testid="alert">
+                              <div className="flex flex-1 flex-col gap-1">
+                                        <AlertTitle>{alertTitle}</AlertTitle>
+                                        <AlertDescription>{message}</AlertDescription>
+                              </div>
                               <button
                                         onClick={() => {
-                                                  setIsVisible(false);
-                                                  if (onClose) onClose();
+                                                  setIsVisible(false)
+                                                  onClose?.()
                                         }}
-                                        className="ml-4 bg-transparent text-current hover:text-gray-500"
+                                        className="ml-auto text-current hover:opacity-70"
                                         data-testid="close-alert-button"
                               >
-                                        ✖
+                                        ✕
                               </button>
-                    </div>
-          );
-};
+                    </ShadcnAlert>
+          )
+}
 
-export default Alert;
+export default Alert

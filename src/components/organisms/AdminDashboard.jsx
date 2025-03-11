@@ -224,15 +224,18 @@ export const AdminDashboard = () => {
           <div className="my-8">
             <h2>Analytics</h2>
             <GridSection>
-              <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+              <div className="p-4 bg-secondary rounded-lg shadow-md hover:shadow-lg hover:bg-primary 
+               transition duration-200 ease-in-out">
                 <h3 className="text-2xl font-bold">Total Users</h3>
                 <p className="text-xl">{users.length}</p>
               </div>
-              <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+              <div className="p-4 bg-secondary rounded-lg shadow-md hover:shadow-lg hover:bg-primary 
+               transition duration-200 ease-in-out">
                 <h3 className="text-2xl font-bold">Total Events</h3>
                 <p className="text-xl">{events.length}</p>
               </div>
-              <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+              <div className="p-4 bg-secondary rounded-lg shadow-md hover:shadow-lg hover:bg-primary 
+               transition duration-200 ease-in-out">
                 <h3 className="text-2xl font-bold">Created Events</h3>
                 <p className="text-xl">{user?.organizedEvents || 0}</p>
               </div>
@@ -276,4 +279,3 @@ export const AdminDashboard = () => {
     </>
   );
 };
- 

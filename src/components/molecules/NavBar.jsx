@@ -15,9 +15,7 @@ const NavBar = () => {
   const handleSubscribeClick = () => setShowSubscribe((prev) => !prev);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -26,17 +24,13 @@ const NavBar = () => {
     <>
       <nav
         data-testid="navbar"
-        className={`bg-background border-border fixed top-0 left-0 w-full z-50 p-2 transition-all ease-in-out duration-300 
-          ${isScrolled ? "bg-opacity-80 shadow-md backdrop-blur-md" : ""}`}
+        className={`bg-background border-border fixed top-0 left-0 w-full z-50 p-2 transition-all ease-in-out duration-300 ${isScrolled ? "bg-opacity-80 shadow-md backdrop-blur-md" : ""
+          }`}
       >
         <div className="max-w-7xl mx-auto p-4 flex justify-between items-center">
           {/* Left Section - Home */}
           <div>
-            <Link
-              to="/"
-              className="text-lg font-medium text-primary-foreground whitespace-nowrap"
-              data-testid="home-link"
-            >
+            <Link to="/" className="text-lg font-medium nav-link-hover">
               Home
             </Link>
           </div>
@@ -44,11 +38,7 @@ const NavBar = () => {
           {/* Right Section - Desktop Links */}
           <div className="hidden md:flex items-center gap-5">
             {!isAdmin && (
-              <Link
-                to="/blog"
-                className="text-lg font-medium text-primary-foreground whitespace-nowrap"
-                data-testid="blog-link"
-              >
+              <Link to="/blog" className="text-lg font-medium nav-link-hover">
                 Blog
               </Link>
             )}
@@ -56,8 +46,7 @@ const NavBar = () => {
               <>
                 <Link
                   to="/usersettings"
-                  className="text-lg font-medium text-primary-foreground flex items-center gap-2"
-                  data-testid="user-settings-link"
+                  className="text-lg font-medium flex items-center gap-2 nav-link-hover"
                 >
                   <i className="fas fa-cog"></i>
                   User Settings
@@ -65,34 +54,25 @@ const NavBar = () => {
                 {!isAdmin && (
                   <button
                     onClick={handleSubscribeClick}
-                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-lg whitespace-nowrap
-                      transition-colors duration-300
-                    "
+                    className="bg-green-500 text-white px-4 py-2 rounded-lg text-lg nav-button-hover"
                   >
                     Subscribe
                   </button>
                 )}
                 {showSubscribe && <Subscribe />}
                 <button
-                  data-testid="logout-button"
                   onClick={logout}
-                  className="bg-muted text-primary-foreground px-4 py-2 rounded-lg text-lg whitespace-nowrap hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+                  className="bg-muted text-primary-foreground px-4 py-2 rounded-lg text-lg nav-button-hover"
                 >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <Link
-                  to="/register"
-                  className="text-lg font-medium text-primary-foreground whitespace-nowrap"
-                >
+                <Link to="/register" className="text-lg font-medium nav-link-hover">
                   Register
                 </Link>
-                <Link
-                  to="/login"
-                  className="text-lg font-medium text-primary-foreground whitespace-nowrap"
-                >
+                <Link to="/login" className="text-lg font-medium nav-link-hover">
                   Login
                 </Link>
               </>
@@ -103,8 +83,7 @@ const NavBar = () => {
           <div className="flex md:hidden">
             <button
               type="button"
-              className="inline-flex items-center p-2 w-10 h-10 justify-center text-muted-foreground rounded-lg 
-              hover:bg-accent transition-colors duration-300 focus:outline-none"
+              className="inline-flex items-center p-2 w-10 h-10 justify-center text-muted-foreground rounded-lg nav-button-hover"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <span className="sr-only">Open main menu</span>
@@ -136,7 +115,7 @@ const NavBar = () => {
               {/* Close Button */}
               <button
                 type="button"
-                className="absolute top-6 right-6 p-2 rounded-lg hover:bg-accent focus:outline-none hover:text-accent transition-colors duration-300"
+                className="absolute top-6 right-6 p-2 rounded-lg nav-button-hover"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <svg
@@ -156,53 +135,32 @@ const NavBar = () => {
               </button>
 
               {!isAdmin && (
-                <Link
-                  to="/blog"
-                  className="text-lg font-medium text-primary-foreground w-full text-center py-2
-                    hover:bg-accent hover:rounded-lg transition-colors duration-300
-                  "
-                >
+                <Link to="/blog" className="text-lg font-medium w-full text-center py-2 nav-button-hover">
                   Blog
                 </Link>
               )}
               {authToken ? (
                 <>
-                  <Link
-                    to="/dashboard"
-                    className="text-lg font-medium text-primary-foreground w-full text-center py-2
-                    hover:bg-accent hover:rounded-lg transition-colors duration-300
-                  "
-                  >
+                  <Link to="/dashboard" className="text-lg font-medium w-full text-center py-2 nav-button-hover">
                     Dashboard
                   </Link>
-                  <Link
-                    to="/usersettings"
-                    className="text-lg font-medium text-primary-foreground w-full text-center py-2
-                      hover:bg-accent hover:rounded-lg transition-colors duration-300
-                    "
-                  >
+                  <Link to="/usersettings" className="text-lg font-medium w-full text-center py-2 nav-button-hover">
                     <i className="fas fa-cog"></i>
                     User Settings
                   </Link>
                   <button
                     onClick={logout}
-                    className="bg-primary text-primary-foreground w-full py-2 rounded-lg text-lg hover:bg-muted transition-colors duration-300"
+                    className="bg-primary text-primary-foreground w-full py-2 rounded-lg text-lg nav-button-hover"
                   >
                     Logout
                   </button>
                 </>
               ) : (
                 <>
-                  <Link
-                    to="/register"
-                    className="text-lg font-medium text-primary-foreground w-full text-center py-2"
-                  >
+                  <Link to="/register" className="text-lg font-medium w-full text-center py-2 nav-button-hover">
                     Register
                   </Link>
-                  <Link
-                    to="/login"
-                    className="text-lg font-medium text-primary-foreground w-full text-center py-2"
-                  >
+                  <Link to="/login" className="text-lg font-medium w-full text-center py-2 nav-button-hover">
                     Login
                   </Link>
                 </>

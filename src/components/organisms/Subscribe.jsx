@@ -74,7 +74,7 @@ export const Subscribe = () => {
     <>
       {showSubscribe && (
         <div
-          className="fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 z-10"
+          className="fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 z-20"
           onClick={handleOverlayClick}
         >
           <div

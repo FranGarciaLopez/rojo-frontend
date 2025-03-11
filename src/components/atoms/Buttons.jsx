@@ -1,16 +1,17 @@
-import React from "react";
+import React from "react"
+// Import shadcn/ui Button component
+import { Button as ShadcnButton } from "@/components/ui/button"
 
-const Buttons = ({ type, placeholder, value, className, ...others }) => {
+const Buttons = ({ type, value, className, ...others }) => {
           return (
-                    <button
+                    <ShadcnButton
                               type={type}
                               {...others}
-                              className={`input input-border w-full 
-                                        transition duration-200 ease-in-out ${className}`}
+                              className={`transition duration-200 ease-in-out ${className || ""}`}
                     >
                               {value}
-                    </button>
-          );        
+                    </ShadcnButton>
+          )
 }
 
-export default Buttons;
+export default Buttons

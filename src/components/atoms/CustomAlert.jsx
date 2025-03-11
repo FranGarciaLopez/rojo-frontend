@@ -1,13 +1,21 @@
-import React from 'react';
+import React from "react"
+// Import shadcn/ui components (adjust path as needed)
+import {
+  Alert as ShadcnAlert,
+  AlertTitle,
+  AlertDescription,
+} from "@/components/ui/alert"
 
 const CustomAlert = ({ title, description, actions }) => {
   return (
-    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-      <strong className="font-bold">{title}</strong>
-      <span className="block sm:inline">{description}</span>
-      <div className="mt-4">{actions}</div>
-    </div>
-  );
-};
+    <ShadcnAlert variant="destructive" role="alert">
+      <div className="flex flex-col gap-1">
+        <AlertTitle>{title}</AlertTitle>
+        <AlertDescription>{description}</AlertDescription>
+        {actions && <div className="mt-4">{actions}</div>}
+      </div>
+    </ShadcnAlert>
+  )
+}
 
-export default CustomAlert;
+export default CustomAlert

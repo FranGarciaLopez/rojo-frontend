@@ -140,9 +140,9 @@ export const CreateEvent = () => {
     return (
         <>
             <NavBar />
-            <div className="h-16"></div> 
+            <div className="h-16"></div>
             <div className="container mx-auto px-6 py-10">
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="flex items-center gap-4 mb-6">
                         <i
                             className="fas fa-arrow-left cursor-pointer text-gray-600 hover:text-gray-800"
@@ -150,66 +150,66 @@ export const CreateEvent = () => {
                         ></i>
                         <h1 className="text-2xl font-bold text-gray-800">Create New Event</h1>
                     </div>
-                        <InputText
-                            type="text"
-                            placeholder="Title"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            className="w-full"
-                            required
-                        />
-                        <select
-                            value={city}
-                            onChange={(e) => setCity(e.target.value)}
-                            className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
-                            required
-                        >
-                            <option value="">Choose your City</option>
-                            {cities.map((city) => (
-                                <option key={city._id} value={city.name}>
-                                    {city.name}
-                                </option>
-                            ))}
-                        </select>
-                        <select
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
-                            required
-                        >
-                            <option value="">Choose a Category</option>
-                            {categories.map((category) => (
-                                <option key={category._id} value={category._id}>
-                                    {category.categoryName}
-                                </option>
-                            ))}
-                        </select>
-                        <textarea
-                            rows="4"
-                            placeholder="Description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
-                            required
-                        />
-                        <input
-                            type="datetime-local"
-                            value={dateTime}
-                            onChange={(e) => setDateTime(e.target.value)}
-                            className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
-                            required
-                        />
-                        <UploadImage setPhotos={setPhotos} />
-                        <Buttons
-                            type="submit"
-                            value={isUploading ? "Uploading..." : "Create Event"}
-                            className={`bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded ${isUploading ? "cursor-not-allowed opacity-50" : ""
-                                }`}
-                            disabled={isUploading}
-                        />
-                    </form>
-                    {error && <p className="text-red-600 mt-4">{error}</p>}
-                </div>
+                    <InputText
+                        type="text"
+                        placeholder="Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="w-full"
+                        required
+                    />
+                    <select
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
+                        required
+                    >
+                        <option value="">Choose your City</option>
+                        {cities.map((city) => (
+                            <option key={city._id} value={city.name}>
+                                {city.name}
+                            </option>
+                        ))}
+                    </select>
+                    <select
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
+                        required
+                    >
+                        <option value="">Choose a Category</option>
+                        {categories.map((category) => (
+                            <option key={category._id} value={category._id}>
+                                {category.categoryName}
+                            </option>
+                        ))}
+                    </select>
+                    <textarea
+                        rows="4"
+                        placeholder="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
+                        required
+                    />
+                    <input
+                        type="datetime-local"
+                        value={dateTime}
+                        onChange={(e) => setDateTime(e.target.value)}
+                        className="bg-gray-100 border border-gray-300 rounded-lg p-2.5 w-full"
+                        required
+                    />
+                    <UploadImage setPhotos={setPhotos} />
+                    <Buttons
+                        type="submit"
+                        value={isUploading ? "Uploading..." : "Create Event"}
+                        className={`bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded ${isUploading ? "cursor-not-allowed opacity-50" : ""
+                            }`}
+                        disabled={isUploading}
+                    />
+                </form>
+                {error && <p className="text-red-600 mt-4">{error}</p>}
+            </div>
         </>
     );
 };

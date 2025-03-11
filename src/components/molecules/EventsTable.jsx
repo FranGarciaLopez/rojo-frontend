@@ -3,13 +3,13 @@ import React from "react";
 export const EventsTable = ({ columns, data, onEdit, onDelete }) => {
           return (
                     <div className="mb-12">
-                              <div className="overflow-x-auto">
+                              <div className="overflow-x-auto min-h-[340px]">
                                         {/* Table for larger screens */}
                                         <table
                                                   data-testid="events-table"
                                                   className="table-auto w-full text-left hidden lg:table">
                                                   <thead>
-                                                            <tr className="bg-gray-100 text-center">
+                                                            <tr className="text-center">
                                                                       {columns.map((column, index) => (
                                                                                 <th key={`header-${index}`} className="px-4 py-2">
                                                                                           {column.charAt(0).toUpperCase() + column.slice(1)}
@@ -40,7 +40,7 @@ export const EventsTable = ({ columns, data, onEdit, onDelete }) => {
                                         </table>
 
                                         {/* Card layout for smaller screens */}
-                                        <div className="lg:hidden">
+                                        <div className="lg:hidden min-h-[1200px]">
                                                   {data.map((event, index) => (
                                                             <div
                                                                       key={event._id || `event-card-${index}`}

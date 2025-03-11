@@ -11,7 +11,8 @@ const BlogHeroSection = ({ onSubscribeClick, showSubscribe }) => (
         </p>
         <button
             onClick={onSubscribeClick}
-            className="flex items-center py-3 px-6 bg-white text-gray-800 text-xl font-semibold rounded-full hover:bg-green-300 transition duration-300 ease-in-out"
+            className="flex items-center py-3 px-6 bg-white text-gray-800 text-xl mt-8
+            font-semibold rounded-full hover:bg-green-300 transition duration-300 ease-in-out"
         >
             <span className="mr-2">Subscribe</span>
             <svg

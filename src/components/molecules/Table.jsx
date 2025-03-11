@@ -1,31 +1,39 @@
-import React from "react";
+import React from "react"
+// Import the shadcn/ui table components
+import {
+    Table as ShadcnTable,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from "../ui/table" // adjust path as needed
 
 const Table = ({ columns, data, onDelete, onEdit }) => {
     return (
         <div className="mb-12">
-            <div className="overflow-x-auto">
-                {/* Table for larger screens */}
-                <table
-                    data-testid="users-table"
-                    className="table-auto w-full text-left hidden lg:table">
-                    <thead>
-                        <tr className="bg-gray-100 text-center">
+            <div className="overflow-x-auto min-h-[320px]">
+                {/* Shadcn table for larger screens */}
+                <ShadcnTable className="hidden w-full lg:table">
+                    <TableHeader>
+                        <TableRow>
                             {columns.map((column, index) => (
-                                <th key={`header-${index}`} className="px-4 py-2">
+                                <TableHead key={`header-${index}`}>
                                     {column.charAt(0).toUpperCase() + column.slice(1)}
-                                </th>
+                                </TableHead>
                             ))}
-                        </tr>
-                    </thead>
-                    <tbody>
+                        </TableRow>
+                    </TableHeader>
+
+                    <TableBody>
                         {data.map((user, index) => (
-                            <tr
+                            <TableRow
                                 key={user._id || user.id || `user-${index}`}
                                 className="border-t hover:bg-gray-100 transition delay-50 ease-in-out"
                             >
-                                <td className="px-4 py-2">{`${user.firstname} ${user.lastname}`}</td>
-                                <td className="px-4 py-2">{user.email}</td>
-                                <td className="px-4 py-2">
+                                <TableCell>{`${user.firstname} ${user.lastname}`}</TableCell>
+                                <TableCell>{user.email}</TableCell>
+                                <TableCell>
                                     <span
                                         className={`bg-gradient-to-r px-3 py-1 rounded-full text-xs font-semibold hover:scale-105 transform transition-all duration-200 ${user.isAdministrator
                                             ? "from-blue-400 via-blue-500 to-blue-600 text-white"
@@ -34,28 +42,28 @@ const Table = ({ columns, data, onDelete, onEdit }) => {
                                     >
                                         {user.isAdministrator ? "Admin" : "User"}
                                     </span>
-                                </td>
-                                <td className="px-4 py-2">
+                                </TableCell>
+                                <TableCell>
                                     <button
                                         className="text-blue-500 hover:underline"
-                                        onClick={() => onEdit(user)}
+                                        onClick={() => onEdit?.(user)}
                                     >
                                         <i className="fa-solid fa-pen-to-square hover:text-blue-800"></i>
                                     </button>
                                     <button
-                                        onClick={() => onDelete(user._id)}
+                                        onClick={() => onDelete?.(user._id)}
                                         className="ml-4 text-red-600 hover:underline"
                                     >
                                         <i className="fa-solid fa-trash-can hover:text-red-800"></i>
                                     </button>
-                                </td>
-                            </tr>
+                                </TableCell>
+                            </TableRow>
                         ))}
-                    </tbody>
-                </table>
+                    </TableBody>
+                </ShadcnTable>
 
                 {/* Card layout for smaller screens */}
-                <div className="lg:hidden">
+                <div className="lg:hidden min-h-[1030px]">
                     {data.map((user, index) => (
                         <div
                             key={user._id || `user-card-${index}`}
@@ -74,13 +82,13 @@ const Table = ({ columns, data, onDelete, onEdit }) => {
                             </p>
                             <div className="mt-2 flex justify-end">
                                 <button
-                                    onClick={() => onEdit(user)}
+                                    onClick={() => onEdit?.(user)}
                                     className="text-blue-600 hover:underline mr-4"
                                 >
                                     <i className="fa-solid fa-pen-to-square hover:text-blue-800"></i>
                                 </button>
                                 <button
-                                    onClick={() => onDelete(user._id)}
+                                    onClick={() => onDelete?.(user._id)}
                                     className="text-red-600 hover:underline"
                                 >
                                     <i className="fa-solid fa-trash-can hover:text-red-800"></i>
@@ -91,7 +99,7 @@ const Table = ({ columns, data, onDelete, onEdit }) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Table;
+export default Table

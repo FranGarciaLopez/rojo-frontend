@@ -9,8 +9,8 @@ const Hero = () => {
     <section className="relative w-full flex-1 flex items-center justify-center"
       data-testid="hero"
     >
-      <Card className="container mx-auto text-center max-w-7xl">
-        <CardContent>
+      <Card className="container mx-auto text-center max-w-7xl border-none shadow-none mt-8 p-2">
+        <CardContent className="px-2">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight">
             Join Today to connect with the{" "}
             <span className="text-blue-600">
@@ -27,7 +27,7 @@ const Hero = () => {
 
           <div className="mt-8 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
             <Link to="/register" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full">
+              <Button size="lg" className="w-full text-white">
                 Get Started
                 <svg
                   className="ml-2 w-5 h-5"

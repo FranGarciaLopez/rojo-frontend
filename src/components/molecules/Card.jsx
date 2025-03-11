@@ -1,31 +1,34 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react"
+import { useNavigate } from "react-router-dom"
+// Import shadcn components
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 
-const Card = ({
+const ActivityCard = ({
     activity,
     interestedInAEvent,
     interestedEvents,
     loadingEvent,
 }) => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const handleInterestClick = async (e) => {
-        e.stopPropagation();
+        e.stopPropagation()
         try {
-            await interestedInAEvent(activity._id);
+            await interestedInAEvent(activity._id)
         } catch (error) {
-            console.error("Error showing interest in event:", error);
+            console.error("Error showing interest in event:", error)
         }
-    };
+    }
 
     const handleCardClick = () => {
-        navigate(`/events/${activity._id}`); // Navigate to EventDetails
-    };
+        navigate(`/events/${activity._id}`) // Navigate to EventDetails
+    }
 
     return (
-        <div
+        <Card
             data-testid="event-card"
-            className="relative group overflow-hidden rounded-lg shadow-lg ease-in-out cursor-pointer h-96 w-full mb-8"
+            className="overflow-hidden cursor-pointer h-96 w-full mb-8 relative group shadow-lg"
             onClick={handleCardClick}
         >
             {/* Background Image */}
@@ -34,9 +37,8 @@ const Card = ({
                 style={{
                     backgroundImage: `url(${activity.photos[0]
                         .split("/upload/")[0]
-                        .concat(
-                            "/upload/w_600,h_800,c_fill/"
-                        )}${activity.photos[0].split("/upload/")[1]}`,
+                        .concat("/upload/w_600,h_800,c_fill/")
+                        }${activity.photos[0].split("/upload/")[1]})`,
                 }}
             ></div>
 
@@ -44,7 +46,8 @@ const Card = ({
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
 
             {/* Content Overlay */}
-            <div className="relative z-10 flex flex-col justify-between h-full p-4">
+            <CardContent className="relative z-10 flex flex-col justify-between h-full p-4">
+                {/* Title and Description */}
                 <div>
                     <h2 className="text-xl font-semibold truncate text-gray-200">
                         {activity.title}
@@ -53,6 +56,8 @@ const Card = ({
                         {activity.description}
                     </p>
                 </div>
+
+                {/* Date, City, and Category */}
                 <div className="text-xs space-y-1 text-white">
                     <p className="text-white/60">
                         {activity.dateTime
@@ -63,31 +68,35 @@ const Card = ({
                         <p className="text-white/60">City: {activity.city.name}</p>
                     )}
                     {activity.category?.name && (
-                        <p className="text-white/60">Category: {activity.category.name}</p>
+                        <p className="text-white/60">
+                            Category: {activity.category.name}
+                        </p>
                     )}
                 </div>
 
                 {/* Interested Button */}
-                <button
-                    onClick={handleInterestClick}
-                    disabled={
-                        interestedEvents.includes(activity._id) ||
-                        loadingEvent === activity._id
-                    }
-                    className={`w-full py-2 mt-4 text-sm font-semibold rounded-lg ${interestedEvents.includes(activity._id)
-                        ? "bg-gray-600 cursor-not-allowed text-white"
-                        : "bg-blue-600 hover:bg-blue-700 text-white"
-                        }`}
-                >
-                    {loadingEvent === activity._id
-                        ? "Processing..."
-                        : interestedEvents.includes(activity._id)
-                            ? "Already Interested"
-                            : "Interested"}
-                </button>
-            </div>
-        </div>
-    );
-};
+                <CardFooter className="p-0 mt-4">
+                    <Button
+                        onClick={handleInterestClick}
+                        disabled={
+                            interestedEvents.includes(activity._id) ||
+                            loadingEvent === activity._id
+                        }
+                        className={`w-full ${interestedEvents.includes(activity._id)
+                            ? "bg-gray-600 cursor-not-allowed text-white"
+                            : "bg-blue-600 hover:bg-blue-700 text-white"
+                            }`}
+                    >
+                        {loadingEvent === activity._id
+                            ? "Processing..."
+                            : interestedEvents.includes(activity._id)
+                                ? "Already Interested"
+                                : "Interested"}
+                    </Button>
+                </CardFooter>
+            </CardContent>
+        </Card>
+    )
+}
 
-export default Card;
+export default ActivityCard

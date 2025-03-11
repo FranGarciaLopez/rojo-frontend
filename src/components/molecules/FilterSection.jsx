@@ -1,5 +1,6 @@
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import InputText from "../atoms/InputText"
+import { Checkbox } from "@/components/ui/checkbox" // Keep using shadcn's Checkbox
+import Label from "../atoms/Label"
 
 const FilterSection = ({ filterText, setFilterText, selectedFilters, setSelectedFilters, user }) => {
           // Map for filter types and their corresponding user object properties
@@ -7,12 +8,12 @@ const FilterSection = ({ filterText, setFilterText, selectedFilters, setSelected
                     category: user?.categoryName?.categoryName || "No Category",
                     day: user?.dayOfTheWeek || "No Day",
                     city: user?.preferedCity?.name || "No City",
-          };
+          }
 
           return (
                     <div className="flex flex-col mb-8 w-full">
                               {/* Search Input */}
-                              <Input
+                              <InputText
                                         type="text"
                                         value={filterText}
                                         onChange={(e) => setFilterText(e.target.value)}
@@ -23,14 +24,11 @@ const FilterSection = ({ filterText, setFilterText, selectedFilters, setSelected
                               {/* Filters */}
                               <div className="flex flex-wrap gap-4 sm:gap-6">
                                         {["category", "day", "city"].map((filterType) => (
-                                                  <label
-                                                            key={filterType}
-                                                            className="flex items-center gap-2 w-full sm:w-auto"
-                                                  >
+                                                  <div key={filterType} className="flex items-center gap-2 w-full sm:w-auto">
                                                             {/* Display filter label */}
-                                                            <span className="text-sm text-muted-foreground">
+                                                            <Label className="text-sm text-muted-foreground">
                                                                       Filter by {filterLabels[filterType]}
-                                                            </span>
+                                                            </Label>
                                                             <Checkbox
                                                                       checked={selectedFilters[filterType]}
                                                                       onCheckedChange={(checked) =>
@@ -41,11 +39,11 @@ const FilterSection = ({ filterText, setFilterText, selectedFilters, setSelected
                                                                       }
                                                                       className="h-5 w-5"
                                                             />
-                                                  </label>
+                                                  </div>
                                         ))}
                               </div>
                     </div>
-          );
-};
+          )
+}
 
-export default FilterSection;
+export default FilterSection

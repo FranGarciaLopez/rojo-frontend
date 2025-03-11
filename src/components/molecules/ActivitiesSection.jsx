@@ -1,7 +1,8 @@
-import React from "react";
-import GridSection from "../atoms/GridSection";
-import Card from "./Card";
-import { Button } from "../ui/button";
+import React from "react"
+// Use the refactored GridSection and Button components
+import GridSection from "../atoms/GridSection"
+import Card from "./Card"
+import Buttons from "../atoms/Buttons" // Import Buttons instead of directly from shadcn/ui
 
 const ActivitiesSection = ({
           activities,
@@ -12,7 +13,6 @@ const ActivitiesSection = ({
           loadingEvent,
 }) => (
           <div className="relative">
-
                     {/* Grid Section */}
                     <GridSection>
                               {activities.slice(0, visibleItems).map((activity) => (
@@ -29,14 +29,16 @@ const ActivitiesSection = ({
                     {/* Show More Button */}
                     {visibleItems < activities.length && (
                               <div className="flex justify-center mt-4">
-                                        <Button type="submit" size="lg" className="w-full"
+                                        <Buttons
+                                                  type="button"
+                                                  size="lg"
+                                                  className="w-full"
                                                   onClick={showMoreItems}
-                                        >
-                                                  Show More
-                                        </Button>
+                                                  value="Show More"
+                                        />
                               </div>
                     )}
           </div>
-);
+)
 
-export default ActivitiesSection;
+export default ActivitiesSection

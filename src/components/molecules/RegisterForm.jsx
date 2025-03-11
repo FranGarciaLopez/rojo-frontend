@@ -61,7 +61,7 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="flex flex-grow justify-center items-center p-6">
+    <div className="flex flex-grow justify-center items-center m-4">
       <Card className="w-full max-w-md">
         <CardContent>
           <form onSubmit={handleSubmit}>

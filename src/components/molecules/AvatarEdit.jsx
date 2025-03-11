@@ -61,7 +61,7 @@ const AvatarEdit = ({ value, onAvatarChange }) => {
     };
 
     return (
-        <div className="grid place-items-center">
+        <div className="grid w-full">
             {/* Alert Section */}
             {alert && (
                 <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md">

@@ -13,12 +13,13 @@ function ImageUpload({ setPhotos }) {
     setUploadedImages((prevImages) => [...prevImages, ...images]);
     setPhotos((prevPhotos) => [...prevPhotos, ...images]);
   };
-  
+
   return (
     <div
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
-      className="flex flex-col items-center justify-center w-full h-[50vh]"
+      className="flex flex-col items-center justify-center w-full h-[50vh]
+      border-2 border-primary rounded-lg"
     >
       {uploadedImages.length === 0 ? (
         <h3>Drag an image here</h3>

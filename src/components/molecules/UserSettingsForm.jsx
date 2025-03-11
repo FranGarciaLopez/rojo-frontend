@@ -95,8 +95,7 @@ export const UserSettingsForm = () => {
             } else {
                 const errorData = await response.json();
                 setAlert({
-                    message:
-                        errorData.message || "Failed to delete account. Please try again.",
+                    message: errorData.message || "Failed to delete account.",
                     type: "error",
                 });
             }
@@ -123,7 +122,7 @@ export const UserSettingsForm = () => {
     };
 
     return (
-        <div className="max-w-3xl mx-auto py-10">
+        <div className="max-w-7xl w-full mx-auto flex-shrink-0 py-10">
             {alert && (
                 <Alert
                     variant={
@@ -140,13 +139,13 @@ export const UserSettingsForm = () => {
                 </Alert>
             )}
 
-            {/* back button */}
-
-            <div className="flex items-center gap-2">
-                <Link to="/dashboard" className="text-blue-500 hover:bg-blue-100 rounded-lg transition-colors duration-200 ease-in-out px-6 py-2
-                    mx-5
-                ">
-                    {/* svg */}
+            {/* Back Button */}
+            <div className="flex items-center gap-2 mb-6">
+                <Link
+                    to="/dashboard"
+                    className="text-blue-500 hover:bg-blue-100 rounded-lg transition-colors duration-200 ease-in-out px-4 py-2"
+                >
+                    {/* SVG Icon */}
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-6 w-6"
@@ -164,29 +163,28 @@ export const UserSettingsForm = () => {
                 </Link>
             </div>
 
-            <Card>
-                <CardContent>
-                    <form onSubmit={handleSaveSettings} className="space-y-6">
+            {/* Settings Form */}
+            <Card className="border-none shadow-none max-w-7xl px-6 xl:px-2 py-8">
+                <CardContent className="space-y-6 px-0">
+                    <form onSubmit={handleSaveSettings} className="space-y-3">
                         <h2 className="text-2xl font-bold">Account Settings</h2>
                         <p className="text-gray-500">
                             Update your profile and personal details.
                         </p>
 
-                        <div className="items-center justify-center gap-4">
-                            <AvatarEdit value={avatar} onAvatarChange={setAvatar}></AvatarEdit>
-
-
-                            <div className="flex gap-2">
-                                <Input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleAvatarUpload}
-                                    className="hidden"
-                                    id="upload-avatar"
-                                />
-                            </div>
+                        {/* Avatar */}
+                        <div className="flex items-center gap-4 justify-center w-full">
+                            <AvatarEdit value={avatar} onAvatarChange={setAvatar} />
+                            <Input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleAvatarUpload}
+                                className="hidden"
+                                id="upload-avatar"
+                            />
                         </div>
 
+                        {/* First Name */}
                         <div>
                             <Label>First Name</Label>
                             <Input
@@ -196,6 +194,7 @@ export const UserSettingsForm = () => {
                             />
                         </div>
 
+                        {/* Last Name */}
                         <div>
                             <Label>Last Name</Label>
                             <Input
@@ -205,6 +204,7 @@ export const UserSettingsForm = () => {
                             />
                         </div>
 
+                        {/* Email */}
                         <div>
                             <Label>Email</Label>
                             <Input
@@ -214,33 +214,7 @@ export const UserSettingsForm = () => {
                             />
                         </div>
 
-                        <div>
-                            <Label>Day of the Week</Label>
-                            <Input
-                                type="text"
-                                value={dayOfTheWeek}
-                                onChange={(e) => setDayOfTheWeek(e.target.value)}
-                            />
-                        </div>
-
-                        <div>
-                            <Label>Prefered Category</Label>
-                            <Input
-                                type="text"
-                                value={preferedCategory}
-                                onChange={(e) => setPreferedCategory(e.target.value)}
-                            />
-                        </div>
-
-                        <div>
-                            <Label>Prefered City</Label>
-                            <Input
-                                type="text"
-                                value={preferedCity}
-                                onChange={(e) => setPreferedCity(e.target.value)}
-                            />
-                        </div>
-
+                        {/* Save Button */}
                         <Button type="submit" className="w-full">
                             Save Settings
                         </Button>
@@ -248,33 +222,33 @@ export const UserSettingsForm = () => {
                 </CardContent>
             </Card>
 
-            <div className="mt-8">
-
-
-                <div className="mt-10 px-6">
-                    <h3>Danger zone</h3>
-                    <CustomAlert
-                        variant="error"
-                        description=" Permanently remove your account. This action is not reversible."
-                        actions={
-                            <Dialog>
-                                <DialogTitle>Delete Account</DialogTitle>
-                                <DialogTrigger asChild>
-                                    <Button variant="destructive">Delete Account</Button>
-                                </DialogTrigger>
-                                <DialogContent>
-                                    <p>Are you sure you want to delete your account? This action cannot be undone.</p>
-                                    <DialogFooter>
-                                        <Button onClick={handleDeleteAccount} variant="destructive">
-                                            Confirm
-                                        </Button>
-                                    </DialogFooter>
-                                </DialogContent>
-                            </Dialog>
-                        }
-                    />
-                </div>
+            {/* Danger Zone */}
+            <div className="px-6 xl:px-2 py-2">
+                <h3 className="mb-2">Danger zone</h3>
+                <CustomAlert
+                    variant="error"
+                    description="Permanently remove your account. This action is not reversible."
+                    actions={
+                        <Dialog>
+                            <DialogTitle className="mb-2">Delete Account</DialogTitle>
+                            <DialogTrigger asChild>
+                                <Button variant="destructive">Delete Account</Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                                <DialogFooter>
+                                    <Button
+                                        onClick={handleDeleteAccount}
+                                        variant="destructive"
+                                    >
+                                        Confirm
+                                    </Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                    }
+                />
             </div>
-        </div>
+        </div >
     );
 };

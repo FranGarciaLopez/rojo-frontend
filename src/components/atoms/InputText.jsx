@@ -1,13 +1,17 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef } from "react"
+// Import shadcn/ui Input component
+import { Input as ShadcnInput } from "@/components/ui/input" // Adjust the path if needed
 
 const InputText = forwardRef(({ className, ...others }, ref) => {
     return (
-        <input
-            className={`input input-border w-full ${className || ""}`}
+        <ShadcnInput
             ref={ref}
             {...others}
+            className={`w-full ${className || ""}`}
         />
-    );
-});
+    )
+})
 
-export default InputText;
+InputText.displayName = "InputText"
+
+export default InputText
