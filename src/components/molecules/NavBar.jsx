@@ -30,7 +30,9 @@ const NavBar = () => {
         <div className="max-w-7xl mx-auto p-4 flex justify-between items-center">
           {/* Left Section - Home */}
           <div>
-            <Link to="/" className="text-lg font-medium nav-link-hover">
+            <Link to="/" className="text-lg font-medium nav-link-hover"
+              data-testid="home-link"
+            >
               Home
             </Link>
           </div>
@@ -38,7 +40,9 @@ const NavBar = () => {
           {/* Right Section - Desktop Links */}
           <div className="hidden md:flex items-center gap-5">
             {!isAdmin && (
-              <Link to="/blog" className="text-lg font-medium nav-link-hover">
+              <Link to="/blog" className="text-lg font-medium nav-link-hover"
+                data-testid="blog-link"
+              >
                 Blog
               </Link>
             )}
@@ -47,6 +51,7 @@ const NavBar = () => {
                 <Link
                   to="/usersettings"
                   className="text-lg font-medium flex items-center gap-2 nav-link-hover"
+                  data-testid="user-settings-link"
                 >
                   <i className="fas fa-cog"></i>
                   User Settings
@@ -63,6 +68,7 @@ const NavBar = () => {
                 <button
                   onClick={logout}
                   className="bg-muted text-primary-foreground px-4 py-2 rounded-lg text-lg nav-button-hover"
+                  data-testid="logout-button"
                 >
                   Logout
                 </button>
