@@ -214,10 +214,41 @@ export const UserSettingsForm = () => {
                             />
                         </div>
 
+                        {/* Day of the Week */}
+                        <div>
+                            <Label>Day of the Week</Label>
+                            <Input
+                                type="text"
+                                value={dayOfTheWeek}
+                                onChange={(e) => setDayOfTheWeek(e.target.value)}
+                            />
+                        </div>
+
+                        {/* Prefered Category */}
+                        <div>
+                            <Label>Prefered Category</Label>
+                            <Input
+                                type="text"
+                                value={preferedCategory}
+                                onChange={(e) => setPreferedCategory(e.target.value)}
+                            />
+                        </div>
+
+                        {/* Prefered City */}
+                        <div>
+                            <Label>Prefered City</Label>
+                            <Input
+                                type="text"
+                                value={preferedCity}
+                                onChange={(e) => setPreferedCity(e.target.value)}
+                            />
+                        </div>
+
                         {/* Save Button */}
                         <Button type="submit" className="w-full">
                             Save Settings
                         </Button>
+
                     </form>
                 </CardContent>
             </Card>
