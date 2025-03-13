@@ -12,13 +12,13 @@ import {
 const Table = ({ columns, data, onDelete, onEdit }) => {
     return (
         <div className="mb-12">
-            <div className="overflow-x-auto min-h-[320px]">
+            <div className="overflow-x-auto min-h-[520px]">
                 {/* Shadcn table for larger screens */}
-                <ShadcnTable className="hidden w-full lg:table">
-                    <TableHeader>
+                <ShadcnTable className="hidden w-full lg:table border-collapse rounded-xl overflow-hidden bg-card shadow-sm">
+                    <TableHeader className="bg-muted">
                         <TableRow>
                             {columns.map((column, index) => (
-                                <TableHead key={`header-${index}`}>
+                                <TableHead key={`header-${index}`} className="px-6 py-4 text-left text-muted-foreground font-medium text-sm tracking-wide border-b">
                                     {column.charAt(0).toUpperCase() + column.slice(1)}
                                 </TableHead>
                             ))}
@@ -29,33 +29,35 @@ const Table = ({ columns, data, onDelete, onEdit }) => {
                         {data.map((user, index) => (
                             <TableRow
                                 key={user._id || user.id || `user-${index}`}
-                                className="border-t hover:bg-gray-100 transition delay-50 ease-in-out"
+                                className="border-b hover:bg-muted/50 transition-all duration-200"
                             >
-                                <TableCell>{`${user.firstname} ${user.lastname}`}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>
+                                <TableCell className="px-6 py-4 text-foreground">{`${user.firstname} ${user.lastname}`}</TableCell>
+                                <TableCell className="px-6 py-4 text-muted-foreground">{user.email}</TableCell>
+                                <TableCell className="px-6 py-4">
                                     <span
-                                        className={`bg-gradient-to-r px-3 py-1 rounded-full text-xs font-semibold hover:scale-105 transform transition-all duration-200 ${user.isAdministrator
-                                            ? "from-blue-400 via-blue-500 to-blue-600 text-white"
-                                            : "from-green-400 via-green-500 to-green-600 text-white"
+                                        className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium ${user.isAdministrator
+                                            ? "bg-primary/10 text-primary ring-1 ring-inset ring-primary/20"
+                                            : "bg-secondary-foreground/10 text-secondary-foreground ring-1 ring-inset ring-secondary/20"
                                             }`}
                                     >
                                         {user.isAdministrator ? "Admin" : "User"}
                                     </span>
                                 </TableCell>
-                                <TableCell>
-                                    <button
-                                        className="text-blue-500 hover:underline"
-                                        onClick={() => onEdit?.(user)}
-                                    >
-                                        <i className="fa-solid fa-pen-to-square hover:text-blue-800"></i>
-                                    </button>
-                                    <button
-                                        onClick={() => onDelete?.(user._id)}
-                                        className="ml-4 text-red-600 hover:underline"
-                                    >
-                                        <i className="fa-solid fa-trash-can hover:text-red-800"></i>
-                                    </button>
+                                <TableCell className="px-6 py-4 text-right">
+                                    <div className="flex items-center justify-end gap-3">
+                                        <button
+                                            className="p-1.5 rounded-md text-primary hover:bg-primary/10 transition-colors duration-200"
+                                            onClick={() => onEdit?.(user)}
+                                        >
+                                            <i className="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <button
+                                            onClick={() => onDelete?.(user._id)}
+                                            className="p-1.5 rounded-md text-destructive hover:bg-destructive/10 transition-colors duration-200"
+                                        >
+                                            <i className="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -63,35 +65,37 @@ const Table = ({ columns, data, onDelete, onEdit }) => {
                 </ShadcnTable>
 
                 {/* Card layout for smaller screens */}
-                <div className="lg:hidden min-h-[1030px]">
+                <div className="lg:hidden space-y-4 min-h-[1040px]">
                     {data.map((user, index) => (
                         <div
                             key={user._id || `user-card-${index}`}
-                            className="p-4 mb-4 bg-gray-100 rounded-lg shadow-sm hover:shadow-lg transition duration-200 ease-in-out"
+                            className="p-5 bg-card border rounded-xl shadow-sm hover:shadow transition-all duration-300"
                         >
-                            <h3 className="font-semibold">{`${user.firstname} ${user.lastname}`}</h3>
-                            <p className="text-gray-600">Email: {user.email}</p>
-                            <p className="text-gray-600">
-                                Role:{" "}
+                            <h3 className="text-lg font-medium text-card-foreground">{`${user.firstname} ${user.lastname}`}</h3>
+                            <p className="text-muted-foreground mt-1">{user.email}</p>
+                            <div className="flex items-center mt-3">
+                                <span className="text-sm text-gray-500 mr-2">Role:</span>
                                 <span
-                                    className={`font-bold ${user.isAdministrator ? "text-blue-600" : "text-green-600"
+                                    className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${user.isAdministrator
+                                        ? "bg-blue-50 text-blue-700"
+                                        : "bg-green-50 text-green-700"
                                         }`}
                                 >
                                     {user.isAdministrator ? "Admin" : "User"}
                                 </span>
-                            </p>
-                            <div className="mt-2 flex justify-end">
+                            </div>
+                            <div className="mt-4 pt-3 border-t border-border flex justify-end gap-3">
                                 <button
                                     onClick={() => onEdit?.(user)}
-                                    className="text-blue-600 hover:underline mr-4"
+                                    className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors duration-200"
                                 >
-                                    <i className="fa-solid fa-pen-to-square hover:text-blue-800"></i>
+                                    <i className="fa-solid fa-pen-to-square"></i>
                                 </button>
                                 <button
                                     onClick={() => onDelete?.(user._id)}
-                                    className="text-red-600 hover:underline"
+                                    className="p-2 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors duration-200"
                                 >
-                                    <i className="fa-solid fa-trash-can hover:text-red-800"></i>
+                                    <i className="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
                         </div>
